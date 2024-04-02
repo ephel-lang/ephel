@@ -1,0 +1,26 @@
+sig Monoid : type -> type
+val Monoid = V => sig {
+    sig neutral : V
+    sig combine : @infix V -> V -> V
+}
+
+val MonoidInt : Monoid Int =
+    let use Int in val {
+        val neutral = 0
+        val combine = +
+    }
+
+val MonoidString : Monoid String =
+    let use String in val {
+        val neutral = ""
+        val combine = ^
+    }
+
+val main1 : Int =
+    let use MonoidInt in
+    1 combine neutral
+
+val main2 : Int =
+    1 (MonoidInt combine) (MonoidInt neutral)
+
+-- Note: Each source file is a module

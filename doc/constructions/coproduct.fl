@@ -1,0 +1,49 @@
+-- CoProduct definition
+
+sig Unit : type
+val Unit =
+    | () : Unit
+
+val Bool : type =
+    | true  : Bool
+    | false : Bool
+
+-- Pattern matching
+
+val not : Bool -> Bool =
+    | true  => false
+    | false => true
+
+-- Recursive CoProduct
+
+val Nat : type =
+    | Zero : Nat
+    | Succ : Nat -> Nat
+
+sig + : @infix Nat -> Nat -> Nat
+val + =
+    | Zero => Identity
+    | Succ n => m => Succ (n + m)
+
+-- Parametric CoProduct definition
+
+sig List : type -> type
+val List = X =>
+    | [] : List X
+    | :: : @infix X -> List X -> List X
+
+sig size : List X -> Nat
+val size =
+    | []     => Zero
+    | _ :: l => Succ (size l)
+
+-- GADT using intentional type theory for the propositional equality
+
+val Equals : type -> type -> type = A _ =>
+    | Refl : Equals A B with A = B
+
+val Expr : type -> type = A =>
+    | Boolean   : Bool -> Expr A with A = Bool
+    | Integer   : Int -> Expr A with A = Int
+    | Addition  : Exp Int -> Expr Int -> Expr A with A = Int
+    | Selection : Expr Bool -> Expr A -> Expr A -> Expr A

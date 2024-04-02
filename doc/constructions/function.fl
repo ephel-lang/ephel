@@ -1,0 +1,17 @@
+-- Parametric functional type
+
+sig Identity : {X:type} -> X -> X
+val Identity = x => x
+
+sig composition : {A B C:type} -> (B -> C) -> (A -> B) -> (A -> C)
+val composition = f g x => f (g x)
+
+-- Infix capability
+
+sig then : {A B C:type} -> @infix (A -> B) -> (B -> C) -> (A -> C)
+val then = f g => composition g f
+
+val main : Int =
+    let increment : Int -> Int = add 1 in
+    let toString  : Int -> String = i => i toString in
+    increment then toString 2

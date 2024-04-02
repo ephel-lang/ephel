@@ -1,0 +1,13 @@
+sig to : @infix ambient name -> ambient name -> Nat -> ambient process
+val to = sender receiver =>
+    | Zero   => go (out sender.in `printer).<ambient name , sender> ]
+    | Succ n => <x:Nat>.(play sender receiver x) || go (out sender.in receiver).<Nat , n> in
+
+sig against : @infix ambient name -> ambient name -> ambient process
+val against = sender receiver =>
+    sender[ <x:Nat>.(sender to receiver x) ] || receiver[ <x:Nat>.(receiver to sender x) ]
+
+ val _ : ambient process =
+    (`ping against `pong) ||
+    `printer[ (x:ambient name).(println x) ] ||
+    go in `ping.<Nat , 42>

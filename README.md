@@ -136,7 +136,7 @@ For example, we have can imagine the ambient process
 `A[ `B[ P ] || `C[ Q ] || `D[ R ] || <x:T>.F ]
 ```
 
-with \`A and \`D ambient located in a physical process `P1`, \`B in `P2` and C in `P3`.
+with \`A and \`D ambient located in a physical process `P1`, \`B in `P2` and \`C in `P3`.
 
 
 ```
@@ -152,9 +152,9 @@ with \`A and \`D ambient located in a physical process `P1`, \`B in `P2` and C i
 
 Each action requires a specific scope:
 
-- in m   : instructs the surrounding ambient to enter some sibling ambient m
-- out m  : instructs the surrounding ambient to exit its parent ambient m
-- open m : instructs the surrounding ambient to dissolve the boundary of an ambient m
+- `in m.P` : instructs the surrounding ambient to enter some sibling ambient m
+- `out m.P`  : instructs the surrounding ambient to exit its parent ambient m
+- `open m.P` : instructs the surrounding ambient to dissolve the boundary of an ambient m
 
 Note: @A means remote ambient in this formalism
 
@@ -164,20 +164,20 @@ Note: @A means remote ambient in this formalism
     P3 : @A[ @B || `C[ Q ] || @D ]              with @A, @D in P1 and @B in P2
 ```
 
-For instance, in P2 `B (resp. P3 `C and P1 `D) has information related to:
+For instance, in the P2 process, \`B (resp. P3 for \`C and P1 for \`D) has information related to:
 - its sibling ambient
 - its parent ambient
 
 ### Reduction implementation sketch
 
-Each scoped Ambient process is in charge on performing embedded action and
-function application on presence of events.
+Each scoped Ambient process is in charge of performing embedded action and
+function application on the presence of events.
 
-So, with this minimal representation each Ambient is able to perform
+So, with this minimal representation, each Ambient can perform
 `in`, `out` and `open` with or without an objective move.
 
 Functions are not represented in remote processes because the event used for
-its reduction is manage by the surrounding ambient.
+its reduction is managed by the surrounding ambient.
 
 #### Message movement using objective ambient action
 

@@ -132,14 +132,14 @@ Since Ambient calculus targets concurrent systems with mobility me would like to
 
 For example, we have can imagine the ambient process
 
-```
+```ocaml
 `A[ `B[ P ] || `C[ Q ] || `D[ R ] || <x:T>.F ]
 ```
 
 with \`A and \`D ambient located in a physical process `P1`, \`B in `P2` and \`C in `P3`.
 
 
-```
+```ocaml
 `A[ `B[ P ] || `C[ Q ] || `D[ R ] || <x:T>.F ]
  |   |    |     |    |                       |
  |   P2---+     P3---+                       |
@@ -158,7 +158,7 @@ Each action requires a specific scope:
 
 Note: @A means remote ambient in this formalism
 
-```
+```ocaml
     P1 : `A[ @B || @C || `D[ R ] || <x:T>.F ]   with @B in P2 and @C in P3
     P2 : @A[ `B[ P ] || @C || @D ]              with @A, @D in P1 and @C in P3
     P3 : @A[ @B || `C[ Q ] || @D ]              with @A, @D in P1 and @B in P2
@@ -181,7 +181,7 @@ its reduction is managed by the surrounding ambient.
 
 #### Message movement using objective ambient action
 
-```
+```ocaml
 P1: `A[ @B || @C || `D[ R ] || <x:T>.F ]
 P2: @A[ `B[ go (out `B).<m> ] || @C || @D ]
 P3: @A[ @B || `C[ Q ] || @D ]
@@ -189,7 +189,7 @@ P3: @A[ @B || `C[ Q ] || @D ]
 
 reduces to
 
-```
+```ocaml
 P1: `A[ <m> || @B || @C || `D[ R ] || <x:T>.F ]
 P2: @A[ `B[] || @C || @D ]
 P3: @A[ @B || `C[ Q ] || @D ]
@@ -197,7 +197,7 @@ P3: @A[ @B || `C[ Q ] || @D ]
 
 reduces to
 
-```
+```ocaml
 P1: `A[ @B || @C || `D[ R ] || F{x:=m} ]
 P2: @A[ `B[] || @C || @D ]
 P3: @A[ @B || `C[ Q ] || @D ]
@@ -205,7 +205,7 @@ P3: @A[ @B || `C[ Q ] || @D ]
 
 #### Message movement using ambient action
 
-```
+```ocaml
 P1: `A[ @B || @C || `D[ R ] || open `M.<x:T>.F ]
 P2: @A[ `B[ `M[ out `B.<m> ] ] || @C || @D ]
 P3: @A[ @B || `C[ Q ] || @D ]
@@ -213,7 +213,7 @@ P3: @A[ @B || `C[ Q ] || @D ]
 
 reduces to
 
-```
+```ocaml
 P1: `A[ `M[ <m> ] || @B || @C || `D[ R ] || open `M.<x:T>.F ]
 P2: @A[ `B[] || @C || @D ]
 P3: @A[ @B || `C[ Q ] || @D ]
@@ -221,7 +221,7 @@ P3: @A[ @B || `C[ Q ] || @D ]
 
 reduces to
 
-```
+```ocaml
 P1: `A[ <m> || @B || @C || `D[ R ] || <x:T>.F ]
 P2: @A[ `B[] || @C || @D ]
 P3: @A[ @B || `C[ Q ] || @D ]
@@ -229,7 +229,7 @@ P3: @A[ @B || `C[ Q ] || @D ]
 
 reduces to
 
-```
+```ocaml
 P1: `A[ @B || @C || `D[ R ] || F{x:=m} ]
 P2: @A[ `B[] || @C || @D ]
 P3: @A[ @B || `C[ Q ] || @D ]

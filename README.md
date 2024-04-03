@@ -126,7 +126,116 @@ val play = {A} who to_a from_a =>
 
 We can remark that such Ambient process implicitly captures the Actor paradigm.
 
-## About
+## Ambient and physical distribution
+
+Since Ambient calculus targets concurrent systems with mobility me would like to physically distribute an ambient hierarchy. 
+
+For example, we have can imagine the ambient process
+
+```
+`A[ `B[ P ] || `C[ Q ] || `D[ R ] || <x:T>.F ]
+```
+
+with \`A and \`D ambient located in a physical process `P1`, \`B in `P2` and C in `P3`.
+
+
+```
+`A[ `B[ P ] || `C[ Q ] || `D[ R ] || <x:T>.F ]
+ |   |    |     |    |                       |
+ |   P2---+     P3---+                       |
+ |                                           |
+ P1------------------------------------------+
+```
+
+
+### Ambient Scope and action reduction
+
+Each action requires a specific scope:
+
+- in m   : instructs the surrounding ambient to enter some sibling ambient m
+- out m  : instructs the surrounding ambient to exit its parent ambient m
+- open m : instructs the surrounding ambient to dissolve the boundary of an ambient m
+
+Note: @A means remote ambient in this formalism
+
+```
+    P1 : `A[ @B || @C || `D[ R ] || <x:T>.F ]   with @B in P2 and @C in P3
+    P2 : @A[ `B[ P ] || @C || @D ]              with @A, @D in P1 and @C in P3
+    P3 : @A[ @B || `C[ Q ] || @D ]              with @A, @D in P1 and @B in P2
+```
+
+For instance, in P2 `B (resp. P3 `C and P1 `D) has information related to:
+- its sibling ambient
+- its parent ambient
+
+### Reduction implementation sketch
+
+Each scoped Ambient process is in charge on performing embedded action and
+function application on presence of events.
+
+So, with this minimal representation each Ambient is able to perform
+`in`, `out` and `open` with or without an objective move.
+
+Functions are not represented in remote processes because the event used for
+its reduction is manage by the surrounding ambient.
+
+#### Message movement using objective ambient action
+
+```
+P1: `A[ @B || @C || `D[ R ] || <x:T>.F ]
+P2: @A[ `B[ go (out `B).<m> ] || @C || @D ]
+P3: @A[ @B || `C[ Q ] || @D ]
+```
+
+reduces to
+
+```
+P1: `A[ <m> || @B || @C || `D[ R ] || <x:T>.F ]
+P2: @A[ `B[] || @C || @D ]
+P3: @A[ @B || `C[ Q ] || @D ]
+```
+
+reduces to
+
+```
+P1: `A[ @B || @C || `D[ R ] || F{x:=m} ]
+P2: @A[ `B[] || @C || @D ]
+P3: @A[ @B || `C[ Q ] || @D ]
+```
+
+#### Message movement using ambient action
+
+```
+P1: `A[ @B || @C || `D[ R ] || open `M.<x:T>.F ]
+P2: @A[ `B[ `M[ out `B.<m> ] ] || @C || @D ]
+P3: @A[ @B || `C[ Q ] || @D ]
+```
+
+reduces to
+
+```
+P1: `A[ `M[ <m> ] || @B || @C || `D[ R ] || open `M.<x:T>.F ]
+P2: @A[ `B[] || @C || @D ]
+P3: @A[ @B || `C[ Q ] || @D ]
+```
+
+reduces to
+
+```
+P1: `A[ <m> || @B || @C || `D[ R ] || <x:T>.F ]
+P2: @A[ `B[] || @C || @D ]
+P3: @A[ @B || `C[ Q ] || @D ]
+```
+
+reduces to
+
+```
+P1: `A[ @B || @C || `D[ R ] || F{x:=m} ]
+P2: @A[ `B[] || @C || @D ]
+P3: @A[ @B || `C[ Q ] || @D ]
+```
+
+## About Ephel
 
 [Ephel](https://www.elfdict.com/wt/21382)
 

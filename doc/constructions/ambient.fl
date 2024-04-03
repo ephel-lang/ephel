@@ -1,4 +1,21 @@
--- Ambient calculus as fist class citizen
+-- Ambient calculus as first class citizen
+
+```ebnf
+M := `id
+C :=
+    M
+    in M
+    out M
+    open M
+    C.C
+P :=
+    ()
+    P || P
+    M[ P ]
+    go (C).P
+    <e,e>
+    <e:e>.e
+```
 
 val name : ambient name =
     `test

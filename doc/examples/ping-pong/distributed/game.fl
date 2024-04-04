@@ -9,16 +9,16 @@ use player
     Open problem:
         Some resources are already provisioned (How?)
 
-    Once @ping is "incarnated" its content is:
+    Once `ping@ is "incarnated" its content is:
     ```
-    @game[ ping[] || @pong || @printer ]
+    game@P0[ `ping[] || `pong@ || `printer@P0 ]
     ```
 }--
 
 val _ : ambient process =
     `game[
-        @`ping                                   ||
-        @`pong                                   ||
+        `ping@                                   ||
+        `pong@                                   ||
         `printer[ (x:ambient name).(println x) ] ||
         go in `ping.<Nat , 42>                   ||
         --{ Additional process for players }--
@@ -26,7 +26,7 @@ val _ : ambient process =
         go (in `pong).(player `pong to `p1ng)    ||
     ]
 
-============================================================
+-- =======================================================================
 
 --{
     Solution 2:
@@ -38,7 +38,7 @@ val _ : ambient process =
     ```
     val spawn : ambient name -> (() -> ambient process) -> ambient process
     val spawn = name f =>
-        @name || go (in name).(f ())
+        name@P || go (in name).(f ())
     ```
 
 }--

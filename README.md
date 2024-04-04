@@ -159,12 +159,12 @@ Each action requires a specific scope:
 - out m  : instructs the surrounding ambient to exit its parent ambient m
 - open m : instructs the surrounding ambient to dissolve the boundary of an ambient m
 
-Note: @`A means remote ambient in this formalism.
+Note: `A@(Nat?) means remote ambient in this formalism where nat is used for the scope.
 
 ```
-    P1 :  `A[ @`B || @`C || `D[ R ] || <x:T>.F ]   with `B in P2 and @`C in P3
-    P2 : @`A[ `B[ P ] || @`C || @`D ]              with @`A, @`D in P1 and @`C in P3
-    P3 : @`A[ @`B || `C[ Q ] || @`D ]              with @`A, @`D in P1 and @`B in P2
+    P1 :  `A[ `B@ || `C@ || `D[ R ] || <x:T>.F ]   with `B in P2 and `C@ in P3
+    P2 : `A@1[ `B[ P ] || `C@ || `D@1 ]            with `A@1, `D@1 in P1 and `C@ in P3
+    P3 : `A@1[ `B@ || `C[ Q ] || `D@1 ]            with `A@1, `D@1 in P1 and `B@ in P2
 ```
 
 For instance, in P2 \`B (resp. P3 \`C and P1 \`D) has information related to:
@@ -185,57 +185,57 @@ its reduction is managed by the surrounding ambient.
 #### Message movement using objective ambient action
 
 ```
-P1:  `A[ @`B || @`C || `D[ R ] || <x:T>.F ]
-P2: @`A[ `B[ go (out `B).<m> ] || @`C || @`D ]
-P3: @`A[ @`B || `C[ Q ] || @`D ]
+P1:  `A[ `B@ || `C@ || `D[ R ] || <x:T>.F ]
+P2: `A@1[ `B[ go (out `B).<m> ] || `C@ || `D@1 ]
+P3: `A@1[ `B@ || `C[ Q ] || `D@1 ]
 ```
 
 reduces to
 
 ```
-P1:  `A[ <m> || @`B || @`C || `D[ R ] || <x:T>.F ]
-P2: @`A[ `B[] || @`C || @`D ]
-P3: @`A[ @`B || `C[ Q ] || @`D ]
+P1:  `A[ <m> || `B@ || `C@ || `D[ R ] || <x:T>.F ]
+P2: `A@1[ `B[] || `C@ || `D@1 ]
+P3: `A@1[ `B@ || `C[ Q ] || `D@1 ]
 ```
 
 reduces to
 
 ```
-P1:  `A[ @`B || @`C || `D[ R ] || F{x:=m} ]
-P2: @`A[ `B[] || @`C || @`D ]
-P3: @`A[ @`B || `C[ Q ] || @`D ]
+P1:  `A[ `B@ || `C@ || `D[ R ] || F{x:=m} ]
+P2: `A@1[ `B[] || `C@ || `D@1 ]
+P3: `A@1[ `B@ || `C[ Q ] || `D@1 ]
 ```
 
 #### Message movement using ambient action
 
 ```
-P1:  `A[ @`B || @`C || `D[ R ] || open `M.<x:T>.F ]
-P2: @`A[ `B[ `M[ out `B.<m> ] ] || @`C || @`D ]
-P3: @`A[ @`B || `C[ Q ] || @`D ]
+P1:  `A[ `B@ || `C@ || `D[ R ] || open `M.<x:T>.F ]
+P2: `A@1[ `B[ `M[ out `B.<m> ] ] || `C@ || `D@1 ]
+P3: `A@1[ `B@ || `C[ Q ] || `D@1 ]
 ```
 
 reduces to
 
 ```
-P1:  `A[ `M[ <m> ] || @`B || @`C || `D[ R ] || open `M.<x:T>.F ]
-P2: @`A[ `B[] || @`C || @`D ]
-P3: @`A[ @`B || `C[ Q ] || @`D ]
+P1:  `A[ `M[ <m> ] || `B@ || `C@ || `D[ R ] || open `M.<x:T>.F ]
+P2: `A@1[ `B[] || `C@ || `D@1 ]
+P3: `A@1[ `B@ || `C[ Q ] || `D@1 ]
 ```
 
 reduces to
 
 ```
-P1:  `A[ <m> || @`B || @`C || `D[ R ] || <x:T>.F ]
-P2: @`A[ `B[] || @`C || @`D ]
-P3: @`A[ @`B || `C[ Q ] || @`D ]
+P1:  `A[ <m> || `B@ || `C@ || `D[ R ] || <x:T>.F ]
+P2: `A@1[ `B[] || `C@ || `D@1 ]
+P3: `A@1[ `B@ || `C[ Q ] || `D@1 ]
 ```
 
 reduces to
 
 ```
-P1:  `A[ @`B || @`C || `D[ R ] || F{x:=m} ]
-P2: @`A[ `B[] || @`C || @`D ]
-P3: @`A[ @`B || `C[ Q ] || @`D ]
+P1:  `A[ `B@ || `C@ || `D[ R ] || F{x:=m} ]
+P2: `A@1[ `B[] || `C@ || `D@1 ]
+P3: `A@1[ `B@ || `C[ Q ] || `D@1 ]
 ```
 
 ## About Ephel

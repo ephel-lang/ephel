@@ -1,0 +1,8 @@
+use behavior
+
+sig to : @infix (ambient name -> ambient process) -> ambient name -> ambient process
+sig to = f p => f p
+
+sig player : ambient name -> ambient name -> ambient process
+val player = sender receiver =>
+    sender[ <x:Nat>.(play sender receiver x) ]

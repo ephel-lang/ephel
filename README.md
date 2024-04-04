@@ -84,20 +84,23 @@ We identify three scoped ambient:
 - `printer` in charge of printing the winner
 
 ```ocaml
-sig to : @infix ambient name -> ambient name -> nat -> ambient process
-val to = sender receiver =>
-    | Zero   => go (out sender.in `printer).<ambient name,sender> ]
-    | Succ n => <x:nat>.(sender to receiver x) || go (out sender.in receiver).<nat,n>
+sig play : ambient name -> ambient name -> Nat -> ambient process
+val play = sender receiver =>
+    | Zero   => go (out sender.in `printer).<ambient name , sender> ]
+    | Succ n => <x:Nat>.(play sender receiver x) || go (out sender.in receiver).<Nat , n> in
 
-sig against : @infix ambient name -> ambient name -> ambient process
-val against = sender receiver =>
-    sender[ <x:nat>.(sender to receiver x) ] || 
-    receiver[ <x:nat>.(receiver to sender x) ]
+sig to : @infix (ambient name -> ambient process) -> ambient name -> ambient process
+sig to = f p => f p
+
+sig player : ambient name -> ambient name -> ambient process
+val player = sender receiver =>
+    sender[ <x:Nat>.(play sender receiver x) ]
 
  val _ : ambient process =
-    (`ping against `pong) ||
-    `printer[ <x:ambient name>.(println $ x value) ] ||
-    go in `ping.<nat , 42>
+    (player `ping to `pong)                  ||
+    (player `pong to `ping)                  ||
+    `printer[ (x:ambient name).(println x) ] ||
+    go in `ping.<Nat , 42>
 ```
 
 #### Functional approach
@@ -132,14 +135,14 @@ Since Ambient calculus targets concurrent systems with mobility me would like to
 
 For example, we have can imagine the ambient process
 
-```ocaml
+```
 `A[ `B[ P ] || `C[ Q ] || `D[ R ] || <x:T>.F ]
 ```
 
-with \`A and \`D ambient located in a physical process `P1`, \`B in `P2` and \`C in `P3`.
+with \`A and \`D ambient located in a physical process `P1`, \`B in `P2` and C in `P3`.
 
 
-```ocaml
+```
 `A[ `B[ P ] || `C[ Q ] || `D[ R ] || <x:T>.F ]
  |   |    |     |    |                       |
  |   P2---+     P3---+                       |
@@ -152,87 +155,87 @@ with \`A and \`D ambient located in a physical process `P1`, \`B in `P2` and \`C
 
 Each action requires a specific scope:
 
-- `in m.P` : instructs the surrounding ambient to enter some sibling ambient m
-- `out m.P`  : instructs the surrounding ambient to exit its parent ambient m
-- `open m.P` : instructs the surrounding ambient to dissolve the boundary of an ambient m
+- in m   : instructs the surrounding ambient to enter some sibling ambient m
+- out m  : instructs the surrounding ambient to exit its parent ambient m
+- open m : instructs the surrounding ambient to dissolve the boundary of an ambient m
 
-Note: @A means remote ambient in this formalism
+Note: @`A means remote ambient in this formalism.
 
-```ocaml
-    P1 : `A[ @B || @C || `D[ R ] || <x:T>.F ]   with @B in P2 and @C in P3
-    P2 : @A[ `B[ P ] || @C || @D ]              with @A, @D in P1 and @C in P3
-    P3 : @A[ @B || `C[ Q ] || @D ]              with @A, @D in P1 and @B in P2
+```
+    P1 :  `A[ @`B || @`C || `D[ R ] || <x:T>.F ]   with `B in P2 and @`C in P3
+    P2 : @`A[ `B[ P ] || @`C || @`D ]              with @`A, @`D in P1 and @`C in P3
+    P3 : @`A[ @`B || `C[ Q ] || @`D ]              with @`A, @`D in P1 and @`B in P2
 ```
 
-For instance, in the P2 process, \`B (resp. P3 for \`C and P1 for \`D) has information related to:
+For instance, in P2 \`B (resp. P3 \`C and P1 \`D) has information related to:
 - its sibling ambient
 - its parent ambient
 
 ### Reduction implementation sketch
 
-Each scoped Ambient process is in charge of performing embedded action and
-function application on the presence of events.
+Each scoped Ambient process is in charge on performing embedded action and
+function application on presence of events.
 
-So, with this minimal representation, each Ambient can perform
+So, with this minimal representation each Ambient is able to perform
 `in`, `out` and `open` with or without an objective move.
 
 Functions are not represented in remote processes because the event used for
-its reduction is managed by the surrounding ambient.
+its reduction is manage by the surrounding ambient.
 
 #### Message movement using objective ambient action
 
-```ocaml
-P1: `A[ @B || @C || `D[ R ] || <x:T>.F ]
-P2: @A[ `B[ go (out `B).<m> ] || @C || @D ]
-P3: @A[ @B || `C[ Q ] || @D ]
+```
+P1:  `A[ @`B || @`C || `D[ R ] || <x:T>.F ]
+P2: @`A[ `B[ go (out `B).<m> ] || @`C || @`D ]
+P3: @`A[ @`B || `C[ Q ] || @`D ]
 ```
 
 reduces to
 
-```ocaml
-P1: `A[ <m> || @B || @C || `D[ R ] || <x:T>.F ]
-P2: @A[ `B[] || @C || @D ]
-P3: @A[ @B || `C[ Q ] || @D ]
+```
+P1:  `A[ <m> || @`B || @`C || `D[ R ] || <x:T>.F ]
+P2: @`A[ `B[] || @`C || @`D ]
+P3: @`A[ @`B || `C[ Q ] || @`D ]
 ```
 
 reduces to
 
-```ocaml
-P1: `A[ @B || @C || `D[ R ] || F{x:=m} ]
-P2: @A[ `B[] || @C || @D ]
-P3: @A[ @B || `C[ Q ] || @D ]
+```
+P1:  `A[ @`B || @`C || `D[ R ] || F{x:=m} ]
+P2: @`A[ `B[] || @`C || @`D ]
+P3: @`A[ @`B || `C[ Q ] || @`D ]
 ```
 
 #### Message movement using ambient action
 
-```ocaml
-P1: `A[ @B || @C || `D[ R ] || open `M.<x:T>.F ]
-P2: @A[ `B[ `M[ out `B.<m> ] ] || @C || @D ]
-P3: @A[ @B || `C[ Q ] || @D ]
+```
+P1:  `A[ @`B || @`C || `D[ R ] || open `M.<x:T>.F ]
+P2: @`A[ `B[ `M[ out `B.<m> ] ] || @`C || @`D ]
+P3: @`A[ @`B || `C[ Q ] || @`D ]
 ```
 
 reduces to
 
-```ocaml
-P1: `A[ `M[ <m> ] || @B || @C || `D[ R ] || open `M.<x:T>.F ]
-P2: @A[ `B[] || @C || @D ]
-P3: @A[ @B || `C[ Q ] || @D ]
+```
+P1:  `A[ `M[ <m> ] || @`B || @`C || `D[ R ] || open `M.<x:T>.F ]
+P2: @`A[ `B[] || @`C || @`D ]
+P3: @`A[ @`B || `C[ Q ] || @`D ]
 ```
 
 reduces to
 
-```ocaml
-P1: `A[ <m> || @B || @C || `D[ R ] || <x:T>.F ]
-P2: @A[ `B[] || @C || @D ]
-P3: @A[ @B || `C[ Q ] || @D ]
+```
+P1:  `A[ <m> || @`B || @`C || `D[ R ] || <x:T>.F ]
+P2: @`A[ `B[] || @`C || @`D ]
+P3: @`A[ @`B || `C[ Q ] || @`D ]
 ```
 
 reduces to
 
-```ocaml
-P1: `A[ @B || @C || `D[ R ] || F{x:=m} ]
-P2: @A[ `B[] || @C || @D ]
-P3: @A[ @B || `C[ Q ] || @D ]
+```
+P1:  `A[ @`B || @`C || `D[ R ] || F{x:=m} ]
+P2: @`A[ `B[] || @`C || @`D ]
+P3: @`A[ @`B || `C[ Q ] || @`D ]
 ```
 
 ## About Ephel

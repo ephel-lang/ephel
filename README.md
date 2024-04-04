@@ -105,7 +105,7 @@ val player = sender receiver =>
 
 #### Functional approach
 
-Since types are used for behavior selection this code can be revisited removing 
+Since types are used for behavior selection this code can be revisited by removing 
 all scoped Ambient for a simpler implementation using dependent type.
 
 ```ocaml
@@ -127,13 +127,13 @@ val play = {A} who to_a from_a =>
     <pong , Pong 42>
 ```
 
-We can remark that such Ambient process implicitly captures the Actor paradigm.
+Such Ambient process implicitly captures the Actor paradigm.
 
 ## Ambient and physical distribution
 
-Since Ambient calculus targets concurrent systems with mobility me would like to physically distribute an ambient hierarchy. 
+Since Ambient calculus targets concurrent systems with mobility we would like to distribute an ambient hierarchy physically. 
 
-For example, we have can imagine the ambient process
+For example, we can imagine the following ambient process
 
 ```
 `A[ `B[ P ] || `C[ Q ] || `D[ R ] || <x:T>.F ]
@@ -173,14 +173,14 @@ For instance, in P2 \`B (resp. P3 \`C and P1 \`D) has information related to:
 
 ### Reduction implementation sketch
 
-Each scoped Ambient process is in charge on performing embedded action and
-function application on presence of events.
+Each scoped Ambient process is in charge of performing embedded action and
+function application on the presence of events.
 
-So, with this minimal representation each Ambient is able to perform
+So, with this minimal representation, each Ambient can perform
 `in`, `out` and `open` with or without an objective move.
 
 Functions are not represented in remote processes because the event used for
-its reduction is manage by the surrounding ambient.
+its reduction is managed by the surrounding ambient.
 
 #### Message movement using objective ambient action
 

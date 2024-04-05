@@ -38,7 +38,7 @@ val _ : ambient process =
     ```
     val spawn : ambient name -> (() -> ambient process) -> ambient process
     val spawn = name f =>
-        name@P || go (in name).(f ())
+        name@ || go (in name).(f ())
     ```
 
 }--

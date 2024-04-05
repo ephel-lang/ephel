@@ -159,7 +159,7 @@ Each action requires a specific scope:
 - out m  : instructs the surrounding ambient to exit its parent ambient m
 - open m : instructs the surrounding ambient to dissolve the boundary of an ambient m
 
-Note: `A@ means remote ambient in this formalism.
+Note: `A@ in this formalism means ambient hosted in another process.
 
 ```
     P1 :  `A[ `B@ || `C@ || `D[ R ] || <x:T>.F ]   with `B in P2 and `C@ in P3

@@ -26,7 +26,7 @@ Ephel provides three types dedicated to Ambient Calculus.
 ### Ambient name
 
 ```ocaml
-val name : ambient name =
+val name: ambient name =
     `test
 ```
 
@@ -100,7 +100,7 @@ val player = sender receiver =>
     (player `ping to `pong)                  ||
     (player `pong to `ping)                  ||
     `printer[ (x:ambient name).(println x) ] ||
-    go in `ping.<Nat , 42>
+    go in `ping.<Nat, 42>
 ```
 
 #### Functional approach
@@ -124,10 +124,10 @@ val play = {A} who to_a from_a =>
     <n:pong>.(play "Bob"   Ping pong_to_nat $ pong_to_nat n) || 
     <n:ping>.(play "Alice" Pong ping_to_nat $ ping_to_nat n) ||
     <x:string>.(println x)                                   ||
-    <pong , Pong 42>
+    <pong, Pong 42>
 ```
 
-Such Ambient process implicitly captures the Actor paradigm.
+Such an Ambient process implicitly captures the Actor paradigm.
 
 ## Ambient and physical distribution
 
@@ -155,16 +155,16 @@ with \`A and \`D ambient located in a physical process `P1`, \`B in `P2` and C i
 
 Each action requires a specific scope:
 
-- in m   : instructs the surrounding ambient to enter some sibling ambient m
-- out m  : instructs the surrounding ambient to exit its parent ambient m
-- open m : instructs the surrounding ambient to dissolve the boundary of an ambient m
+- in m: instructs the surrounding ambient to enter some sibling ambient m
+- out m: instructs the surrounding ambient to exit its parent ambient m
+- open m: instructs the surrounding ambient to dissolve the boundary of an ambient m
 
 Note: `A@ in this formalism means ambient hosted in another process.
 
 ```
     P1 :  `A[ `B@ || `C@ || `D[ R ] || <x:T>.F ]   with `B in P2 and `C@ in P3
-    P2 : `A@[ `B[ P ] || `C@ || `D@ ]            with `A@, `D@ in P1 and `C@ in P3
-    P3 : `A@[ `B@ || `C[ Q ] || `D@ ]            with `A@, `D@ in P1 and `B@ in P2
+    P2 : `A@[ `B[ P ] || `C@ || `D@ ]              with `A@, `D@ in P1 and `C@ in P3
+    P3 : `A@[ `B@ || `C[ Q ] || `D@ ]              with `A@, `D@ in P1 and `B@ in P2
 ```
 
 For instance, in P2 \`B (resp. P3 \`C and P1 \`D) has information related to:

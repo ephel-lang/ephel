@@ -49,7 +49,7 @@ val combine_action : ambient action -> ambient action -> ambient action
 ### Ambient process
 
 ```ocaml
-val output : (A:type).A -> ambient process =
+val output : {A:type} -> A -> ambient process =
     = m => <m>
      
 val input : (A:type) -> (A -> ambient process) -> ambient process =
@@ -87,7 +87,7 @@ We identify three scoped ambient:
 sig play : ambient name -> ambient name -> Nat -> ambient process
 val play = sender receiver =>
     | Zero   => go (out sender.in `printer).<ambient name , sender> ]
-    | Succ n => <x:Nat>.(play sender receiver x) || go (out sender.in receiver).<Nat , n> in
+    | Succ n => <x:Nat>.(play sender receiver x) || go (out sender.in receiver).<n> in
 
 sig to : @infix (ambient name -> ambient process) -> ambient name -> ambient process
 val to = f p => f p
@@ -100,7 +100,7 @@ val player = sender receiver =>
     (player `ping to `pong)                  ||
     (player `pong to `ping)                  ||
     `printer[ (x:ambient name).(println x) ] ||
-    go in `ping.<Nat, 42>
+    go in `ping.<42>
 ```
 
 #### Functional approach
@@ -118,13 +118,13 @@ val pong_to_nat : pong -> nat = Pong n => n
 sig play : {A:type} -> string -> (nat -> A) -> (A -> nat) -> nat -> ambient process
 val play = {A} who to_a from_a =>
     | Zero   => <string,who>
-    | Succ n => <x:A>.(play who fa from_a $ from_a a) || <A,to_a n>
+    | Succ n => <x:A>.(play who fa from_a $ from_a a) || <to_a n>
 
 val _ : ambient process =
     <n:pong>.(play "Bob"   Ping pong_to_nat $ pong_to_nat n) || 
     <n:ping>.(play "Alice" Pong ping_to_nat $ ping_to_nat n) ||
     <x:string>.(println x)                                   ||
-    <pong, Pong 42>
+    <Pong 42>
 ```
 
 Such an Ambient process implicitly captures the Actor paradigm.

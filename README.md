@@ -120,7 +120,7 @@ val play = {A} who to_a from_a =>
     | Zero   => <string,who>
     | Succ n => <x:A>.(play who fa from_a $ from_a a) || <A,to_a n>
 
- val _ : ambient process =
+val _ : ambient process =
     <n:pong>.(play "Bob"   Ping pong_to_nat $ pong_to_nat n) || 
     <n:ping>.(play "Alice" Pong ping_to_nat $ ping_to_nat n) ||
     <x:string>.(println x)                                   ||
@@ -159,7 +159,7 @@ Each action requires a specific scope:
 - out m: instructs the surrounding ambient to exit its parent ambient m
 - open m: instructs the surrounding ambient to dissolve the boundary of an ambient m
 
-Note: `A@ in this formalism means ambient hosted in another process.
+Note: `A@ in this formalism means ambient hosted in another **physical** process.
 
 ```
     P1 :  `A[ `B@ || `C@ || `D[ R ] || <x:T>.F ]   with `B in P2 and `C@ in P3

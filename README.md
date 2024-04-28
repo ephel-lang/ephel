@@ -42,7 +42,7 @@ val out_action : ambient name -> ambient action
 val open_action : ambient name -> ambient action
     = name p => open name
 
-val combine_action = ambient action -> ambient action -> ambient action
+val combine_action : ambient action -> ambient action -> ambient action
     = a1 a2 => a1.a2 
 ```
 

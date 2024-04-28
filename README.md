@@ -1,6 +1,6 @@
 # Ephel
 
-Ephel is a language mixing [functional programming](https://en.wikipedia.org/wiki/Functional_programming) and [Ambient Calculus](https://en.wikipedia.org/wiki/Ambient_calculus).
+Ephel is a language mixing [functional programming](https://en.wikipedia.org/wiki/Functional_programming) and [Safe Ambient Calculus](https://en.wikipedia.org/wiki/Ambient_calculus).
 
 The functional paradigm is dedicated to the expression of behaviors, while the ambient paradigm is dedicated to structuring and topological management.
 
@@ -131,6 +131,11 @@ Such an Ambient process implicitly captures the Actor paradigm.
 
 ## Ambient and physical distribution
 
+References:
+-  [Safe Ambients: Abstract machine and distributed implementation](https://www.sciencedirect.com/science/article/pii/S016764230500064X)
+
+- [An efficient abstract machine for Safe Ambients](https://www.sciencedirect.com/science/article/pii/S1567832607000033?via%3Dihub)
+
 Since Ambient calculus targets concurrent systems with mobility we would like to distribute an ambient hierarchy physically. 
 
 For example, we can imagine the following ambient process
@@ -159,7 +164,7 @@ Each action requires a specific scope:
 - out m: instructs the surrounding ambient to exit its parent ambient m
 - open m: instructs the surrounding ambient to dissolve the boundary of an ambient m
 
-Note: `A@ in this formalism means ambient hosted in another **physical** process.
+- Note: `A@ in this formalism means ambient hosted in another **physical** process.
 
 ```
     P1 :  `A[ `B@ || `C@ || `D[ R ] || <x:T>.F ]   with `B in P2 and `C@ in P3

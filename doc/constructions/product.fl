@@ -1,10 +1,10 @@
 -- Product data type
 
-val Pair : type = (X:type).X
+val Pair : type = (X:type) * X
 val pair : Pair = char, 'a'
 
 val first  : type = fst pair
-val second : fst pair = snd pair
+val second : first = snd pair
 
 -- Pattern matching is translated using `fst` and `snd`.
 

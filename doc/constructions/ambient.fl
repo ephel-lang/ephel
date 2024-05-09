@@ -12,9 +12,10 @@ P :=
     ()
     P || P
     M[ P ]
+    C.P
     go (C).P
-    <e,e>
-    <e:e>.e
+    <e>
+    <e:e> -> e
 ```
 
 val name : ambient name =
@@ -24,13 +25,16 @@ val zero : ambient process =
     ()
 
 val parallel : ambient process -> ambient process -> ambient process
-    = p1 p2 => p1 || p2
+    = fun p1 p2 -> p1 || p2
 
 val in_cap : ambient name -> ambient process -> ambient process
-    = name p => in name.p
+    = fun name p -> in name.p
 
 val out_cap : ambient name -> ambient process -> ambient process
-    = name p => out name.p
+    = fun name p -> out name.p
 
 val open_cap : ambient name -> ambient process -> ambient process
-    = name p => open name.p
+    = fun name p -> open name.p
+
+val go : ambient capability -> ambient process -> ambient process
+    = c p => go c.p

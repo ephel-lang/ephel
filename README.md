@@ -30,19 +30,19 @@ val name: ambient name =
     `test
 ```
 
-### Ambient action
+### Ambient capability
 
 ```ocaml
-val in_action : ambient name -> ambient action
+val in_action : ambient name -> ambient capability
     = name p => in name
 
-val out_action : ambient name -> ambient action
+val out_action : ambient name -> ambient capability
     = name p => out name
 
-val open_action : ambient name -> ambient action
+val open_action : ambient name -> ambient capability
     = name p => open name
 
-val combine_action : ambient action -> ambient action -> ambient action
+val combine_action : ambient capability -> ambient capability -> ambient capability
     = a1 a2 => a1.a2 
 ```
 
@@ -64,11 +64,11 @@ val amb : ambient name -> ambient process -> ambient process
 val parallel : ambient process -> ambient process -> ambient process
     = p1 p2 => p1 || p2 
     
-val cap : ambient action -> ambient process -> ambient process
+val cap : ambient capability -> ambient process -> ambient process
     = c p => c.p     
 
 -- Objective move
-val go_cap : ambient action -> ambient process -> ambient process
+val go_cap : ambient capability -> ambient process -> ambient process
     = c p => go c.p       
 ```
 
@@ -133,8 +133,10 @@ Such an Ambient process implicitly captures the Actor paradigm.
 
 References:
 -  [Safe Ambients: Abstract machine and distributed implementation](https://www.sciencedirect.com/science/article/pii/S016764230500064X)
-
 - [An efficient abstract machine for Safe Ambients](https://www.sciencedirect.com/science/article/pii/S1567832607000033?via%3Dihub)
+- [Boxed Ambients](https://www.irif.fr/~gc/papers/tacs01.pdf)
+- [A Distributed Abstract Machine for Boxed Ambient Calculi
+](https://www.microsoft.com/en-us/research/publication/a-distributed-abstract-machine-for-boxed-ambient-calculi/)
 
 Since Ambient calculus targets concurrent systems with mobility we would like to distribute an ambient hierarchy physically. 
 
@@ -146,7 +148,6 @@ For example, we can imagine the following ambient process
 
 with \`A and \`D ambient located in a physical process `P1`, \`B in `P2` and C in `P3`.
 
-
 ```
 `A[ `B[ P ] || `C[ Q ] || `D[ R ] || <x:T>.F ]
  |   |    |     |    |                       |
@@ -155,10 +156,9 @@ with \`A and \`D ambient located in a physical process `P1`, \`B in `P2` and C i
  P1------------------------------------------+
 ```
 
+### Ambient Scope and capability reduction
 
-### Ambient Scope and action reduction
-
-Each action requires a specific scope:
+Each capability requires a specific scope:
 
 - in m: instructs the surrounding ambient to enter some sibling ambient m
 - out m: instructs the surrounding ambient to exit its parent ambient m
@@ -167,9 +167,9 @@ Each action requires a specific scope:
 - Note: `A@ in this formalism means ambient hosted in another **physical** process.
 
 ```
-    P1 :  `A[ `B@ || `C@ || `D[ R ] || <x:T>.F ]   with `B in P2 and `C@ in P3
-    P2 : `A@[ `B[ P ] || `C@ || `D@ ]              with `A@, `D@ in P1 and `C@ in P3
-    P3 : `A@[ `B@ || `C[ Q ] || `D@ ]              with `A@, `D@ in P1 and `B@ in P2
+    P1: `A[ `B@ || `C@ || `D[ R ] || <x:T>.F ]
+    P2: `A@[ `B[ P ] || `C@ || `D@ ]
+    P3: `A@[ `B@ || `C[ Q ] || `D@ ]
 ```
 
 For instance, in P2 \`B (resp. P3 \`C and P1 \`D) has information related to:
@@ -178,19 +178,17 @@ For instance, in P2 \`B (resp. P3 \`C and P1 \`D) has information related to:
 
 ### Reduction implementation sketch
 
-Each scoped Ambient process is in charge of performing embedded action and
-function application on the presence of events.
+Each scoped Ambient process is in charge of performing embedded capability and function application on the presence of events.
 
 So, with this minimal representation, each Ambient can perform
 `in`, `out` and `open` with or without an objective move.
 
-Functions are not represented in remote processes because the event used for
-its reduction is managed by the surrounding ambient.
+Functions are not represented in remote processes because the event used for its reduction is managed by the surrounding ambient.
 
-#### Message movement using objective ambient action
+#### Message movement using objective ambient capability
 
 ```
-P1:  `A[ `B@ || `C@ || `D[ R ] || <x:T>.F ]
+P1: `A[ `B@ || `C@ || `D[ R ] || <x:T>.F ]
 P2: `A@[ `B[ go (out `B).<m> ] || `C@ || `D@ ]
 P3: `A@[ `B@ || `C[ Q ] || `D@ ]
 ```
@@ -198,7 +196,7 @@ P3: `A@[ `B@ || `C[ Q ] || `D@ ]
 reduces to
 
 ```
-P1:  `A[ <m> || `B@ || `C@ || `D[ R ] || <x:T>.F ]
+P1: `A[ <m> || `B@ || `C@ || `D[ R ] || <x:T>.F ]
 P2: `A@[ `B[] || `C@ || `D@ ]
 P3: `A@[ `B@ || `C[ Q ] || `D@ ]
 ```
@@ -206,15 +204,15 @@ P3: `A@[ `B@ || `C[ Q ] || `D@ ]
 reduces to
 
 ```
-P1:  `A[ `B@ || `C@ || `D[ R ] || F{x:=m} ]
+P1: `A[ `B@ || `C@ || `D[ R ] || F{x:=m} ]
 P2: `A@[ `B[] || `C@ || `D@ ]
 P3: `A@[ `B@ || `C[ Q ] || `D@ ]
 ```
 
-#### Message movement using ambient action
+#### Message movement using ambient capability
 
 ```
-P1:  `A[ `B@ || `C@ || `D[ R ] || open `M.<x:T>.F ]
+P1: `A[ `B@ || `C@ || `D[ R ] || open `M.<x:T>.F ]
 P2: `A@[ `B[ `M[ out `B.<m> ] ] || `C@ || `D@ ]
 P3: `A@[ `B@ || `C[ Q ] || `D@ ]
 ```
@@ -222,7 +220,7 @@ P3: `A@[ `B@ || `C[ Q ] || `D@ ]
 reduces to
 
 ```
-P1:  `A[ `M[ <m> ] || `B@ || `C@ || `D[ R ] || open `M.<x:T>.F ]
+P1: `A[ `M[ <m> ] || `B@ || `C@ || `D[ R ] || open `M.<x:T>.F ]
 P2: `A@[ `B[] || `C@ || `D@ ]
 P3: `A@[ `B@ || `C[ Q ] || `D@ ]
 ```
@@ -230,7 +228,7 @@ P3: `A@[ `B@ || `C[ Q ] || `D@ ]
 reduces to
 
 ```
-P1:  `A[ <m> || `B@ || `C@ || `D[ R ] || <x:T>.F ]
+P1: `A[ <m> || `B@ || `C@ || `D[ R ] || <x:T>.F ]
 P2: `A@[ `B[] || `C@ || `D@ ]
 P3: `A@[ `B@ || `C[ Q ] || `D@ ]
 ```
@@ -238,7 +236,7 @@ P3: `A@[ `B@ || `C[ Q ] || `D@ ]
 reduces to
 
 ```
-P1:  `A[ `B@ || `C@ || `D[ R ] || F{x:=m} ]
+P1: `A[ `B@ || `C@ || `D[ R ] || F{x:=m} ]
 P2: `A@[ `B[] || `C@ || `D@ ]
 P3: `A@[ `B@ || `C[ Q ] || `D@ ]
 ```

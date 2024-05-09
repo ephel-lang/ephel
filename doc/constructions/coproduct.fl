@@ -14,6 +14,13 @@ val not : Bool -> Bool =
     | true  => false
     | false => true
 
+val not : Bool -> Bool = b =>
+    b match
+    | true  => false
+    | false => true
+    -- b match f == f b but with multiple cases for f by construction
+
+
 -- Recursive CoProduct
 
 val Nat : type =
@@ -22,7 +29,7 @@ val Nat : type =
 
 sig + : @infix Nat -> Nat -> Nat
 val + =
-    | Zero => Identity
+    | Zero   => Identity
     | Succ n => m => Succ (n + m)
 
 -- Parametric CoProduct definition

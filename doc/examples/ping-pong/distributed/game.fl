@@ -3,7 +3,7 @@ use player
 --{
     Solution 1:
 
-    @ping and @pong should exist (i.e. active agents)
+    @ping and @pong should exist (i.e. non local agents)
     and are denoted by an ambient with the same name.
 
     Open problem:
@@ -11,7 +11,7 @@ use player
 
     Once `ping@ is "incarnated" its content is:
     ```
-    game@P0[ `ping[] || `pong@ || `printer@P0 ]
+    `game@[ `ping[] || `pong@ || `printer@ ]
     ```
 }--
 
@@ -19,7 +19,7 @@ val _ : ambient process =
     `game[
         `ping@                                   ||
         `pong@                                   ||
-        `printer[ (x:ambient name).(println x) ] ||
+        `printer[ <x:ambient name>.(println x) ] ||
         go in `ping.<42>                         ||
         --{ Additional process for players }--
         go (in `ping).(player `ping to `pong)    ||
@@ -37,8 +37,7 @@ val _ : ambient process =
 
     ```
     val spawn : ambient name -> ambient process -> ambient process
-    val spawn = name p =>
-        name@ || go (in name).p
+    val spawn = name p => name@ || go (in name).p
     ```
 
 }--
@@ -48,5 +47,5 @@ val _ : ambient process =
         (spawn `ping $ player `ping to `pong) ||
         (spawn `pong $ player `pong to `ping) ||
         `printer[ (x:ambient name).(println x) ]    ||
-        go in `ping.<Nat , 42>
+        go in `ping.<42>
     ]

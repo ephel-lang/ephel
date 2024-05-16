@@ -82,6 +82,7 @@ capability ::=
     'out' (name | id)
     'open' (name | id)
     capability '.' capability
+    
 process ::=
     (name | id) '[' process ']'
     'go' (capability | id) '.' process

@@ -1,6 +1,6 @@
 sig play : ambient name -> ambient name -> Nat -> ambient process
 val play = sender receiver =>
-    | Zero   => go (out sender.in `printer).<ambient name , sender> ]
+    | Zero   => go (out sender.in `printer).<ambient name , sender>
     | Succ n => <x:Nat>.(play sender receiver x) || go (out sender.in receiver).<n> in
 
 sig to : @infix (ambient name -> ambient process) -> ambient name -> ambient process

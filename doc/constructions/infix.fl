@@ -30,24 +30,7 @@ val else = ifThen b t => e => case b (_ => eval t) (_ => eval e)
 val test : Bool -> Int = b => if b { 1 } else { 2 }
 
 -{
-    A dedicated pass should be provided in the compiler which manipulates
-    and generates code without infix consideration. In addition this pass
-    should manage left or right associativity and also priorities.
+    A dedicated pass should be provided in the compiler which
+    generates code without infix consideration. In addition this pass
+    should manage left and right associativity and also priorities.
 }-
-
--{
-    Pseudo object approach with a string separation between data and behavior
-}-
-
-sig Vector : sig struct
-    sig x : @infix t -> int
-    sig y : @infix t -> int
-    sig + : @infix Vector -> Vector
-end
-
-sig vector : int -> int -> Vector
-val vector = x y => val struct
-    sig x = x
-    sig y = y
-    sig + = v => vector (v x + x) (v y + y) -- fold should be used here -> Can we infer it?
-end

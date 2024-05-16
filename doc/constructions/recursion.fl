@@ -1,0 +1,40 @@
+-{
+    Recursive types and values.
+
+    Recursion imply internal rec type and Y term with
+    additional fold/unfold for type checking.
+
+    All these constructions are introduced implicitly by the compiler.
+
+    Question: Is it necessary to have a rec/nonrec capability (like Ocaml)?
+}-
+
+sig Vector : type
+val Vector = sig struct
+    sig x : int
+    sig y : int
+    sig + : Vector -> Vector
+end
+
+sig vector : int -> int -> Vector
+val vector = x y => val struct
+    sig x = x
+    sig y = y
+    sig + = v => vector (v x + x) (v y + y)
+end
+
+sig Vector : type
+val Vector = sig struct
+    sig t : type
+    sig x : @infix t -> int
+    sig y : @infix t -> int
+    sig + : @infix t -> t -> t
+end
+
+sig vector : int -> int -> Vector
+val vector = val struct
+    sig t = int * int
+    sig x = self => fst self
+    sig y = self => snd self
+    sig + = self v => (
+end

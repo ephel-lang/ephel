@@ -13,6 +13,7 @@ value ::=
 
 term ::=
     literal
+    variable
     functional
     product
     coproduct
@@ -26,6 +27,9 @@ literal ::=
     NUMBER
     STRING
     CHARACTER
+    
+variable ::=
+    id
     
 functional ::= 
     (id | '{' id+ '}')+ '=>' term
@@ -75,18 +79,23 @@ recursion ::=
 
 name ::=
     '`' id '@'? 
+    
+name_id ::=
+    name
+    id
    
 capability ::=
-    'nothing' 
-    'in' (name | id)
-    'out' (name | id)
-    'open' (name | id)
+    'nocap'
+    'in' name_id
+    'out' name_id
+    'open' name_id
     capability '.' capability
-    
+    name_id
+   
 process ::=
-    (name | id) '[' process ']'
-    'go' (capability | id) '.' process
-    (capability | id) '.' process
+    name_id '[' process ']'
+    'go' capability '.' process
+    capability '.' process
     process '||' process
     <id:term>.process
     <process>

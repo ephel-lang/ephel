@@ -1,3 +1,28 @@
- val _ : ambient process =
-    <"Hello World!">
-    <x:string>.(println x)
+sig Console : sig struct
+    sig println : String -> Unit
+end
+
+sig () : Ambient Process -- Inactivity
+
+val basic : Console -> Ambient Process = console =>
+    let _ = console println "Hello World!" in ()
+
+val withStringOutput : Console -> Ambient Process = console =>
+    <"Hello World!"> ||
+    <x:string>.(let _ = console println x in ())
+
+val withMessageOutput : Console -> Ambient Process = console =>
+    message[ <"Hello World!"> ] ||
+    open message.<x:string>.(let _ = console println x in ())
+
+val withActionMessageOutput : Console -> Ambient Process = console =>
+    message[ in Console.<"Hello World!"> ] ||
+    Console[ open message.<x:string>.(let _ = console println x in ()) ]
+
+val withDirectActionMessageOutput : Console -> Ambient Process = console =>
+    go in Console.message[ <"Hello World!"> ] ||
+    Console[ open message.<x:string>.(let _ = console println x in ()) ]
+
+val withDirectActionStringOutput : Console -> Ambient Process = console =>
+    go in Console.<"Hello World!"> ||
+    Console[ <x:string>.(let _ = console println x in ()) ]

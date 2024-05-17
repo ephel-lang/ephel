@@ -3,29 +3,29 @@ sig Console : sig struct
 end
 
 val println : String -> Ambient Process = s =>
-    let _ = console println s in ()
+    let _ = Console println s in ()
 
 sig () : Ambient Process -- Inactivity
 
-val basic : Console -> Ambient Process = console =>
-    let _ = console println "Hello World!" in ()
+val basic : Ambient Process =
+    println "Hello World!"
 
-val withStringOutput : Console -> Ambient Process = console =>
+val withStringOutput : Ambient Process =
     <"Hello World!"> ||
     <x:string>.(println x)
 
-val withMessageOutput : Console -> Ambient Process = console =>
+val withMessageOutput : Ambient Process =
     message[ <"Hello World!"> ] ||
     open message.<x:string>.(println x)
 
-val withActionMessageOutput : Console -> Ambient Process = console =>
+val withActionMessageOutput : Ambient Process =
     message[ in Console.<"Hello World!"> ] ||
     Console[ open message.<x:string>.(println x) ]
 
-val withDirectActionMessageOutput : Console -> Ambient Process = console =>
+val withDirectActionMessageOutput : Ambient Process =
     go in Console.message[ <"Hello World!"> ] ||
     Console[ open message.<x:string>.(println x) ]
 
-val withDirectActionStringOutput : Console -> Ambient Process = console =>
+val withDirectActionStringOutput : Ambient Process =
     go in Console.<"Hello World!"> ||
     Console[ <x:string>.(println x) ]

@@ -2,6 +2,9 @@ sig Console : sig struct
     sig println : String -> Unit
 end
 
+val println : String -> Ambient Process = s =>
+    let _ = console println s in ()
+
 sig () : Ambient Process -- Inactivity
 
 val basic : Console -> Ambient Process = console =>
@@ -9,20 +12,20 @@ val basic : Console -> Ambient Process = console =>
 
 val withStringOutput : Console -> Ambient Process = console =>
     <"Hello World!"> ||
-    <x:string>.(let _ = console println x in ())
+    <x:string>.(println x)
 
 val withMessageOutput : Console -> Ambient Process = console =>
     message[ <"Hello World!"> ] ||
-    open message.<x:string>.(let _ = console println x in ())
+    open message.<x:string>.(println x)
 
 val withActionMessageOutput : Console -> Ambient Process = console =>
     message[ in Console.<"Hello World!"> ] ||
-    Console[ open message.<x:string>.(let _ = console println x in ()) ]
+    Console[ open message.<x:string>.(println x) ]
 
 val withDirectActionMessageOutput : Console -> Ambient Process = console =>
     go in Console.message[ <"Hello World!"> ] ||
-    Console[ open message.<x:string>.(let _ = console println x in ()) ]
+    Console[ open message.<x:string>.(println x) ]
 
 val withDirectActionStringOutput : Console -> Ambient Process = console =>
     go in Console.<"Hello World!"> ||
-    Console[ <x:string>.(let _ = console println x in ()) ]
+    Console[ <x:string>.(println x) ]

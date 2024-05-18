@@ -146,7 +146,7 @@ For example, we can imagine the following ambient process
 `A[ `B[ P ] || `C[ Q ] || `D[ R ] || <x:T>.F ]
 ```
 
-with \`A and \`D ambient located in a physical process `P1`, \`B in `P2` and C in `P3`.
+with \`A and \`D ambients located in a physical process `P1`, \`B in `P2` and C in `P3`.
 
 ```
 `A[ `B[ P ] || `C[ Q ] || `D[ R ] || <x:T>.F ]

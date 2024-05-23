@@ -86,7 +86,7 @@ We identify three scoped ambient:
 ```ocaml
 sig play : ambient name -> ambient name -> Nat -> ambient process
 val play = sender receiver =>
-    | Zero   => go (out sender.in `printer).<ambient name , sender> ]
+    | Zero   => go (out sender.in `printer).<sender> 
     | Succ n => <x:Nat>.(play sender receiver x) || go (out sender.in receiver).<n> in
 
 sig to : @infix (ambient name -> ambient process) -> ambient name -> ambient process
@@ -117,7 +117,7 @@ val pong_to_nat : pong -> nat = Pong n => n
 
 sig play : {A:type} -> string -> (nat -> A) -> (A -> nat) -> nat -> ambient process
 val play = {A} who to_a from_a =>
-    | Zero   => <string,who>
+    | Zero   => <who>
     | Succ n => <x:A>.(play who fa from_a $ from_a a) || <to_a n>
 
 val _ : ambient process =

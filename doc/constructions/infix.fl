@@ -1,6 +1,6 @@
 --{
     @infix add the capability to have infix function application
-    This annotation is used the the type specification
+    This annotation is used in the type specification
 
     Left or Right associativity and priority should be targeted.
 }--

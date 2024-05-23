@@ -129,7 +129,7 @@ val _ : ambient process =
 
 Such an Ambient process implicitly captures the Actor paradigm.
 
-## Ambient and physical distribution
+## Ambient and physical distribution [WIP]
 
 References:
 -  [Safe Ambients: Abstract machine and distributed implementation](https://www.sciencedirect.com/science/article/pii/S016764230500064X)

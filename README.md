@@ -1,6 +1,6 @@
 # Ephel
 
-Ephel is a language mixing [functional programming](https://en.wikipedia.org/wiki/Functional_programming) and [Safe Ambient Calculus](https://en.wikipedia.org/wiki/Ambient_calculus).
+Ephel is a language mixing [functional programming](https://en.wikipedia.org/wiki/Functional_programming) and [Ambient Calculus](https://en.wikipedia.org/wiki/Ambient_calculus).
 
 The functional paradigm is dedicated to the expression of behaviors, while the ambient paradigm is dedicated to structuring and topological management.
 

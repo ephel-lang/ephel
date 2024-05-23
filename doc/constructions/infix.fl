@@ -19,13 +19,15 @@ val main : Int = 1 2 +
 -- Trivial and simplistic DSL using infix
 
 sig IfThen : type -> type
-val IfThen = A => | ifThen : Bool -> Lazy A -> IfThen A
+val IfThen = A => 
+    | ifThen : Bool -> Lazy A -> IfThen A
 
 sig if : {A:type} -> Bool -> Lazy A -> IfThen A
 val if = c t => ifThen c t
 
 sig else : {A:type} -> @infix IfThen A -> Lazy A -> A
-val else = ifThen b t => e => case b (_ => eval t) (_ => eval e)
+val else = 
+    | ifThen b t => e => case b (_ => eval t) (_ => eval e)
 
 val test : Bool -> Int = b => if b { 1 } else { 2 }
 

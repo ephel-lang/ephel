@@ -20,7 +20,6 @@ val not : Bool -> Bool = b =>
     | false => true
     -- b match f == f b but with multiple cases for f by construction
 
-
 -- Recursive CoProduct
 
 val Nat : type =

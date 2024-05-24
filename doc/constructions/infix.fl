@@ -13,7 +13,7 @@ sig + : @infix Int -> @infix Int -> Int
 
 val main : Int = 1 2 +
 --{
-    Equivalent to `(1 (2 +))`
+    Equivalent to `(1 (2 +))` and to `(+ 2 1)` without infix
 }--
 
 -- Trivial and simplistic DSL using infix
@@ -22,6 +22,12 @@ sig IfThen : type -> type
 val IfThen = A => 
     | ifThen : Bool -> Lazy A -> IfThen A
 
+sig Lazy : type -> type
+val Lazy = A => Unit -> A
+
+sig eval : {A:type} -> Lazy A -> A
+val eval = l => l unit
+
 sig if : {A:type} -> Bool -> Lazy A -> IfThen A
 val if = c t => ifThen c t
 
@@ -29,7 +35,7 @@ sig else : {A:type} -> @infix IfThen A -> Lazy A -> A
 val else = 
     | ifThen b t => e => case b (_ => eval t) (_ => eval e)
 
-val test : Bool -> Int = b => if b { 1 } else { 2 }
+val test : Bool -> Int = b => if b (_ => 1 ) else (_ => 2)
 
 -{
     A dedicated pass should be provided in the compiler which

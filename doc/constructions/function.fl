@@ -12,7 +12,7 @@ sig then : {A B C:type} -> @infix (A -> B) -> (B -> C) -> (A -> C)
 val then = f g => composition g f
 
 val main : Int =
-    let increment : Int -> Int = add 1 in
+    let increment : la = add 1 in
     let toString  : Int -> String = i => i toString in
     -{ increment (then Int String String) toString 2 }-
     increment then toString 2

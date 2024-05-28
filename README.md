@@ -21,6 +21,13 @@ Cf. work on [Nehtra](https://github.com/lambe-lang/nethra) for the type checker 
 
 ## Ambient programming layer
 
+References:
+- [Ambient Calculus](https://en.wikipedia.org/wiki/Ambient_calculus)
+- [Mobile Safe Ambients](https://dl.acm.org/doi/pdf/10.1145/596980.596981)
+- [The synchronized ambient calculus](https://www.sciencedirect.com/science/article/pii/S030439752400094X)
+- [Types for the Ambient Calculus](https://www.microsoft.com/en-us/research/wp-content/uploads/2002/01/Types-for-the-ambient-calculus.pdf)
+- [A Dependently Typed Ambient Calculus](https://eprints.soton.ac.uk/262298/1/dtaESOPoff.pdf)
+
 Ephel provides three types dedicated to Ambient Calculus.
 
 ### Ambient name

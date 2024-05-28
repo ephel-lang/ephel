@@ -17,7 +17,7 @@ It covers:
 - dependent records (can subsume sigma type) and
 - dependent recursive types.
 
-Cf. work on [Nehtra](https://github.com/lambe-lang/nethra).
+Cf. work on [Nehtra](https://github.com/lambe-lang/nethra) for the type checker and [Mitch](https://github.com/lambe-lang/mitch/) for the execution.
 
 ## Ambient programming layer
 

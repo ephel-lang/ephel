@@ -3,13 +3,13 @@
 sig Identity : {X:type} -> X -> X
 val Identity = x => x
 
-sig composition : {A B C:type} -> (B -> C) -> (A -> B) -> (A -> C)
-val composition = f g x => f (g x)
+sig _o_ : {A B C:type} -> (B -> C) -> (A -> B) -> (A -> C)
+val _o_ = f g x => f (g x)
 
 -- Infix capability
 
 sig _|>_ : {A B C:type} -> (A -> B) -> (B -> C) -> (A -> C)
-val _|>_ = f g => composition g f
+val _|>_ = f g => g o f
 
 val main : Int =
     let increment : Int -> Int = add 1 in

@@ -20,14 +20,24 @@ val not : Bool -> Bool = b =>
     | false => true
     -- b match f == f b but with multiple cases for f by construction
 
+val(infix 15) _and_ : Bool -> Bool -> Bool =
+    | true  => b => b
+    | false => _ => false
+
+val(infix 15) _or_ : Bool -> Bool -> Bool =
+    | true  => _ => true
+    | false => b => b
+
+val(infix 20) _=>_ : Bool -> Bool -> Bool = a b => not a or b
+
 -- Recursive CoProduct
 
 val Nat : type =
     | Zero : Nat
     | Succ : Nat -> Nat
 
-sig + : @infix Nat -> Nat -> Nat
-val + =
+sig _+_ : Nat -> Nat -> Nat
+val _+_ =
     | Zero   => Identity
     | Succ n => m => Succ (n + m)
 
@@ -35,8 +45,8 @@ val + =
 
 sig List : type -> type
 val List = X =>
-    | [] : List X
-    | :: : @infix X -> List X -> List X
+    | []   : List X
+    | _::_ : X -> List X -> List X
 
 sig size : List X -> Nat
 val size =
@@ -46,10 +56,21 @@ val size =
 -- GADT using intentional type theory for the propositional equality
 
 val Equals : type -> type -> type = A _ =>
-    | Refl : Equals A B with A = B
+    | Refl : Equals A A
 
 val Expr : type -> type = A =>
-    | Boolean   : Bool -> Expr A with A = Bool
-    | Integer   : Int -> Expr A with A = Int
-    | Addition  : Exp Int -> Expr Int -> Expr A with A = Int
-    | Selection : Expr Bool -> Expr A -> Expr A -> Expr A
+    | Bool          : Bool -> Expr Bool
+    | Int           : Int -> Expr Int
+    | _+_           : Exp Int -> Expr Int -> Expr Int
+    | if_then_else_ : Expr Bool -> Expr A -> Expr A -> Expr A
+
+-{
+    With such GADT we can write the following term:
+    if (Bool true) then (Int 1) else
+
+}-
+
+-- Absurd
+
+sig _|_ : type
+val _|_ = -{ No possible construction }-

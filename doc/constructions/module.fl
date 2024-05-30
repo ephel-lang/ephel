@@ -1,19 +1,18 @@
-sig Monoid : type -> type
-val Monoid = T => sig struct
+val Monoid : type -> type = T => sig struct
     sig neutral : T
-    sig combine : @infix T -> T -> T
+    sig _combine_ : T -> T -> T
 end
 
 val MonoidInt : Monoid Int =
     let use Int in val struct
         val neutral = 0
-        val combine = +
+        val _combine_ = _+_
     end
 
 val MonoidString : Monoid String =
     let use String in val struct
         val neutral = ""
-        val combine = ^
+        val _combine_ = _^_
     end
 
 val main1 : Int =
@@ -21,6 +20,16 @@ val main1 : Int =
     1 combine neutral
 
 val main2 : Int =
-    1 (MonoidInt combine) (MonoidInt neutral)
+    1 (MonoidInt.combine) (MonoidInt.neutral)
 
 -- Note: Each source file is a module
+
+val mf : sig struct f : int -> int end = val struct
+    val f = i => i
+end
+
+val mg : sig struct g : int -> int end = val struct
+    val g = i => i
+end
+
+val mfg : #typeof mf with #typeof mg = mf with mf

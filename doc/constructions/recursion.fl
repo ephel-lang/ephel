@@ -26,15 +26,15 @@ end
 sig Vector : type
 val Vector = sig struct
     sig t : type
-    sig x : @infix t -> int
-    sig y : @infix t -> int
-    sig + : @infix t -> t -> t
+    sig _x : t -> int
+    sig _y : t -> int
+    sig _+_ : t -> t -> t
 end
 
 sig vector : int -> int -> Vector
 val vector = val struct
-    sig t = int * int
-    sig x = self => fst self
-    sig y = self => snd self
-    sig + = self v => (
+    sig t   = int * int
+    sig _x  = self => fst self
+    sig _y  = self => snd self
+    sig _+_ = self v => (
 end

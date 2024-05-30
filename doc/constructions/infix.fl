@@ -1,44 +1,80 @@
 --{
-    @infix add the capability to have an infix function application
-    This annotation is used in the type specification
+    Infix add the capability to have an infix function application
+    This annotation is used in the type specification.
 
-    Left or Right associativity and priority should be targeted.
+    The chosen approach is the same as the one adopted in Agda.
+    The main advantage of such an approach is a simple and intuitive
+    approach.
+
+    The adopted approach is the same as the one chosen for Agda
+    Cf. https://agda.readthedocs.io/en/latest/language/mixfix-operators.html
 }--
 
 --{
-    Reversed application using @infix everywhere
+    Reversed application specifying infix everywhere
 }--
 
-sig + : @infix Int -> @infix Int -> Int
+sig __+ : Int -> Int -> Int
 
 val main : Int = 1 2 +
 --{
-    Equivalent to `(1 (2 +))` and to `(+ 2 1)` without infix
+    Equivalent to `(1 (2 +))` and to `(+ 2 1)` without infix constructions.
 }--
 
 -- Trivial and simplistic DSL using infix
 
-sig IfThen : type -> type
-val IfThen = A => 
-    | ifThen : Bool -> Lazy A -> IfThen A
-
 sig Lazy : type -> type
 val Lazy = A => Unit -> A
 
-sig eval : {A:type} -> Lazy A -> A
-val eval = l => l unit
-
-sig if : {A:type} -> Bool -> Lazy A -> IfThen A
-val if = c t => ifThen c t
-
-sig else : {A:type} -> @infix IfThen A -> Lazy A -> A
-val else = 
-    | ifThen b t => e => case b (_ => eval t) (_ => eval e)
+sig if_then_else_ : {A:type} -> Bool -> Lazy A -> Lazy A -> A
+val if_then_else_ = b t f =>
+    case b (_ => t ()) (_ => f ())
 
 val test : Bool -> Int = b => if b (_ => 1 ) else (_ => 2)
 
 -{
-    A dedicated pass should be provided in the compiler which
-    generates code without infix consideration. In addition this pass
-    should manage left and right associativity and also priorities.
+    In addition a infix precedence and associativity capabilities can be proposed.
 }-
+
+sig(infixl 20) _+_ : Int -> Int -> Int
+sig(infixl 15) _*_ : Int -> Int -> Int
+
+val main : Int = 1 + 2 * 4 -{ equivalent to `1 + (2 * 4)` }-
+
+-{
+    Finally infix can be "deactivated" using infix marker i.e. underscore. Then
+    applied to the if_then_else_ function we have the following variations:
+    - if_then y else z x
+    - if x then_else z y
+    - if x then y else_ z
+    - if x then_else_ y z
+    - if_then y else_ x z
+    - if_then_else z x y
+    - if_then_else_ x y z
+}-
+
+-{ For comprehension }-
+
+val Return : type -> type = F => sig struct
+    sig return : {A :type} -> A -> F A
+end
+
+val Bind : type -> type = F => sig struct
+    sig _>>=_ : {A B:type} -> F A -> (A -> F B) -> F B
+end
+
+val Option : type -> type = A =>
+    | None : Option A
+    | Some : A -> Option A
+
+val BindOption : Bind Option = val struct
+    val _>>=_ =
+        | None   => _ => None
+        | Some a => f => Some (f a)
+end
+
+val example : Option String =
+    let use BindOption in
+    Some 1 >>= 1 +_ >>= to_string
+
+

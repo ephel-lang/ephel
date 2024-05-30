@@ -8,11 +8,11 @@ val composition = f g x => f (g x)
 
 -- Infix capability
 
-sig then : {A B C:type} -> @infix (A -> B) -> (B -> C) -> (A -> C)
-val then = f g => composition g f
+sig _|>_ : {A B C:type} -> (A -> B) -> (B -> C) -> (A -> C)
+val _|>_ = f g => composition g f
 
 val main : Int =
-    let increment : la = add 1 in
+    let increment : Int -> Int = add 1 in
     let toString  : Int -> String = i => i toString in
-    -{ increment (then Int String String) toString 2 }-
-    increment then toString 2
+    -{ increment (|> Int String String) toString 2 }-
+    increment |> toString 2

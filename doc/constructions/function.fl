@@ -4,7 +4,7 @@ sig Identity : {X:type} -> X -> X
 val Identity = x => x
 
 sig _o_ : {A B C:type} -> (B -> C) -> (A -> B) -> (A -> C)
-val _o_ = f g x => f (g x)
+val _o_ = f g => x => f (g x)
 
 -- Infix capability
 

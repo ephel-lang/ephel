@@ -11,21 +11,21 @@ val basic : Ambient Process =
     println "Hello World!"
 
 val withStringOutput : Ambient Process =
-    <"Hello World!"> ||
+    <"Hello World!"> |
     <x:string>.(println x)
 
 val withMessageOutput : Ambient Process =
-    message[ <"Hello World!"> ] ||
+    message[ <"Hello World!"> ] |
     open message.<x:string>.(println x)
 
 val withActionMessageOutput : Ambient Process =
-    message[ in Console.<"Hello World!"> ] ||
+    message[ in Console.<"Hello World!"> ] |
     Console[ open message.<x:string>.(println x) ]
 
 val withDirectActionMessageOutput : Ambient Process =
-    go in Console.message[ <"Hello World!"> ] ||
+    go in Console.message[ <"Hello World!"> ] |
     Console[ open message.<x:string>.(println x) ]
 
 val withDirectActionStringOutput : Ambient Process =
-    go in Console.<"Hello World!"> ||
+    go in Console.<"Hello World!"> |
     Console[ <x:string>.(println x) ]

@@ -11,19 +11,19 @@ use player
 
     Once `ping@ is "incarnated" its content is:
     ```
-    `game@[ `ping[] || `pong@ || `printer@ ]
+    `game@[ `ping[] | `pong@ | `printer@ ]
     ```
 }--
 
 val _ : ambient process =
     `game[
-        `ping@                                   ||
-        `pong@                                   ||
-        `printer[ <x:ambient name>.(println x) ] ||
-        go in `ping.<42>                         ||
+        `ping@                                   |
+        `pong@                                   |
+        `printer[ <x:ambient name>.(println x) ] |
+        go in `ping.<42>                         |
         --{ Additional process for players }--
-        go in `ping.(player `ping to `pong)    ||
-        go in `pong.(player `pong to `p1ng)    ||
+        go in `ping.(player `ping to `pong)      |
+        go in `pong.(player `pong to `p1ng)      |
     ]
 
 -- =======================================================================
@@ -37,14 +37,14 @@ val _ : ambient process =
 
     ```
     val spawn : ambient name -> ambient process -> ambient process
-    val spawn = name p => name@ || go (in name).p
+    val spawn = name p => name@ | go (in name).p
     ```
 }--
 
 val _ : ambient process =
     `game[
-        spawn `ping $ player `ping to `pong ||
-        spawn `pong $ player `pong to `ping ||
-        `printer[ (x:ambient name).(println x) ]    ||
+        spawn `ping $ player `ping to `pong |
+        spawn `pong $ player `pong to `ping |
+        `printer[ (x:ambient name).(println x) ]    |
         go in `ping.<42>
     ]

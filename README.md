@@ -69,7 +69,7 @@ val amb : ambient name -> ambient process -> ambient process
     = n p => n[ p ] 
 
 val parallel : ambient process -> ambient process -> ambient process
-    = p1 p2 => p1 || p2 
+    = p1 p2 => p1 | p2 
     
 val cap : ambient capability -> ambient process -> ambient process
     = c p => c.p     
@@ -94,7 +94,7 @@ We identify three scoped ambient:
 sig play : ambient name -> ambient name -> Nat -> ambient process
 val play = sender receiver =>
     | Zero   => go (out sender.in `printer).<sender> 
-    | Succ n => <x:Nat>.(play sender receiver x) || go (out sender.in receiver).<n> in
+    | Succ n => <x:Nat>.(play sender receiver x) | go (out sender.in receiver).<n> in
 
 sig to : @infix (ambient name -> ambient process) -> ambient name -> ambient process
 val to = f p => f p
@@ -104,9 +104,9 @@ val player = sender receiver =>
     sender[ <x:Nat>.(play sender receiver x) ]
 
  val _ : ambient process =
-    (player `ping to `pong)                  ||
-    (player `pong to `ping)                  ||
-    `printer[ (x:ambient name).(println x) ] ||
+    (player `ping to `pong)                  |
+    (player `pong to `ping)                  |
+    `printer[ (x:ambient name).(println x) ] |
     go in `ping.<42>
 ```
 
@@ -125,12 +125,12 @@ val pong_to_nat : pong -> nat = Pong n => n
 sig play : {A:type} -> string -> (nat -> A) -> (A -> nat) -> nat -> ambient process
 val play = {A} who to_a from_a =>
     | Zero   => <who>
-    | Succ n => <x:A>.(play who fa from_a $ from_a a) || <to_a n>
+    | Succ n => <x:A>.(play who fa from_a $ from_a a) | <to_a n>
 
 val _ : ambient process =
-    <n:pong>.(play "Bob"   Ping pong_to_nat $ pong_to_nat n) || 
-    <n:ping>.(play "Alice" Pong ping_to_nat $ ping_to_nat n) ||
-    <x:string>.(println x)                                   ||
+    <n:pong>.(play "Bob"   Ping pong_to_nat $ pong_to_nat n) | 
+    <n:ping>.(play "Alice" Pong ping_to_nat $ ping_to_nat n) |
+    <x:string>.(println x)                                   |
     <Pong 42>
 ```
 
@@ -150,17 +150,17 @@ Since Ambient calculus targets concurrent systems with mobility we would like to
 For example, we can imagine the following ambient process
 
 ```
-`A[ `B[ P ] || `C[ Q ] || `D[ R ] || <x:T>.F ]
+`A[ `B[ P ] | `C[ Q ] | `D[ R ] | <x:T>.F ]
 ```
 
 with \`A and \`D ambients located in a physical process `P1`, \`B in `P2` and C in `P3`.
 
 ```
-`A[ `B[ P ] || `C[ Q ] || `D[ R ] || <x:T>.F ]
- |   |    |     |    |                       |
- |   P2---+     P3---+                       |
- |                                           |
- P1------------------------------------------+
+`A[ `B[ P ] | `C[ Q ] | `D[ R ] | <x:T>.F ]
+ |   |    |     |    |                    |
+ |   P2---+     P3---+                    |
+ |                                        |
+ P1---------------------------------------+
 ```
 
 ### Ambient Scope and capability reduction
@@ -174,9 +174,9 @@ Each capability requires a specific scope:
 - Note: `A@ in this formalism means ambient hosted in another **physical** process.
 
 ```
-    P1: `A[ `B@ || `C@ || `D[ R ] || <x:T>.F ]
-    P2: `A@[ `B[ P ] || `C@ || `D@ ]
-    P3: `A@[ `B@ || `C[ Q ] || `D@ ]
+    P1: `A[ `B@ | `C@ | `D[ R ] | <x:T>.F ]
+    P2: `A@[ `B[ P ] | `C@ | `D@ ]
+    P3: `A@[ `B@ | `C[ Q ] | `D@ ]
 ```
 
 For instance, in P2 \`B (resp. P3 \`C and P1 \`D) has information related to:
@@ -195,57 +195,57 @@ Functions are not represented in remote processes because the event used for its
 #### Message movement using objective ambient capability
 
 ```
-P1: `A[ `B@ || `C@ || `D[ R ] || <x:T>.F ]
-P2: `A@[ `B[ go (out `B).<m> ] || `C@ || `D@ ]
-P3: `A@[ `B@ || `C[ Q ] || `D@ ]
+P1: `A[ `B@ | `C@ | `D[ R ] | <x:T>.F ]
+P2: `A@[ `B[ go (out `B).<m> ] | `C@ | `D@ ]
+P3: `A@[ `B@ | `C[ Q ] | `D@ ]
 ```
 
 reduces to
 
 ```
-P1: `A[ <m> || `B@ || `C@ || `D[ R ] || <x:T>.F ]
-P2: `A@[ `B[] || `C@ || `D@ ]
-P3: `A@[ `B@ || `C[ Q ] || `D@ ]
+P1: `A[ <m> | `B@ | `C@ | `D[ R ] | <x:T>.F ]
+P2: `A@[ `B[] | `C@ | `D@ ]
+P3: `A@[ `B@ | `C[ Q ] | `D@ ]
 ```
 
 reduces to
 
 ```
-P1: `A[ `B@ || `C@ || `D[ R ] || F{x:=m} ]
-P2: `A@[ `B[] || `C@ || `D@ ]
-P3: `A@[ `B@ || `C[ Q ] || `D@ ]
+P1: `A[ `B@ | `C@ | `D[ R ] | F{x:=m} ]
+P2: `A@[ `B[] | `C@ | `D@ ]
+P3: `A@[ `B@ | `C[ Q ] | `D@ ]
 ```
 
 #### Message movement using ambient capability
 
 ```
-P1: `A[ `B@ || `C@ || `D[ R ] || open `M.<x:T>.F ]
-P2: `A@[ `B[ `M[ out `B.<m> ] ] || `C@ || `D@ ]
-P3: `A@[ `B@ || `C[ Q ] || `D@ ]
+P1: `A[ `B@ | `C@ | `D[ R ] | open `M.<x:T>.F ]
+P2: `A@[ `B[ `M[ out `B.<m> ] ] | `C@ | `D@ ]
+P3: `A@[ `B@ | `C[ Q ] | `D@ ]
 ```
 
 reduces to
 
 ```
-P1: `A[ `M[ <m> ] || `B@ || `C@ || `D[ R ] || open `M.<x:T>.F ]
-P2: `A@[ `B[] || `C@ || `D@ ]
-P3: `A@[ `B@ || `C[ Q ] || `D@ ]
+P1: `A[ `M[ <m> ] | `B@ | `C@ | `D[ R ] | open `M.<x:T>.F ]
+P2: `A@[ `B[] | `C@ | `D@ ]
+P3: `A@[ `B@ | `C[ Q ] | `D@ ]
 ```
 
 reduces to
 
 ```
-P1: `A[ <m> || `B@ || `C@ || `D[ R ] || <x:T>.F ]
-P2: `A@[ `B[] || `C@ || `D@ ]
-P3: `A@[ `B@ || `C[ Q ] || `D@ ]
+P1: `A[ <m> | `B@ | `C@ | `D[ R ] | <x:T>.F ]
+P2: `A@[ `B[] | `C@ | `D@ ]
+P3: `A@[ `B@ | `C[ Q ] | `D@ ]
 ```
 
 reduces to
 
 ```
-P1: `A[ `B@ || `C@ || `D[ R ] || F{x:=m} ]
-P2: `A@[ `B[] || `C@ || `D@ ]
-P3: `A@[ `B@ || `C[ Q ] || `D@ ]
+P1: `A[ `B@ | `C@ | `D[ R ] | F{x:=m} ]
+P2: `A@[ `B[] | `C@ | `D@ ]
+P3: `A@[ `B@ | `C[ Q ] | `D@ ]
 ```
 
 ## About Ephel

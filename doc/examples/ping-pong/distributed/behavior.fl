@@ -1,4 +1,4 @@
 sig play : ambient name -> ambient name -> Nat -> ambient process
 val play = sender receiver =>
     | Zero   => go (out sender.in `printer).<sender>
-    | Succ n => <x:Nat>.(play sender receiver x) || go out sender.in receiver.<n>
+    | Succ n => <x:Nat>.(play sender receiver x) | go out sender.in receiver.<n>

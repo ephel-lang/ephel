@@ -2,7 +2,6 @@ sig _? : type -> type (infix 200)
 val _? = A =>
     | None : A?
     | Some : A -> A?
--- Is it possible to have a private access control for this definition?
 
 val none : {A:type} -> A? = None
 val some : {A:type} -> A -> A? = Some

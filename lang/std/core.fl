@@ -4,11 +4,14 @@ val identity = x => x
 sig _$_ : {A B:type} -> (A -> B) -> A -> B (infixl 1000)
 val _$_ = identity
 
-sig _<|_ : {A B C:type} -> (B -> C) -> (A -> B) -> (A -> C)
+sig _<|_ : {A B C:type} -> (B -> C) -> (A -> B) -> (A -> C) (infixl 200)
 val _<|_ = f g => x => f (g x)
 
-sig _|>_ : {A B C:type} -> (A -> B) -> (B -> C) -> (A -> C)
+sig _|>_ : {A B C:type} -> (A -> B) -> (B -> C) -> (A -> C) (infixl 200)
 val _|>_ = f g => g <| f
 
 sig const : {A B:type} -> A -> B -> A
 val const = a _ => a
+
+sig Defer : type -> type
+val Defer = let open unit in A => Unit -> A

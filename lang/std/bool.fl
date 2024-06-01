@@ -1,0 +1,22 @@
+sig Bool : type
+val Bool =
+    | True  : Bool
+    | False : Bool
+
+sig _/\_ : Bool -> Bool -> Bool (infixl 100)
+val _/\_ =
+    | True  => b => b
+    | False => _ => False
+
+sig _\/_ : Bool -> Bool -> Bool (infixl 150)
+val _\/_ =
+    | True  => _ => True
+    | False => b => b
+
+sig ~ : Bool -> Bool
+val ~ =
+    | True  => False
+    | False => True
+
+sig _==>_ : Bool -> Bool -> Bool (infixl 200)
+val _==>_ = a b => ~a \/ b

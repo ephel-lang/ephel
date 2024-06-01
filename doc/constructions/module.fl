@@ -39,9 +39,11 @@ val mg : sig struct g : int -> int end =
         val g = i => i
     end
 
-val mfg : sig struct
-        open sig of mf
-        open sig of mg
+val mfg :
+    let open core in -- for $
+    sig struct
+        open $ sig of mf
+        open $ sig of mg
     end =
     val struct
         open mf

@@ -1,14 +1,16 @@
-sig [_] : type -> type
-val [_] = A =>
-    | Nil  : [A]
-    | _::_ : A -> [A] -> [A] (infixl 200)
+open option
 
-val head : [A] -> A? =
-    let open option in
-    | Nil    => none
+sig [_] : type -> type (infix 500)
+val [_] = A =>
+    | []   : [A]
+    | _::_ : A -> [A] -> [A] (infixl 500)
+
+val head : let open option in [A] -> A? =
+    | []     => none
     | h :: _ => some a
 
-val tail : [A] -> [A]? =
-    let open option in
-    | Nil    => none
+val tail : let open option in [A] -> [A]? =
+    | []     => none
     | _ :: t => some t
+
+-- 1::2::3::[] : [int]

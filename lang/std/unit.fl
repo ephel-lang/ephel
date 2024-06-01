@@ -1,0 +1,3 @@
+sig Unit : type
+val Unit =
+    | () : Unit

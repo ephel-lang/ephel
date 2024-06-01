@@ -4,23 +4,28 @@
     Recursion imply internal rec type and Y term with
     additional fold/unfold for type checking.
 
-    All these constructions are introduced implicitly by the compiler.
+    All these constructions are introduced implicitly by the compiler. For
+    this purpose this construction are not available in the language.
 
     Question: Is it necessary to have a rec/nonrec capability (like Ocaml)?
 }-
+
+sig(infixl 100) _$_ : {A B:type} -> (A -> B) -> A -> B
+val _$_ = identity
 
 sig Vector : type
 val Vector = sig struct
     sig x : int
     sig y : int
-    sig + : Vector -> Vector
+    sig _+_ : Vector -> Vector
 end
 
 sig vector : int -> int -> Vector
 val vector = x y => val struct
     sig x = x
     sig y = y
-    sig + = v => vector (v x + x) (v y + y)
+    sig _+_ = v => vector $ v x + x $ v y + y
+    -- = ((vector $ (v x + x)) $ (v y + y)) = vector (v x + x) (v y + y)
 end
 
 sig Vector : type
@@ -36,5 +41,5 @@ val vector = val struct
     sig t   = int * int
     sig _x  = self => fst self
     sig _y  = self => snd self
-    sig _+_ = self v => (
+    sig _+_ = self v => self x + v x, self y + v y
 end

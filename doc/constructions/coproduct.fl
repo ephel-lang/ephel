@@ -14,21 +14,25 @@ val not : Bool -> Bool =
     | true  => false
     | false => true
 
-val not : Bool -> Bool = b =>
-    b match
-    | true  => false
-    | false => true
-    -- b match f == f b but with multiple cases for f by construction
+-- DSL which mimics OCaml match with construction
 
-val(infix 15) _and_ : Bool -> Bool -> Bool =
+sig match_with_ : {A B:type} -> A -> (A -> B) -> B
+val match_with_ = a f => f a
+
+val not : Bool -> Bool = b =>
+    match b with
+    | true  -> false
+    | false -> true
+
+val(infix 15) _&&_ : Bool -> Bool -> Bool =
     | true  => b => b
     | false => _ => false
 
-val(infix 15) _or_ : Bool -> Bool -> Bool =
+val(infix 15) _||_ : Bool -> Bool -> Bool =
     | true  => _ => true
     | false => b => b
 
-val(infix 20) _=>_ : Bool -> Bool -> Bool = a b => not a or b
+val(infix 20) _==>_ : Bool -> Bool -> Bool = a b => not a or b
 
 -- Recursive CoProduct
 
@@ -73,4 +77,4 @@ val Expr : type -> type = A =>
 -- Absurd
 
 sig _|_ : type
-val _|_ = -{ No possible construction }-
+val _|_ = . -{ No possible construction }-

@@ -36,8 +36,8 @@ val test : Bool -> Int = b => if b (_ => 1 ) else (_ => 2)
     In addition a infix precedence and associativity capabilities can be proposed.
 }-
 
-sig(infixl 20) _+_ : Int -> Int -> Int
-sig(infixl 15) _*_ : Int -> Int -> Int
+sig _+_ : Int -> Int -> Int (infix 20)
+sig _*_ : Int -> Int -> Int (infix 15)
 
 val main : Int = 1 + 2 * 4 -{ equivalent to `1 + (2 * 4)` }-
 

@@ -13,34 +13,40 @@ value ::=
 
 term ::=
     literal
-    variable
+    id
     functional
     product
     coproduct
     structural
-    recursion <- Need to be considered differently
     equality
     type
     ambient
+    group
+
+group ::= 
+    '(' term ')' 
     
 literal ::=
     NUMBER
     STRING
     CHARACTER
-    
-variable ::=
-    id
-    
-functional ::= 
+  
+functional_term ::= 
+    -- abstraction and PM
     (id | '{' id+ '}')+ '=>' term
     ('|' term => term)+
+    -- functional type
     '{' id+ ':' term '}' '->' term  
     '(' id+ ':' term ')' '->' term
     term '->' term
+    -- application   
     term term
-    term 'match' ('|' term => term)+
-    'let' id (':' term)? = term in term
-    '(' term ')'
+    term '{' term '}'
+    -- let binding
+    'let' id (':' term)? = term 'in' term
+    'let' open 'in' term   
+    -- meta
+    'sig' 'of' term
     
 product ::=
     term ',' term
@@ -55,14 +61,13 @@ coproduct ::=
     'inr' r
     'case' id term term
     
-structural ::= 
-    'sig' 'struct' signature* 'end'
-    'val' 'struct' value* 'end'
-    
-recursion ::=
-    'rec' '(' id ':' term ')' '.' term
-    'fold' term
-    'unfold' term
+structural ::=  -- To be reconsidered ...
+    'sig' 'struct' (open | signature | value)* 'end'
+    'val' 'struct' (open | signature | value)* 'end'
+    term '.' id
+
+open ::=
+    'open' term
     
  equality ::=
     'refl'
@@ -96,7 +101,7 @@ process ::=
     name_id '[' process ']'
     'go' capability '.' process
     capability '.' process
-    process '||' process
+    process '|' process
     <id:term>.process
     <process>
     term    

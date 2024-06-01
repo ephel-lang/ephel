@@ -1,0 +1,14 @@
+sig identity : {A:type} -> A -> A
+val identity = x => x
+
+sig _$_ : {A B:type} -> (A -> B) -> A -> B (infixl 1000)
+val _$_ = identity
+
+sig _<|_ : {A B C:type} -> (B -> C) -> (A -> B) -> (A -> C)
+val _<|_ = f g => x => f (g x)
+
+sig _|>_ : {A B C:type} -> (A -> B) -> (B -> C) -> (A -> C)
+val _|>_ = f g => g <| f
+
+sig const : {A B:type} -> A -> B -> A
+val const = a _ => a

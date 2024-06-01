@@ -1,0 +1,1 @@
+val match_with_ : {A B:type} -> A -> (A -> B) -> B = f a => f a

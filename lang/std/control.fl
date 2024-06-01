@@ -1,0 +1,41 @@
+val Functor : (type -> type) -> type = F =>
+    sig struct
+        sig map : {A B:type} -> (A -> B) -> F A -> F B
+        val _<$>_ = map
+    end
+
+val Applicative : (type -> type) -> type = F =>
+    sig struct
+        open Functor F
+
+        sig pure : {A:type} -> A -> F a
+        sig product : {A B:type} -> F A -> F B -> F (A * B)
+
+        sig _<*>_ : {A B:type} -> F (A -> B) -> F A -> F B
+        val _<*>_ = f a => (p => fst p $ snd p) <$> product f a
+
+        sig _<**>_ : {A B:type} -> F A -> F (A -> B) -> F B
+        val _<**>_ = a f => f <*> a
+    end
+
+val Monad : (type -> type) -> type = F =>
+    sig struct
+        open Applicative F
+
+        sig join : {A:type} -> F (F A) -> F A
+
+        val returns = pure
+
+        sig bind : {A B:type} -> A -> (A -> F B) -> F B
+        val bind = a f => join (f <$> a)
+
+        val _>>=_ = bind
+    end
+
+val Kleisli : (type -> type) -> type = F =>
+    sig struct
+        open Monad F
+
+        sig _>=>_ : {A B C:type} -> (A -> F B) -> (B -> F C) -> (A -> F C)
+        val _>=>_ = let open core in fa fb => fa |> $ fb =<<_
+    end

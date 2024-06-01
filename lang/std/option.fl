@@ -1,0 +1,36 @@
+sig _? : type -> type (infix 200)
+val _? = A =>
+    | None : A?
+    | Some : A -> A?
+-- Is it possible to have a private access control for this definition?
+
+val none : {A:type} -> A? = None
+val some : {A:type} -> A -> A? = Some
+
+val Functor : control.Functor _? =
+    val struct
+        val map = f =>
+            | None => None
+            | Some a => Some $ f a
+    end
+
+val Applicative : control.Applicative _? =
+    val struct
+        open Functor
+
+        val pure = some
+        val product =
+            | None   => _  => None
+            | Some f =>
+                | None   => None
+                | Some a => Some (f a)
+    end
+
+val Monad : control.Monad _? =
+    val struct
+        open Applicative
+
+        val join =
+            | None   => None
+            | Some a => a
+   end

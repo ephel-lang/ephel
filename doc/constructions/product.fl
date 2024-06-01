@@ -8,4 +8,4 @@ val second : first = snd pair
 
 -- Pattern matching is translated using `fst` and `snd`.
 
-val snd : (type * char) -> char = (_,c) => c
+val snd : (type * char) -> char = | (_,c) => c

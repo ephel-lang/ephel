@@ -10,7 +10,7 @@ C :=
     C.C
 P :=
     ()
-    P || P
+    P | P
     M[ P ]
     C.P
     go (C).P
@@ -25,7 +25,7 @@ val zero : ambient process =
     ()
 
 val parallel : ambient process -> ambient process -> ambient process
-    = fun p1 p2 -> p1 || p2
+    = fun p1 p2 -> p1 | p2
 
 val in_cap : ambient name -> ambient process -> ambient process
     = fun name p -> in name.p

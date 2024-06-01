@@ -22,7 +22,7 @@ val Applicative : control.Applicative _? =
             | None   => _ => None
             | Some f =>
                 | None   => None
-                | Some a => Some (f a)
+                | Some a => Some (f,a)
     end
 
 val Monad : control.Monad _? =

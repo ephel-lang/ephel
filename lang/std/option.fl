@@ -19,7 +19,7 @@ val Applicative : control.Applicative _? =
 
         val pure = some
         val product =
-            | None   => _  => None
+            | None   => _ => None
             | Some f =>
                 | None   => None
                 | Some a => Some (f a)

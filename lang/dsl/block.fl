@@ -1,2 +1,2 @@
-sig begin_end : {A:type} -> A -> A (infixl 1000)
+sig begin_end : {A:type} -> A -> A (infix 1000)
 sig begin_end = std.core.identity

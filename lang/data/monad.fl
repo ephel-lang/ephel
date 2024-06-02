@@ -1,10 +1,10 @@
-sig Join : (type -> type) -> type = F =>
+sig Join : (type -> type) -> type
 val Join = F =>
     sig struct
         sig join : {A:type} -> F (F A) -> F A
     end
 
-sig Return : (type -> type) -> type = F =>
+sig Return : (type -> type) -> type
 val Return = F =>
     let open data.applicative in
     sig struct
@@ -19,7 +19,7 @@ val Bind = F =>
         val _>>=_ : sig of bind = bind
     end
 
-sig Monad : (type -> type) -> type = F =>
+sig Monad : (type -> type) -> type
 val Monad = F =>
     let open data.applicative in
     sig struct

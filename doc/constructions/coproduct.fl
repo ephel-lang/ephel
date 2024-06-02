@@ -59,6 +59,7 @@ val size =
     | _ :: l => Succ (size l)
 
 -- GADT using intentional type theory for the propositional equality
+-- This is not a short term target for the moment.
 
 val :=: : type -> type -> type = A _ =>
     | Refl : A :=: A
@@ -67,11 +68,11 @@ val Expr : type -> type = A =>
     | Bool          : Bool -> Expr Bool
     | Int           : Int -> Expr Int
     | _+_           : Exp Int -> Expr Int -> Expr Int
-    | if_then_else_ : Expr Bool -> Expr A -> Expr A -> Expr A
+    | If_Then_Else_ : Expr Bool -> Expr A -> Expr A -> Expr A
 
 -{
     With such GADT we can write the following term:
-    if (Bool true) then (Int 1) else
+    If (Bool true) Then (Int 1) Else
 
 }-
 

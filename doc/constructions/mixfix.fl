@@ -1,10 +1,7 @@
 --{
-    Infix add the capability to have an infix function application
-    This annotation is used in the type specification.
-
     The chosen approach is the same as the one adopted in Agda.
     The main advantage of such an approach is a simple and intuitive
-    approach.
+    approach for the user. This approach is ideal for DSLs definition.
 
     The adopted approach is the same as the one chosen for Agda
     Cf. https://agda.readthedocs.io/en/latest/language/mixfix-operators.html
@@ -23,10 +20,10 @@ val main : Int = 1 2 +
 
 -- Trivial and simplistic DSL using infix
 
-sig Lazy : type -> type
-val Lazy = A => Unit -> A
+sig Defer : type -> type
+val Defer = A => Unit -> A
 
-sig if_then_else_ : {A:type} -> Bool -> Lazy A -> Lazy A -> A
+sig if_then_else_ : {A:type} -> Bool -> Defer A -> Defer A -> A
 val if_then_else_ = b t f =>
     case b (_ => t ()) (_ => f ())
 

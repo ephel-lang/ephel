@@ -16,13 +16,14 @@ val not : Bool -> Bool =
 
 -- DSL which mimics OCaml match with construction
 
-sig match_with_ : {A B:type} -> A -> (A -> B) -> B
-val match_with_ = a f => f a
+sig match_with_end : {A B:type} -> A -> (A -> B) -> B
+val match_with_end = a f => f a
 
 val not : Bool -> Bool = b =>
     match b with
     | true  -> false
     | false -> true
+    end
 
 val(infix 15) _&&_ : Bool -> Bool -> Bool =
     | true  => b => b
@@ -59,8 +60,8 @@ val size =
 
 -- GADT using intentional type theory for the propositional equality
 
-val Equals : type -> type -> type = A _ =>
-    | Refl : Equals A A
+val :=: : type -> type -> type = A _ =>
+    | Refl : A :=: A
 
 val Expr : type -> type = A =>
     | Bool          : Bool -> Expr Bool

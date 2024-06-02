@@ -1,0 +1,7 @@
+open std.bool
+open std.core
+
+sig if_then_else_ : {A:type} -> Bool -> Defer A -> Defer A -> A (infixl 1000)
+val if_then_else_ =
+    | True  => t _ => t ()
+    | False => _ f => f ()

@@ -1,0 +1,49 @@
+open std.bool
+open dsl.block
+open dsl.match
+
+val And : type =
+    sig struct
+        sig commute : {A B:Bool} -> A /\ B :=: B /\ A
+        val commute = {A B} =>
+            A match
+            | True  =>
+                begin B match
+                | True  => refl
+                | False => refl
+                end
+            | False =>
+                begin B match
+                | True  => refl
+                | False => refl
+                end
+
+        sig left : {A:Bool} -> False /\ A :=: False
+        val left = refl
+
+        sig right : {A:Bool} -> A /\ False :=: False
+        val right = subst refl with commute
+    end
+
+val Or : type =
+    sig struct
+        sig commute : {A B:Bool} -> A \/ B :=: B \/ A
+        val commute = {A B} =>
+            A match
+            | True  =>
+                begin B match
+                | True  => refl
+                | False => refl
+                end
+            | False =>
+                begin B match
+                | True  => refl
+                | False => refl
+                end
+
+        sig left : {A:Bool} -> True \/ A :=: True
+        val left = refl
+
+        sig right : {A:Bool} -> A \/ True :=: True
+        val right = subst refl with commute
+    end

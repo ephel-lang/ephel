@@ -1,0 +1,33 @@
+sig Neutral : type -> type
+val Neutral : A =>
+    sig struct
+        sig neutral : A
+    end
+
+sig SemiGroup : type -> type
+val SemiGroup : A =>
+    sig struct
+        sig compose : A -> A -> A
+        val _+_ : sig of compose = compose
+    end
+
+sig Monoid : type -> type
+val Monoid : A =>
+    sig struct
+        open Neutral A
+        open SemiGroup A
+
+        -- Laws
+
+        sig ''a = neutral + a'' : {a:A} ->
+            -----------------
+            a :=: neutral + a
+
+        sig ''a = a + neutral'' : {a:A} ->
+            -----------------
+            a :=: a + neutral
+
+        sig ''(a + b) + c = a + (b + c)'' : {a b c:self} ->
+            ---------------------------
+            (a + b) + c :=: a + (b + c)
+    end

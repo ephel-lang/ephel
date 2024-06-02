@@ -1,0 +1,10 @@
+sig Category : (_~>_: type -> type -> type) -> type
+val Category = _~>_ =>
+    sig struct
+      sig identity: {A:type} -> A ~> A
+      sig compose : {A B C:type} -> B ~> C -> A ~> B -> A ~> C
+
+      val _<<<_ : sig of compose = compose
+    end
+
+-- Laws are missing here

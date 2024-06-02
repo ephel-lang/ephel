@@ -6,10 +6,10 @@ declaration ::=
     value
 
 signature ::=
-    'sig' id ':' term
+    'sig' id ':' term infix?
     
 value ::=
-    'val' id (':' term)? =' term
+    'val' id (':' term infix?)? =' term
 
 term ::=
     literal
@@ -56,10 +56,7 @@ product ::=
     'snd' term    
     
 coproduct ::=
-    term '|' term
-    'inl' term
-    'inr' r
-    'case' id term term
+    ('|' term ':' term infix?)+
     
 structural ::=  -- To be reconsidered ...
     'sig' 'struct' (open | signature | value)* 'end'
@@ -104,5 +101,8 @@ process ::=
     process '|' process
     <id:term>.process
     <process>
-    term    
+    term  
+    
+infix ::=
+    '(' ('infixl'|'infixr') NAT ')'      
 ```

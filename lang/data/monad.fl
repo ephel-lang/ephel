@@ -1,0 +1,35 @@
+sig Join : (type -> type) -> type = F =>
+val Join = F =>
+    sig struct
+        sig join : {A:type} -> F (F A) -> F A
+    end
+
+sig Return : (type -> type) -> type = F =>
+val Return = F =>
+    let open data.applicative in
+    sig struct
+        open Pure F
+        val return : sig of pure = pure
+    end
+
+sig Bind : (type -> type) -> type = F =>
+val Bind = F =>
+    sig struct
+        sig bind : {A B:type} -> A -> (A -> F B) -> F B
+        val _>>=_ : sig of bind = bind
+    end
+
+sig Monad : (type -> type) -> type = F =>
+val Monad = F =>
+    let open data.applicative in
+    sig struct
+        open Applicative F
+
+        open Join F
+        open Return F
+        open Bind F
+
+        val bind = a f => join (f <$> a)
+    end
+
+-- Laws are missing here

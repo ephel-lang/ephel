@@ -6,14 +6,29 @@ val _? = A =>
 val none : {A:type} -> A? = None
 val some : {A:type} -> A -> A? = Some
 
-val Functor : control.Functor _? =
+val Functor : data.Functor _? =
     val struct
         val map = f =>
             | None => None
             | Some a => Some $ f a
+
+        -- Functor laws
+
+        -{
+            Note: tactics "à la Coq" are missing here since we
+            have to exhibit the term which inhabits the type!
+        }-
+
+        val ''map id = id'' =
+            | None   => refl
+            | Some _ => refl
+
+        val ''(map f) <| (map g) = map (f <| g)'' =
+            | None   => refl
+            | Some _ => refl
     end
 
-val Applicative : control.Applicative _? =
+val Applicative : data.Applicative _? =
     val struct
         open Functor
 
@@ -25,7 +40,7 @@ val Applicative : control.Applicative _? =
                 | Some a => Some (f,a)
     end
 
-val Monad : control.Monad _? =
+val Monad : data.Monad _? =
     val struct
         open Applicative
 

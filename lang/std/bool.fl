@@ -8,6 +8,15 @@ val _/\_ =
     | True  => b => b
     | False => _ => False
 
+sig OrLaws : type =
+    sig struct
+        sig left : {A:Bool} -> True /\ A :=: True
+        val left = refl
+
+        sig right : {A:Bool} -> A /\ True :=: True
+        val right = refl -- This is not the proof since commutativity is not applied!
+    end
+
 sig _\/_ : Bool -> Bool -> Bool (infixl 150)
 val _\/_ =
     | True  => _ => True

@@ -1,0 +1,5 @@
+sig Free : (type -> type) -> type -> type
+val Free = F A =>
+    | Pure : A -> FreeT F A
+    | Bind : F (FreeT F A) -> FreeT F A
+

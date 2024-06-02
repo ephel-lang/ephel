@@ -1,0 +1,36 @@
+sig Pure : (type -> type) -> type
+val Pure = F =>
+    sig struct
+        sig pure : {A:type} -> A -> F a
+    end
+
+sig Product : (type -> type) -> type
+val Product = F =>
+    sig struct
+        sig product : {A B:type} -> F A -> F B -> F (A * B)
+    end
+
+sig Apply : (type -> type) -> type
+val Apply = F =>
+    sig struct
+        sig _<*>_ : {A B:type} -> F (A -> B) -> F A -> F B
+
+        sig _<**>_ : {A B:type} -> F A -> F (A -> B) -> F B
+        val _<**>_ = a f => f <*> a
+    end
+
+sig Applicative : (type -> type) -> type
+val Applicative = F =>
+    let open std.core in
+    let open data.functor in
+    sig struct
+        open Functor F
+
+        open Pure F
+        open Product F
+        open Apply F
+
+        val _<*>_ = f a => (p => fst p $ snd p) <$> product f a
+    end
+
+-- Laws are missing here

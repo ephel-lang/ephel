@@ -1,0 +1,16 @@
+sig Compose : (type -> type) -> type
+val Compose = F =>
+    let open std.core in
+    let open data.monad in
+    sig struct
+        open Monad F
+
+        sig _>=>_ : {A B C:type} -> (A -> F B) -> (B -> F C) -> (A -> F C)
+        val _>=>_ =
+            let open core in -- for |>
+            fa fb => fa |> $ fb =<<_
+    end
+
+sig Kleisli : sig of Compose = Compose
+
+-- Laws are missing here

@@ -4,7 +4,7 @@ open dsl.match
 
 val And : type =
     sig struct
-        sig commute : {A B:Bool} -> A /\ B :=: B /\ A
+        sig commute : {A B:Bool} -> A && B :=: B && A
         val commute = {A B} =>
             A match
             | True  =>
@@ -18,16 +18,16 @@ val And : type =
                 | False => refl
                 end
 
-        sig left : {A:Bool} -> False /\ A :=: False
+        sig left : {A:Bool} -> False && A :=: False
         val left = refl
 
-        sig right : {A:Bool} -> A /\ False :=: False
+        sig right : {A:Bool} -> A && False :=: False
         val right = subst refl by commute
     end
 
 val Or : type =
     sig struct
-        sig commute : {A B:Bool} -> A \/ B :=: B \/ A
+        sig commute : {A B:Bool} -> A || B :=: B || A
         val commute = {A B} =>
             A match
             | True  =>
@@ -41,9 +41,9 @@ val Or : type =
                 | False => refl
                 end
 
-        sig left : {A:Bool} -> True \/ A :=: True
+        sig left : {A:Bool} -> True || A :=: True
         val left = refl
 
-        sig right : {A:Bool} -> A \/ True :=: True
+        sig right : {A:Bool} -> A || True :=: True
         val right = subst refl by commute
     end

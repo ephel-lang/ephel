@@ -7,17 +7,44 @@ val [_] = A =>
 
 -- Example: 1::2::3::[] : [int]
 
-val head : [A] -> A? =
-    | []     => none
-    | h :: _ => some a
+sig Core :
+    sig struct
+        sig head : [A] -> A?
+        sig tail : [A] -> [A]?  -- Note [A]? = _? ([_] A)
+        sig size : [A] -> Int
+    end
+val Core =
+    val struct
+        val head =
+            | []     => none
+            | h :: _ => some a
 
-val tail : [A] -> [A]? = -- Note [A] = [_] A
-    | []     => none
-    | _ :: t => some t
+        val tail =
+            | []     => none
+            | _ :: t => some t
 
-val size : [A] -> Int =
-    let size : Int -> [A] -> Int =
-        acc => | []     => acc
-               | _ :: l => size (acc + 1) l
-    in
-    size 0
+        val size =
+            let size : Int -> [A] -> Int = acc =>
+                | []     => acc
+                | _ :: l => size (acc + 1) l
+            in
+            size 0
+    end
+
+val Functor : data.Functor [_] =
+    val struct
+        val map = f =>
+            | []     => []
+            | h :: t => f h :: map f t
+
+        -- Functor laws
+
+        val ''map id = id'' =
+            | []     => refl
+            | h :: t => admit -- reasoning t is missing here -> congruent
+
+        val ''(map f) <| (map g) = map (f <| g)'' =
+            | []     => refl
+            | h :: t => admit -- reasoning t is missing here -> congruent
+    end
+

@@ -10,35 +10,36 @@ val Profunctor = _~>_ =>
         sig rmap : {A B C:type} -> (B -> C) -> A ~> B -> A ~> C -- aka map_snd
         val rmap = dimap identity
 
-        -- Laws
+        sig Laws =
+            sig struct
+            sig ''dimap identity identity = identity'' :
+                dimap identity identity :=: identity
 
-        sig ''dimap identity identity = identity'' :
-            dimap identity identity :=: identity
+            sig ''lmap identity = identity'' :
+                lmap identity :=: identity
 
-        sig ''lmap identity = identity'' :
-            lmap identity :=: identity
+            sig ''rmap identity = identity'' :
+                rmap identity :=: identity
 
-        sig ''rmap identity = identity'' :
-            rmap identity :=: identity
+            sig ''dimap f g = lmap f <| rmap g'' :
+                {A B C D:type}
+                -> {f:A -> B} -> {g:C -> D}
+                -> dimap f g :=: lmap f <| rmap g
 
-        sig ''dimap f g = lmap f <| rmap g'' :
-            {A B C D:type}
-            -> {f:A -> B} -> {g:C -> D}
-            -> dimap f g :=: lmap f <| rmap g
+            sig ''dimap (f <| g) (h <| i) = dimap g h <| dimap f i'' :
+                {A B C D E F:type}
+                -> {f:B -> C} -> {g:A -> B}
+                -> {h:E -> F} -> {i:D -> E}
+                -> dimap (f <| g) (h <| i) :=: dimap g h <| dimap f i
 
-        sig ''dimap (f <| g) (h <| i) = dimap g h <| dimap f i'' :
-            {A B C D E F:type}
-            -> {f:B -> C} -> {g:A -> B}
-            -> {h:E -> F} -> {i:D -> E}
-            -> dimap (f <| g) (h <| i) :=: dimap g h <| dimap f i
+            sig ''lmap (f <| g) = lmap g <| lmap f'' :
+                {A B C:type}
+                -> {f:B -> C} -> {g:A -> B}
+                -> lmap (f <| g) :=: lmap g <| lmap f
 
-        sig ''lmap (f <| g) = lmap g <| lmap f'' :
-            {A B C:type}
-            -> {f:B -> C} -> {g:A -> B}
-            -> lmap (f <| g) :=: lmap g <| lmap f
-
-        sig ''rmap (f <| g) = rmap f <| rmap g'' :
-            {A B C:type}
-            -> {f:B -> C} -> {g:A -> B}
-            -> rmap (f <| g) :=: rmap f <| rmap g
+            sig ''rmap (f <| g) = rmap f <| rmap g'' :
+                {A B C:type}
+                -> {f:B -> C} -> {g:A -> B}
+                -> rmap (f <| g) :=: rmap f <| rmap g
+        end
     end

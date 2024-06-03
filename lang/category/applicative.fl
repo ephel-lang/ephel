@@ -22,9 +22,8 @@ val Apply = F =>
 sig Applicative : (type -> type) -> type
 val Applicative = F =>
     let open std.core in
-    let open data.functor in
     sig struct
-        open Functor F
+        open functor.Functor F
 
         open Pure F
         open Product F

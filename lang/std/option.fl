@@ -3,32 +3,28 @@ val _? = A =>
     | None : A?
     | Some : A -> A?
 
-val none : {A:type} -> A? = None
-val some : {A:type} -> A -> A? = Some
+val none : {A:type} -> A? = {_} => None
+val some : {A:type} -> A -> A? = {_} => Some
 
-val Functor : data.Functor _? =
+val Functor : category.functor.Functor _? =
     val struct
         val map = f =>
             | None => None
             | Some a => Some $ f a
 
-        -- Functor laws
+        val Laws =
+            val struct
+                val ''map id = id'' =
+                    | None   => refl
+                    | Some _ => refl
 
-        -{
-            Note: tactics "à la Coq" are missing here since we
-            have to exhibit the term which inhabits the type!
-        }-
-
-        val ''map id = id'' =
-            | None   => refl
-            | Some _ => refl
-
-        val ''(map f) <| (map g) = map (f <| g)'' =
-            | None   => refl
-            | Some _ => refl
+                val ''(map f) <| (map g) = map (f <| g)'' =
+                    | None   => refl
+                    | Some _ => refl
+            end
     end
 
-val Applicative : data.Applicative _? =
+val Applicative : category.applicative.Applicative _? =
     val struct
         open Functor
 
@@ -40,7 +36,7 @@ val Applicative : data.Applicative _? =
                 | Some a => Some (f,a)
     end
 
-val Monad : data.Monad _? =
+val Monad : category.monad.Monad _? =
     val struct
         open Applicative
 

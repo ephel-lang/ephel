@@ -3,7 +3,7 @@ open std.option
 sig [_] : type -> type (infix 500)
 val [_] = A =>
     | []   : [A]
-    | _::_ : A -> [A] -> [A] (infixl 500)
+    | _::_ : A -> [A] -> [A] (infixr 500)
 
 -- Example: 1::2::3::[] : [int]
 
@@ -31,7 +31,7 @@ val Core =
             size 0
     end
 
-val Functor : data.Functor [_] =
+val Functor : category.functor.Functor [_] =
     val struct
         val map = f =>
             | []     => []

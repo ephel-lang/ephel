@@ -1,0 +1,44 @@
+sig Profunctor : (_~>_ : type -> type -> type) -> type
+val Profunctor = _~>_ =>
+    let open std.core in
+    sig struct
+        sig dimap : {A B C D:type} -> (A -> B) -> (C -> D) -> B ~> C -> A ~> D
+
+        sig lmap : {A B C:type} -> (A -> B) -> B ~> C -> A ~> C -- aka contramap_fst
+        val lmap = f => dimap f identity
+
+        sig rmap : {A B C:type} -> (B -> C) -> A ~> B -> A ~> C -- aka map_snd
+        val rmap = dimap identity
+
+        -- Laws
+
+        sig ''dimap identity identity = identity'' :
+            dimap identity identity :=: identity
+
+        sig ''lmap identity = identity'' :
+            lmap identity :=: identity
+
+        sig ''rmap identity = identity'' :
+            rmap identity :=: identity
+
+        sig ''dimap f g = lmap f <| rmap g'' :
+            {A B C D:type}
+            -> {f:A -> B} -> {g:C -> D}
+            -> dimap f g :=: lmap f <| rmap g
+
+        sig ''dimap (f <| g) (h <| i) = dimap g h <| dimap f i'' :
+            {A B C D E F:type}
+            -> {f:B -> C} -> {g:A -> B}
+            -> {h:E -> F} -> {i:D -> E}
+            -> dimap (f <| g) (h <| i) :=: dimap g h <| dimap f i
+
+        sig ''lmap (f <| g) = lmap g <| lmap f'' :
+            {A B C:type}
+            -> {f:B -> C} -> {g:A -> B}
+            -> lmap (f <| g) :=: lmap g <| lmap f
+
+        sig ''rmap (f <| g) = rmap f <| rmap g'' :
+            {A B C:type}
+            -> {f:B -> C} -> {g:A -> B}
+            -> rmap (f <| g) :=: rmap f <| rmap g
+    end

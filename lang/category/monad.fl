@@ -6,9 +6,8 @@ val Join = F =>
 
 sig Return : (type -> type) -> type
 val Return = F =>
-    let open data.applicative in
     sig struct
-        open Pure F
+        open applicative.Pure F
         val return : sig of pure = pure
     end
 
@@ -21,9 +20,8 @@ val Bind = F =>
 
 sig Monad : (type -> type) -> type
 val Monad = F =>
-    let open data.applicative in
     sig struct
-        open Applicative F
+        open applicative.Applicative F
 
         open Join F
         open Return F

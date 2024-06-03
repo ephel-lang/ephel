@@ -3,8 +3,8 @@ val Either = E A =>
     | Left  : E -> Either E A
     | Right : A ->  Either E A
 
-val left : {E A:type} -> E -> Either E A = {_ _} => Left
-val right : {E A:type} -> A -> Either E A = {_ _} => Right
+val left : {E A:type} -> E -> Either E A = Left
+val right : {E A:type} -> A -> Either E A = Right
 
 val Functor : (E: type) -> category.functor.Functor (Either E) =
     val struct

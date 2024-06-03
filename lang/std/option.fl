@@ -3,8 +3,8 @@ val _? = A =>
     | None : A?
     | Some : A -> A?
 
-val none : {A:type} -> A? = {_} => None
-val some : {A:type} -> A -> A? = {_} => Some
+val none : {A:type} -> A? = None
+val some : {A:type} -> A -> A? = Some
 
 val Functor : category.functor.Functor _? =
     val struct

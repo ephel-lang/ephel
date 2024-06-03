@@ -37,14 +37,15 @@ val Functor : category.functor.Functor [_] =
             | []     => []
             | h :: t => f h :: map f t
 
-        -- Functor laws
+        val Laws =
+            val struct
+                val ''map id = id'' =
+                    | []     => refl
+                    | h :: t => ''map id = id'' t
 
-        val ''map id = id'' =
-            | []     => refl
-            | h :: t => admit -- reasoning t is missing here -> congruent
-
-        val ''(map f) <| (map g) = map (f <| g)'' =
-            | []     => refl
-            | h :: t => admit -- reasoning t is missing here -> congruent
+                val ''(map f) <| (map g) = map (f <| g)'' =
+                    | []     => refl
+                    | h :: t => ''(map f) <| (map g) = map (f <| g)'' t
+            end
     end
 

@@ -1,0 +1,46 @@
+sig _Or_ : type -> type -> type
+val _Or_ = E A =>
+    | Inl : E -> E Or A
+    | Inr : A ->  E Or A
+
+val inl : {E A:type} -> E -> E Or A = Inl
+val inr : {E A:type} -> A -> E Or A = Inr
+
+val Functor : (E: type) -> category.functor.Functor (E Or_) =
+    val struct
+        val map = f =>
+            | Inl e => Inl e
+            | Inr a => Inr $ f a
+
+        val Laws =
+            val struct
+                val ''map id = id'' =
+                    | Inl _ => refl
+                    | Inr _ => refl
+
+                val ''(map f) <| (map g) = map (f <| g)'' =
+                    | Inl _ => refl
+                    | Inr _ => refl
+            end
+    end
+
+val Applicative : (E: type) -> category.applicative.Applicative (E Or_) =
+    val struct
+        open Functor
+
+        val pure = some
+        val product =
+            | Inl l =>  _ => Inl l
+            | Inr f =>
+                | Inl l => Inl l
+                | Inr a => Inr (f,a)
+    end
+
+val Monad : (E: type) -> category.monad.Monad (E Or_) =
+    val struct
+        open Applicative
+
+        val join =
+            | Inl l => Inl l
+            | Inr a => a
+   end

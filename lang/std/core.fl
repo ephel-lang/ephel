@@ -20,3 +20,5 @@ val Defer = let open unit in A => Unit -> A
 
 sig <_>_ : (A:type) -> A -> A (infix 200)
 val <_>_ = _ => id
+
+--  Examples: <Int> 1, <Type> Int, <<Type> Int> 1

@@ -10,6 +10,13 @@ val Compose = F =>
             fa fb => fa |> $ fb =<<_
     end
 
-sig Kleisli : sig of Compose = Compose
+sig Kleisli : (type -> type) -> type
+val Kleisli = F =>
+    sig struct
+        open Compose F
 
--- Laws are missing here
+        sig Laws =
+            sig struct
+                -- Laws are missing here
+            end
+    end

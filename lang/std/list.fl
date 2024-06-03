@@ -1,11 +1,15 @@
 open std.option
 
+-{ Type definition }-
+
 sig [_] : type -> type (infix 500)
 val [_] = A =>
     | []   : [A]
     | _::_ : A -> [A] -> [A] (infixr 500)
 
 -- Example: 1::2::3::[] : [int]
+
+-{ Basic functions }-
 
 sig Core :
     sig struct
@@ -31,6 +35,8 @@ val Core =
             size 0
     end
 
+-{ Functor, Applicative and Monad }-
+
 val Functor : category.functor.Functor [_] =
     val struct
         val map = f =>
@@ -49,3 +55,4 @@ val Functor : category.functor.Functor [_] =
             end
     end
 
+-- TBC

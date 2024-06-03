@@ -1,10 +1,16 @@
+-{ Type definition }-
+
 sig _? : type -> type (infix 200)
 val _? = A =>
     | None : A?
     | Some : A -> A?
 
+-{ Constructors }-
+
 val none : {A:type} -> A? = None
 val some : {A:type} -> A -> A? = Some
+
+-{ Functor, Applicative and Monad }-
 
 val Functor : category.functor.Functor _? =
     val struct
@@ -34,6 +40,8 @@ val Applicative : category.applicative.Applicative _? =
             | Some f =>
                 | None   => None
                 | Some a => Some (f,a)
+
+        val Laws = val struct end
     end
 
 val Monad : category.monad.Monad _? =
@@ -43,4 +51,6 @@ val Monad : category.monad.Monad _? =
         val join =
             | None   => None
             | Some a => a
+
+        val Laws = val struct end
    end

@@ -1,10 +1,16 @@
+-{ Type definition }-
+
 sig _Or_ : type -> type -> type
 val _Or_ = E A =>
     | Inl : E -> E Or A
-    | Inr : A ->  E Or A
+    | Inr : A -> E Or A
+
+-{ Constructors }-
 
 val inl : {E A:type} -> E -> E Or A = Inl
 val inr : {E A:type} -> A -> E Or A = Inr
+
+-{ Functor, Applicative and Monad }-
 
 val Functor : (E: type) -> category.functor.Functor (E Or_) =
     val struct
@@ -28,12 +34,14 @@ val Applicative : (E: type) -> category.applicative.Applicative (E Or_) =
     val struct
         open Functor
 
-        val pure = some
+        val pure = inl
         val product =
-            | Inl l =>  _ => Inl l
+            | Inl l => _ => Inl l
             | Inr f =>
                 | Inl l => Inl l
                 | Inr a => Inr (f,a)
+
+       val Laws = val struct end
     end
 
 val Monad : (E: type) -> category.monad.Monad (E Or_) =
@@ -43,4 +51,6 @@ val Monad : (E: type) -> category.monad.Monad (E Or_) =
         val join =
             | Inl l => Inl l
             | Inr a => a
+
+        val Laws = val struct end
    end

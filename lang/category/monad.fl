@@ -28,6 +28,9 @@ val Monad = F =>
         open Bind F
 
         val bind = a f => join (f <$> a)
-    end
 
--- Laws are missing here
+        sig Laws =
+            sig struct
+                -- Laws are missing here
+            end
+    end

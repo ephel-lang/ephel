@@ -16,7 +16,7 @@ val Functor = F =>
                 sig ''map id = id'' : {A:type} ->
                     (a:F A)
                     --------------------
-                    -> map identity a :=: a
+                    -> map id a :=: a
 
                 sig ''(map f) <| (map g) = map (f <| g)'' :
                     {A B C:type} -> {f:B -> C} -> {g:A -> B}

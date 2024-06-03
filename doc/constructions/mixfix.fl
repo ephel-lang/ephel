@@ -8,17 +8,17 @@
 }--
 
 --{
-    Reversed application specifying infix everywhere
+    Reversed application specifying mixfix everywhere
 }--
 
-sig __+ : Int -> Int -> Int
+sig __+ : Int -> Int -> Int -- This kind of mixfix is prohibited in the first version (same for multi word)
 
 val main : Int = 1 2 +
 --{
-    Equivalent to `(1 (2 +))` and to `(+ 2 1)` without infix constructions.
+    Equivalent to `(1 (2 +))` and to `(+ 2 1)` without mixfix constructions.
 }--
 
--- Trivial and simplistic DSL using infix
+-- Trivial and simplistic DSL using mixfix
 
 sig Defer : type -> type
 val Defer = A => Unit -> A
@@ -30,16 +30,16 @@ val if_then_else_ = b t f =>
 val test : Bool -> Int = b => if b (_ => 1 ) else (_ => 2)
 
 -{
-    In addition a infix precedence and associativity capabilities can be proposed.
+    In addition a mixfix precedence and associativity capabilities can be proposed.
 }-
 
-sig _+_ : Int -> Int -> Int (infix 20)
-sig _*_ : Int -> Int -> Int (infix 15)
+sig _+_ : Int -> Int -> Int (mixfix 20)
+sig _*_ : Int -> Int -> Int (mixfix 15)
 
 val main : Int = 1 + 2 * 4 -{ equivalent to `1 + (2 * 4)` }-
 
 -{
-    Finally infix can be "deactivated" using infix marker i.e. underscore. Then
+    Finally mixfix can be "deactivated" using mixfix marker i.e. underscore. Then
     applied to the if_then_else_ function we have the following variations:
     - if_then y else z x
     - if x then_else z y
@@ -72,6 +72,8 @@ end
 
 val example : Option String =
     let use BindOption in
-    Some 1 >>= 1 +_ >>= to_string
+    Some 1 >>= 1 +_ >>= to-String
 
+-- Of course such mixfix prohibits by construction snake case naming convention.
+-- Nevertheless, the language accept kebab case as illustrated with the `to-string` function.
 

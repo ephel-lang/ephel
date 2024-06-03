@@ -5,21 +5,21 @@ val Profunctor = _~>_ =>
         sig dimap : {A B C D:type} -> (A -> B) -> (C -> D) -> B ~> C -> A ~> D
 
         sig lmap : {A B C:type} -> (A -> B) -> B ~> C -> A ~> C -- aka contramap_fst
-        val lmap = f => dimap f identity
+        val lmap = f => dimap f id
 
         sig rmap : {A B C:type} -> (B -> C) -> A ~> B -> A ~> C -- aka map_snd
-        val rmap = dimap identity
+        val rmap = dimap id
 
         sig Laws =
             sig struct
-            sig ''dimap identity identity = identity'' :
-                dimap identity identity :=: identity
+            sig ''dimap id id = id'' :
+                dimap id id :=: id
 
-            sig ''lmap identity = identity'' :
-                lmap identity :=: identity
+            sig ''lmap id = id'' :
+                lmap id :=: id
 
-            sig ''rmap identity = identity'' :
-                rmap identity :=: identity
+            sig ''rmap id = id'' :
+                rmap id :=: id
 
             sig ''dimap f g = lmap f <| rmap g'' :
                 {A B C D:type}

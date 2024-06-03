@@ -22,7 +22,7 @@ val And : type =
         val left = refl
 
         sig right : {A:Bool} -> A && False :=: False
-        val right = subst refl by commute
+        val right = subst left by commute
     end
 
 val Or : type =
@@ -45,5 +45,5 @@ val Or : type =
         val left = refl
 
         sig right : {A:Bool} -> A || True :=: True
-        val right = subst refl by commute
+        val right = subst left by commute
     end

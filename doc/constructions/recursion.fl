@@ -11,7 +11,7 @@
 }-
 
 sig(infixl 100) _$_ : {A B:type} -> (A -> B) -> A -> B
-val _$_ = identity
+val _$_ = id
 
 sig Vector : type
 val Vector = sig struct

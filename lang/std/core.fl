@@ -1,8 +1,8 @@
-sig identity : {A:type} -> A -> A
-val identity = x => x
+sig id : {A:type} -> A -> A
+val id = x => x
 
 sig _$_ : {A B:type} -> (A -> B) -> A -> B (infixl 1000)
-val _$_ = identity
+val _$_ = id
 
 sig _<|_ : {A B C:type} -> (B -> C) -> (A -> B) -> (A -> C) (infixl 200)
 val _<|_ = f g => x => f (g x)
@@ -15,3 +15,8 @@ val const = a _ => a
 
 sig Defer : type -> type
 val Defer = let open unit in A => Unit -> A
+
+-{ Explicit type annotation }-
+
+sig <_>_ : (A:type) -> A -> A (infix 200)
+val <_>_ = _ => id

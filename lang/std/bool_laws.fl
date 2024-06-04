@@ -1,6 +1,6 @@
 open std.bool
-open dsl.block
-open dsl.match
+open dsl.begin-end
+open dsl.-match-
 
 val And : type =
     sig struct

@@ -1,0 +1,8 @@
+sig Reader : (F:type -> type) -> type
+val Reader : F =>
+    sig struct
+        sig monad : Monad F
+
+
+
+    end

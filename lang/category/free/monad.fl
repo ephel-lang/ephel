@@ -1,5 +1,14 @@
 sig Free : (type -> type) -> type -> type
-val Free = F A =>
-    | Pure : A -> Free F A
-    | Bind : F (Free F A) -> Free F A
+val Free = T A =>
+    | Return : A -> Free T A
+    | Bind : T (Free T A) -> Free T A
 
+sig Map : (T:type -> type) -> Functor T -> Monad (Free T)
+val Map : T F =>
+    val struct
+        open Functor (Free T)
+
+        sig map = f =>
+            | Return v => Return (f v)
+            | Bind f' => Bind (F.map (map f) f')
+    end

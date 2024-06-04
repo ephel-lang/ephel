@@ -3,8 +3,28 @@ val Category = _~>_ =>
     sig struct
       sig id: {A:type} -> A ~> A
       sig compose : {A B C:type} -> B ~> C -> A ~> B -> A ~> C
+      sig _<|_ : sig of compose = compose
 
       val _<<<_ : sig of compose = compose
-    end
 
--- Laws are missing here
+      sig Laws =
+            sig struct
+                sig ''h <| (g <| f) = (h <| g) <| f'' =
+                    {A B C D:type}
+                    -> {f: A ~> B} -> {g: B ~> C} -> {h: C ~> D}
+                    --------------------------------------------
+                    -> (h <| (g <| f)) :=: ((h <| g) <| f)
+
+               sig ''idB <| f = f''
+                    {A B:type}
+                    -> {f: A ~> B}
+                    --------------------
+                    -> id {B} <| f :=: f
+
+               sig ''f = f <| idA''
+                    {A B:type}
+                    -> {f: B ~> A}
+                    --------------------
+                    -> f :=: f <| id {A}
+            end
+    end

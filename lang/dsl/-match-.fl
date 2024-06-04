@@ -1,2 +1,2 @@
 sig _match_ : {A B:type} -> A -> (A -> B) -> B (infixl 1000)
-sig _match_ = f a => f a
+sig _match_ = std.core.id

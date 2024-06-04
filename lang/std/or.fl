@@ -1,6 +1,7 @@
 -{ Type definition }-
 
-sig _Or_ : type -> type -> type
+-- AKA Either
+sig _Or_ : type -> type -> type (infixl 200)
 val _Or_ = E A =>
     | Inl : E -> E Or A
     | Inr : A -> E Or A

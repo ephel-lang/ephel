@@ -1,0 +1,7 @@
+open std.bool
+open std.core
+
+sig if_then_else_ : {A:type} -> Bool -> (Unit -> A) -> (Unit -> A) -> A (infix 1000)
+val if_then_else_ =
+    | True  => t _ => t unit
+    | False => _ f => f unit

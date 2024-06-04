@@ -13,7 +13,10 @@ val Profunctor = _~>_ =>
         sig Laws =
             sig struct
             sig ''dimap id id = id'' :
-                dimap id id :=: id
+                {B C:type }
+                -> (f: B ~> C)
+                ----------------------
+                dimap id id f :=: id f
 
             sig ''lmap id = id'' :
                 lmap id :=: id

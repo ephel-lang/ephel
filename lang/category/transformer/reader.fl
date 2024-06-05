@@ -4,7 +4,7 @@ val Reader = F e a => (e -> F a) -> Reader F e a
 sig reader : {F:type -> type} -> {e a:type} -> (e -> F a) -> Reader F e a
 val reader = std.core.id
 
-sig run : {F:type -> type} -> {e a:type} -> Reader F e a -> (e -> F a)
+sig run : {F:type -> type} -> {e a:type} -> Reader F e a -> e -> F a
 val run = std.core.id
 
 sig FunctorT :

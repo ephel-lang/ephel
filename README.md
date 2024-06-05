@@ -28,6 +28,78 @@ It covers:
 
 Cf. work on [Nehtra](https://github.com/lambe-lang/nethra) for the type checker and [Mitch](https://github.com/lambe-lang/mitch/) for the execution.
 
+### A taste of Ephel FP layer
+
+#### Functor
+
+```ocaml
+sig Map : (type -> type) -> type
+val Map = F =>
+    sig struct
+        sig map : {A B:type} -> (A -> B) -> F A -> F B
+        val _<$>_ : sig of map = map
+    end
+
+sig Api : (type -> type) -> type
+val Api = F =>
+    let open std.core in
+    sig struct
+        open Map F
+
+        sig Laws :
+            sig struct
+                sig ''map id = id'' :
+                    {A:type}
+                    -> (a:F A)
+                    --------------------
+                    -> map id a :=: a
+
+                sig ''(map f) <| (map g) = map (f <| g)'' :
+                    {A B C:type}
+                    -> {f:B -> C} -> {g:A -> B}
+                    -> (a:F A)
+                    -------------------------------------
+                    -> (map f <| map g) a :=: map (f <| g) a
+            end
+    end
+```
+
+#### Option
+
+```ocaml
+-{ Type definition }-
+
+sig _? : type -> type (infix 200)
+val _? = A =>
+    | None : A?
+    | Some : A -> A?
+
+-{ Constructors }-
+
+val none : {A:type} -> A? = None
+val some : {A:type} -> A -> A? = Some
+
+-{ Functor }-
+
+val Functor : category.functor.Api _? =
+    val struct
+        val map = f =>
+            | None => None
+            | Some a => Some $ f a
+
+        val Laws =
+            val struct
+                val ''map id = id'' =
+                    | None   => refl
+                    | Some _ => refl
+
+                val ''(map f) <| (map g) = map (f <| g)'' =
+                    | None   => refl
+                    | Some _ => refl
+            end
+    end
+```
+
 ## Ambient programming layer
 
 References:
@@ -88,7 +160,7 @@ val go_cap : ambient capability -> ambient process -> ambient process
     = c p => go c.p       
 ```
 
-### Example
+### A taste of Ambient Calculus layer
 
 A basic ping pong game can be proposed using Ephel. 
 

@@ -28,9 +28,9 @@ It covers:
 
 Cf. work on [Nehtra](https://github.com/lambe-lang/nethra) for the type checker and [Mitch](https://github.com/lambe-lang/mitch/) for the execution.
 
-### A taste of Ephel FP layer
+### A taste of Ephel functional programming layer
 
-#### Functor
+#### Module  category.functor
 
 ```ocaml
 sig Map : (type -> type) -> type
@@ -64,7 +64,7 @@ val Api = F =>
     end
 ```
 
-#### Option
+#### Module option
 
 ```ocaml
 -{ Type definition }-
@@ -160,7 +160,7 @@ val go_cap : ambient capability -> ambient process -> ambient process
     = c p => go c.p       
 ```
 
-### A taste of Ambient Calculus layer
+### A taste of Ephel Ambient Calculus layer
 
 A basic ping pong game can be proposed using Ephel. 
 

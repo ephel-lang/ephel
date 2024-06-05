@@ -23,7 +23,7 @@ val Api = _~>_ =>
 
                sig ''f = f <| idA''
                     {A B:type}
-                    -> {f: B ~> A}
+                    -> {f: A ~> B}
                     --------------------
                     -> f :=: f <| id {A}
             end

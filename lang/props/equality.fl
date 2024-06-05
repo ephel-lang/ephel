@@ -1,7 +1,8 @@
 -{ Propositional equality }-
 
 sig reflexive :
-    {A:type} -> {a:A}
+    {A:type}
+    -> {a:A}
     -----------------
     -> a :=: a
 
@@ -9,7 +10,8 @@ val reflexive =
     refl
 
 sig symmetric :
-    {A:type} -> {a b:A}
+    {A:type}
+    -> {a b:A}
     -> a :=: b
     ----------
     -> b :=: a
@@ -18,7 +20,8 @@ val symmetric = a=b =>
     subst refl by a=b
 
 sig transitivity :
-    {A:type} -> {a b c :A}
+    {A:type}
+    -> {a b c :A}
     -> a :=: b
     -> b :=: c
     ----------
@@ -28,7 +31,9 @@ val transitivity = a=b b=c =>
     subst (subst refl by a=b) by b=c
 
 sig congruent :
-    {A B:type} -> (f:A -> B) -> {a b:A}
+    {A B:type}
+    -> (f:A -> B)
+    -> {a b:A}
     -> a :=: b
     --------------
     -> f a :=: f b
@@ -37,16 +42,19 @@ val congruent = f a=b =>
     subst refl by (a=b)
 
 sig congruent-2 :
-    {A B C:type} -> (f:A -> B -> C) -> {a b:A} -> {c d:B}
+    {A B C:type}
+    -> (f:A -> B -> C)
+    -> {a b:A} -> {c d:B}
     -> a :=: b
     -> c :=: d
-    ------------------
+    ---------------------
     -> f a c :=: f b d
 
 val congruent-2 = f a=b c=d =>
     subst (subst refl by a=b) by c=d
 
-sig congruent-app : {A B:type} -> (f g:A -> B)
+sig congruent-app : {A B:type}
+    -> (f g:A -> B)
     -> f :=: g
     -----------------------
     -> {a:A} -> f a :=: g a
@@ -54,7 +62,9 @@ sig congruent-app : {A B:type} -> (f g:A -> B)
 val congruent-app = f g f=g =>
     subst refl by (f=g)
 
-sig substitution : {A:type} -> {x y:A} -> (P:A -> type)
+sig substitution : {A:type}
+    -> {x y:A}
+    -> (P:A -> type)
     -> x :=: y
     -------------
     -> P x -> P y

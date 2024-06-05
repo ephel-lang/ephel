@@ -42,11 +42,11 @@ val Map = F =>
 
 sig Api : (type -> type) -> type
 val Api = F =>
-    let open std.core in
     sig struct
         open Map F
 
         sig Laws :
+            let open std.core in
             sig struct
                 sig ''map id = id'' :
                     {A:type}

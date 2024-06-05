@@ -37,7 +37,7 @@ val Core =
 
 -{ Functor, Applicative and Monad }-
 
-val Functor : category.functor.Functor [_] =
+val Functor : category.functor.Api [_] =
     val struct
         val map = f =>
             | []     => []

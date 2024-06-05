@@ -19,8 +19,8 @@ val Apply = F =>
         val _<**>_ = a f => f <*> a
     end
 
-sig Applicative : (type -> type) -> type
-val Applicative = F =>
+sig Api : (type -> type) -> type
+val Api = F =>
     let open std.core in
     sig struct
         open functor.Functor F

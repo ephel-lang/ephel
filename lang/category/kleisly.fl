@@ -1,8 +1,7 @@
 sig Compose : (type -> type) -> type
 val Compose = F =>
-    let open std.core in
     sig struct
-        open monad.Monad F
+        open category.monad.Api F
 
         sig _>=>_ : {A B C:type} -> (A -> F B) -> (B -> F C) -> (A -> F C)
         val _>=>_ =
@@ -10,8 +9,8 @@ val Compose = F =>
             fa fb => fa |> $ fb =<<_
     end
 
-sig Kleisli : (type -> type) -> type
-val Kleisli = F =>
+sig Api : (type -> type) -> type
+val Api = F =>
     sig struct
         open Compose F
 

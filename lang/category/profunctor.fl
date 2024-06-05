@@ -1,5 +1,5 @@
-sig Profunctor : (_~>_ : type -> type -> type) -> type
-val Profunctor = _~>_ =>
+sig Api : (_~>_ : type -> type -> type) -> type
+val Api = _~>_ =>
     let open std.core in
     sig struct
         sig dimap : {A B C D:type} -> (A -> B) -> (C -> D) -> B ~> C -> A ~> D

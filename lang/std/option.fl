@@ -12,7 +12,7 @@ val some : {A:type} -> A -> A? = Some
 
 -{ Functor, Applicative and Monad }-
 
-val Functor : category.functor.Functor _? =
+val Functor : category.functor.Api _? =
     val struct
         val map = f =>
             | None => None
@@ -30,7 +30,7 @@ val Functor : category.functor.Functor _? =
             end
     end
 
-val Applicative : category.applicative.Applicative _? =
+val Applicative : category.applicative.Api _? =
     val struct
         open Functor
 
@@ -44,7 +44,7 @@ val Applicative : category.applicative.Applicative _? =
         val Laws = val struct end
     end
 
-val Monad : category.monad.Monad _? =
+val Monad : category.monad.Api _? =
     val struct
         open Applicative
 

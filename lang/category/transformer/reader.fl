@@ -1,8 +1,54 @@
-sig Reader : (F:type -> type) -> type
-val Reader : F =>
-    sig struct
-        sig monad : Monad F
+sig Reader : (type -> type) -> type -> type -> type
+val Reader = F e a => (e -> F a) -> Reader F e a
 
+sig reader : {F:type -> type} -> {e a:type} -> (e -> F a) -> Reader F e a
+val reader = std.core.id
 
+sig run : {F:type -> type} -> {e a:type} -> Reader F e a -> (e -> F a)
+val run = std.core.id
 
+sig FunctorT :
+    let Functor = category.functor.Api in
+    (F:type -> type) -> Functor F -> (e:type) -> Functor (Reader F e)
+
+val FunctorT = F inner e =>
+    let Functor = category.functor.Api in
+    val struct
+        open Functor (Reader F e)
+
+        val map =
+            let open inner in
+            f ma => e => f <$> (ma e)
+    end
+
+sig ApplicativeT :
+    let Applicative = category.applicative.Api in
+    (F:type -> type) -> (e:type) -> Applicative F -> Applicative (Reader F e)
+
+val ApplicativeT = F e inner =>
+    let Applicative = category.applicative.Api in
+    val struct
+        open Applicative (Reader F e)
+
+        let pure = e => std.core.const (inner.pure x)
+        let apply =
+            let open inner in
+            mf ma => e => mf e <*> ma e
+    end
+
+sig MonadT :
+    let Monad = category.monad.Api in
+    (F:type -> type) -> (e:type) -> Monad F -> Monad (Reader F e)
+
+val MonadT = F e inner =>
+    let Monad = category.monad.Api in
+    val struct
+        open Monad (Reader F e)
+
+        val bind =
+            let open inner in
+            let open std.core in
+            ma f => e => ma e >>= switch f e
+
+        val join = bind std.core.id
     end

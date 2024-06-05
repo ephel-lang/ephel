@@ -1,4 +1,4 @@
-# Created by https://www.toptal.com/developers/gitignore/api/intellij+all,intellij+iml,ocaml
+# Created by https://www.toptal.com/developers/gitignore/Api/intellij+all,intellij+iml,ocaml
 # Edit at https://www.toptal.com/developers/gitignore?templates=intellij+all,intellij+iml,ocaml
 
 ### Intellij+all ###
@@ -177,4 +177,4 @@ setup.log
 # Local OPAM switch
 _opam/
 
-# End of https://www.toptal.com/developers/gitignore/api/intellij+all,intellij+iml,ocaml
+# End of https://www.toptal.com/developers/gitignore/Api/intellij+all,intellij+iml,ocaml

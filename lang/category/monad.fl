@@ -1,9 +1,3 @@
-sig Join : (type -> type) -> type
-val Join = F =>
-    sig struct
-        sig join : {A:type} -> F (F A) -> F A
-    end
-
 sig Return : (type -> type) -> type
 val Return = F =>
     sig struct
@@ -18,16 +12,24 @@ val Bind = F =>
         val _>>=_ : sig of bind = bind
     end
 
-sig Monad : (type -> type) -> type
-val Monad = F =>
+sig Join : (type -> type) -> type
+val Join = F =>
     sig struct
-        open applicative.Applicative F
+        sig join : {A:type} -> F (F A) -> F A
+    end
 
-        open Join F
+sig Api : (type -> type) -> type
+val Api = F =>
+    sig struct
+        open category.applicative.Api F
+
         open Return F
         open Bind F
+        open Join F
 
-        val bind = a f => join (f <$> a)
+        val bind = a f =>
+            let open std.core in
+            f <$> a |> join
 
         sig Laws =
             sig struct

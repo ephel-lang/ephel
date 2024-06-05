@@ -13,7 +13,7 @@ val inr : {E A:type} -> A -> E Or A = Inr
 
 -{ Functor, Applicative and Monad }-
 
-val Functor : (E: type) -> category.functor.Functor (E Or_) =
+val Functor : (E: type) -> category.functor.Api (E Or_) =
     val struct
         val map = f =>
             | Inl e => Inl e
@@ -31,7 +31,7 @@ val Functor : (E: type) -> category.functor.Functor (E Or_) =
             end
     end
 
-val Applicative : (E: type) -> category.applicative.Applicative (E Or_) =
+val Applicative : (E: type) -> category.applicative.Api (E Or_) =
     val struct
         open Functor
 
@@ -45,7 +45,7 @@ val Applicative : (E: type) -> category.applicative.Applicative (E Or_) =
        val Laws = val struct end
     end
 
-val Monad : (E: type) -> category.monad.Monad (E Or_) =
+val Monad : (E: type) -> category.monad.Api (E Or_) =
     val struct
         open Applicative
 

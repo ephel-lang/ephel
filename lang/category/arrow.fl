@@ -1,7 +1,7 @@
 sig Arrow : (_~>_: type -> type -> type) -> type
 val Arrow = _~>_ =>
     sig struct
-        open category.Category _~>_
+        open category.Api _~>_
 
         sig arrow : {A B:type} -> (A -> B) -> A ~> B
         sig _>>>_ : {A B C:type} -> A ~> B -> B ~> C -> A ~> C

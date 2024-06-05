@@ -18,16 +18,24 @@ val Monoid : A =>
         open SemiGroup A
 
         -- Laws
+        sig Laws :
+            sig struct
+                sig ''a = neutral + a'' :
+                    (a:A)
+                    ---------------------
+                     -> a :=: neutral + a
 
-        sig ''a = neutral + a'' : {a:A} ->
-            -----------------
-            a :=: neutral + a
+                sig ''a = a + neutral'' :
+                    (a:A)
+                    ---------------------
+                     -> a :=: a + neutral
 
-        sig ''a = a + neutral'' : {a:A} ->
-            -----------------
-            a :=: a + neutral
-
-        sig ''(a + b) + c = a + (b + c)'' : {a b c:self} ->
-            ---------------------------
-            (a + b) + c :=: a + (b + c)
+                sig ''(a + b) + c = a + (b + c)'' :
+                    (a b c:A)
+                    ---------------------------
+                    -> (a + b) + c :=: a + (b + c)
+            end
     end
+
+sig Api : type
+val Api = Monoid

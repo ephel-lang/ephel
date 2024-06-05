@@ -1,3 +1,5 @@
+-{ Local mixfix to be considered here }-
+
 sig Arrow : (_~>_: type -> type -> type) -> type
 val Arrow = _~>_ =>
     sig struct
@@ -7,3 +9,6 @@ val Arrow = _~>_ =>
         sig _>>>_ : {A B C:type} -> A ~> B -> B ~> C -> A ~> C
         sig first : {A B C:type} -> A ~> B -> (A * C) ~> (B * C)
     end
+
+sig Api : (type -> type -> type) -> type
+val Api = Arrow

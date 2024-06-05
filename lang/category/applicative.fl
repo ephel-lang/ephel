@@ -19,11 +19,11 @@ val Apply = F =>
         val _<**>_ = a f => f <*> a
     end
 
-sig Api : (type -> type) -> type
-val Api = F =>
+sig Applicative : (type -> type) -> type
+val Applicative = F =>
     let open std.core in
     sig struct
-        open functor.Functor F
+        open functor.Api F
 
         open Pure F
         open Product F
@@ -36,3 +36,6 @@ val Api = F =>
                 -- Laws are missing here
             end
     end
+
+sig Api : (type -> type) -> type
+val Api = Applicative

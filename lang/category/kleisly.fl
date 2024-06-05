@@ -9,8 +9,8 @@ val Compose = F =>
             fa fb => fa |> $ fb =<<_
     end
 
-sig Api : (type -> type) -> type
-val Api = F =>
+sig Kleisly : (type -> type) -> type
+val Kleisly = F =>
     sig struct
         open Compose F
 
@@ -19,3 +19,6 @@ val Api = F =>
                 -- Laws are missing here
             end
     end
+
+sig Api : (type -> type) -> type
+val Api = Kleisly

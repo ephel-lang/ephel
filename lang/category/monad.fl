@@ -18,8 +18,8 @@ val Join = F =>
         sig join : {A:type} -> F (F A) -> F A
     end
 
-sig Api : (type -> type) -> type
-val Api = F =>
+sig Monad : (type -> type) -> type
+val Monad = F =>
     sig struct
         open category.applicative.Api F
 
@@ -36,3 +36,6 @@ val Api = F =>
                 -- Laws are missing here
             end
     end
+
+sig Monad : (type -> type) -> type
+val Monad = Monad

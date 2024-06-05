@@ -5,8 +5,8 @@ val Map = F =>
         val _<$>_ : sig of map = map
     end
 
-sig Api : (type -> type) -> type
-val Api = F =>
+sig Functor : (type -> type) -> type
+val Functor  = F =>
     let open std.core in
     sig struct
         open Map F
@@ -27,3 +27,6 @@ val Api = F =>
                     -> (map f <| map g) a :=: map (f <| g) a
             end
     end
+
+sig Api : (type -> type) -> type
+val Api = Functor

@@ -1,5 +1,7 @@
-sig Api : (_~>_: type -> type -> type) -> type
-val Api = _~>_ =>
+-{ Local mixfix to be considered here }-
+
+sig Category : (_~>_: type -> type -> type) -> type
+val Category = _~>_ =>
     sig struct
       sig id: {A:type} -> A ~> A
       sig compose : {A B C:type} -> B ~> C -> A ~> B -> A ~> C
@@ -28,3 +30,7 @@ val Api = _~>_ =>
                     -> f :=: f <| id {A}
             end
     end
+
+sig Api : (type -> type -> type) -> type
+val Api = Category
+

@@ -40,8 +40,8 @@ val Map = F =>
         val _<$>_ : sig of map = map
     end
 
-sig Api : (type -> type) -> type
-val Api = F =>
+sig Functor : (type -> type) -> type
+val Functor = F =>
     sig struct
         open Map F
 
@@ -62,6 +62,9 @@ val Api = F =>
                     -> (map f <| map g) a :=: map (f <| g) a
             end
     end
+
+sig Api : type
+val Api = Functor
 ```
 
 #### Module option

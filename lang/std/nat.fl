@@ -18,7 +18,7 @@ val Monoid =
 
                 val ''a = a + neutral'' =
                     | Zero    => refl
-                    | Succ a' => subst refl by (''a = a + neutral'' {a'})
+                    | Succ a' => subst refl by (''a = a + neutral'' a')
 
                 val ''(a + b) + c = a + (b + c)'' = a b c =>
                     a match

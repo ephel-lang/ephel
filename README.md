@@ -204,9 +204,10 @@ sig player : ambient name -> ambient name -> ambient process
 val player = sender receiver =>
     sender[ <x:Nat>.(play sender receiver x) ]
 
- val _ : ambient process =
-    (player `ping to `pong)                  |
-    (player `pong to `ping)                  |
+ val main : ambient process =
+    let open std.core in
+    (player $ `ping to `pong)                  |
+    (player $ `pong to `ping)                  |
     `printer[ (x:ambient name).(println x) ] |
     go in `ping.<42>
 ```
@@ -214,7 +215,7 @@ val player = sender receiver =>
 #### Functional approach
 
 Since types are used for behavior selection this code can be revisited by removing 
-all scoped Ambient for a simpler implementation using dependent type.
+all scoped Ambient for a simpler implementation using dependent types.
 
 ```ocaml
 val ping : type = Ping : nat -> ping
@@ -225,10 +226,11 @@ val pong_to_nat : pong -> nat = Pong n => n
 
 sig play : {A:type} -> string -> (nat -> A) -> (A -> nat) -> nat -> ambient process
 val play = {A} who to_a from_a =>
+    let open std.core in
     | Zero   => <who>
     | Succ n => <x:A>.(play who fa from_a $ from_a a) | <to_a n>
 
-val _ : ambient process =
+val main : ambient process =
     <n:pong>.(play "Bob"   Ping pong_to_nat $ pong_to_nat n) | 
     <n:ping>.(play "Alice" Pong ping_to_nat $ ping_to_nat n) |
     <x:string>.(println x)                                   |

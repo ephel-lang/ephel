@@ -47,11 +47,11 @@ val Functor : category.functor.Api [_] =
             val struct
                 val ''map id = id'' =
                     | []     => refl
-                    | h :: t => ''map id = id'' t
+                    | h :: t => ''map id = id'' t -- this is wrong of course!
 
                 val ''(map f) <| (map g) = map (f <| g)'' =
                     | []     => refl
-                    | h :: t => ''(map f) <| (map g) = map (f <| g)'' t
+                    | h :: t => ''(map f) <| (map g) = map (f <| g)'' t -- this is wrong of course!
             end
     end
 

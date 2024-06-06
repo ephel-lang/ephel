@@ -197,8 +197,8 @@ val play = sender receiver =>
     | Zero   => go (out sender.in `printer).<sender> 
     | Succ n => <x:Nat>.(play sender receiver x) | go (out sender.in receiver).<n> in
 
-sig to : @infix (ambient name -> ambient process) -> ambient name -> ambient process
-val to = f p => f p
+sig _to_ : (ambient name -> ambient process) -> ambient name -> ambient process
+val _to_ = f p => f p
 
 sig player : ambient name -> ambient name -> ambient process
 val player = sender receiver =>

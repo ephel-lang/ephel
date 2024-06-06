@@ -47,12 +47,10 @@ val Functor : category.functor.Api [_] =
             val struct
                 val ''map id = id'' =
                     | []     => refl
-                    | h :: t => ''map id = id'' t -- this is wrong of course!
+                    | h :: t => congruent (h ::_) (''map id = id'' t)
 
-                val ''(map f) <| (map g) = map (f <| g)'' =
+                val ''map f <| map g = map (f <| g)'' =
                     | []     => refl
-                    | h :: t => ''(map f) <| (map g) = map (f <| g)'' t -- this is wrong of course!
+                    | h :: t => congruent ((f <| g) h ::_) (''map f <| map g = map (f <| g)'' t)
             end
     end
-
--- TBC

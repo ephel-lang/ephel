@@ -24,7 +24,7 @@ val Functor : category.functor.Api _? =
                     | None   => refl
                     | Some _ => refl
 
-                val ''(map f) <| (map g) = map (f <| g)'' =
+                val ''map f <| map g = map (f <| g)'' =
                     | None   => refl
                     | Some _ => refl
             end

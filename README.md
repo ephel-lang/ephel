@@ -208,7 +208,7 @@ val player = sender receiver =>
     let open std.core in
     (player $ `ping to `pong)                  |
     (player $ `pong to `ping)                  |
-    `printer[ (x:ambient name).(println x) ] |
+    `printer[ (x:ambient name).(io.println x) ] |
     go in `ping.<42>
 ```
 
@@ -218,11 +218,21 @@ Since types are used for behavior selection this code can be revisited by removi
 all scoped Ambient for a simpler implementation using dependent types.
 
 ```ocaml
-val ping : type = Ping : nat -> ping
-val ping_to_nat : ping -> nat = Ping n => n
+-{ Types and extractors }-
 
-val pong : type = Pong : nat -> pong
-val pong_to_nat : pong -> nat = Pong n => n
+val ping : type =
+    | Ping : nat -> ping
+
+val ping_to_nat : ping -> nat =
+    | Ping n => n
+
+val pong : type =
+    | Pong : nat -> pong
+
+val pong_to_nat : pong -> nat =
+    | Pong n => n
+
+-{ Game defintion }-
 
 sig play : {A:type} -> string -> (nat -> A) -> (A -> nat) -> nat -> ambient process
 val play = {A} who to_a from_a =>
@@ -231,9 +241,10 @@ val play = {A} who to_a from_a =>
     | Succ n => <x:A>.(play who fa from_a $ from_a a) | <to_a n>
 
 val main : ambient process =
+    let open std.core in
     <n:pong>.(play "Bob"   Ping pong_to_nat $ pong_to_nat n) | 
     <n:ping>.(play "Alice" Pong ping_to_nat $ ping_to_nat n) |
-    <x:string>.(println x)                                   |
+    <x:string>.(io.println x)                                   |
     <Pong 42>
 ```
 

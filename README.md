@@ -48,17 +48,17 @@ val Api = F =>
         sig Laws :
             let open std.core in
             sig struct
-                sig ''map id = id'' :
+                sig ''map id :=: id'' :
                     {A:type}
                     -> (a:F A)
-                    --------------------
+                    -----------------
                     -> map id a :=: a
 
-                sig ''(map f) <| (map g) = map (f <| g)'' :
+                sig ''map f <| map g :=: map (f <| g)'' :
                     {A B C:type}
                     -> {f:B -> C} -> {g:A -> B}
                     -> (a:F A)
-                    -------------------------------------
+                    ----------------------------------------
                     -> (map f <| map g) a :=: map (f <| g) a
             end
     end
@@ -89,11 +89,11 @@ val Functor : category.functor.Api _? =
 
         val Laws =
             val struct
-                val ''map id = id'' =
+                val ''map id :=: id'' =
                     | None   => refl
                     | Some _ => refl
 
-                val ''(map f) <| (map g) = map (f <| g)'' =
+                val ''map f <| map g :=: map (f <| g)'' =
                     | None   => refl
                     | Some _ => refl
             end

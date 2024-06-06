@@ -70,7 +70,7 @@ val substitution = P x=y px =>
 sig Dsl :
     -{ Inspired by Agda Cf. https://plfa.github.io/Equality }-
     sig struct
-        sig proof_ : {A:type}
+        sig Proof_ : {A:type}
              -> {a b:A}
              -> a :=: b
              ----------
@@ -91,8 +91,8 @@ sig Dsl :
 
 val Dsl =
     val struct
-        val proof = symmetric
+        val Proof_ = symmetric
         val _<<_>>_ = transitive
-        val Qed = refl
+        val _Qed = refl
     end
 

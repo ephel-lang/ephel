@@ -26,11 +26,15 @@ It covers:
 - dependent records (can subsume sigma type) and
 - dependent recursive types.
 
-Cf. work on [Nehtra](https://github.com/lambe-lang/nethra) for the type checker and [Mitch](https://github.com/lambe-lang/mitch/) for the execution.
+Cf. work on [Nehtra](https://github.com/lambe-lang/nethra) for the type checker and 
+[Mitch](https://github.com/lambe-lang/mitch/) for the execution.
 
 ### A taste of Ephel functional programming layer
 
-#### Module  category.functor
+#### Module category.functor
+
+First, we design the functor (quite classic) and, at the same time, we specify the laws 
+to be verified by each incarnation. 
 
 ```ocaml
 sig Map : (type -> type) -> type
@@ -67,7 +71,13 @@ sig Api : type
 val Api = Functor
 ```
 
+In the type `map id a :=: a` the operator `:=:` refers to the propositional equality. 
+
 #### Module option
+
+We can now propose an implementation of optional expression. For this purpose we 
+propose the type definion thanks to the postix operator `_?` in order to retrieve
+the expressivity offered by other langages like Swift, Dart or Kotlin for example.
 
 ```ocaml
 -{ Type definition }-
@@ -81,7 +91,14 @@ val _? = A =>
 
 val none : {A:type} -> A? = None
 val some : {A:type} -> A -> A? = Some
+```
 
+Then we can propose a functor implementation dedicated to optional expressions.
+This implementation should provide a `map` but also an incarnation of the inner
+structure called Laws. Here proofs are really trivial proceeding by structural
+induction and applying `refl` for reflexivity.
+
+```ocaml
 -{ Functor }-
 
 val Functor : category.functor.Api _? =

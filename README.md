@@ -206,8 +206,8 @@ val player = sender receiver =>
 
  val main : ambient process =
     let open std.core in
-    (player $ `ping to `pong)                  |
-    (player $ `pong to `ping)                  |
+    (player $ `ping to `pong)                   |
+    (player $ `pong to `ping)                   |
     `printer[ (x:ambient name).(io.println x) ] |
     go in `ping.<42>
 ```
@@ -244,7 +244,7 @@ val main : ambient process =
     let open std.core in
     <n:pong>.(play "Bob"   Ping pong_to_nat $ pong_to_nat n) | 
     <n:ping>.(play "Alice" Pong ping_to_nat $ ping_to_nat n) |
-    <x:string>.(io.println x)                                   |
+    <x:string>.(io.println x)                                |
     <Pong 42>
 ```
 

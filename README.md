@@ -34,7 +34,7 @@ Cf. work on [Nehtra](https://github.com/lambe-lang/nethra) for the type checker 
 #### Module category.functor
 
 First, we design the functor (quite classic) and, at the same time, we specify the laws 
-to be verified by each incarnation. 
+to be verified by each incarnation. Otherwise, it's not a functor!
 
 ```ocaml
 sig Map : (type -> type) -> type

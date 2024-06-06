@@ -10,17 +10,19 @@ val Sequence = T F =>
         sig sequence : {A:type} -> T (F A) -> F (T A)
     end
 
-sig Api : (type -> type) -> (type -> type) -> type
+sig Traversable : (type -> type) -> (type -> type) -> type
 val Api = T F =>
     sig struct
         open Traverse T F
         open Sequence T F
     end
 
+sig Api =: sig of Traversable = Traversable
+
 -{ Work in progress }-
 
-sig With_Applicative: (T:type -> type) -> (F:type -> type) -> category.applicative.Api F -> Api T F
-val With_Applicative = T F applicative =>
+sig With-Applicative: (T:type -> type) -> (F:type -> type) -> category.applicative.Api F -> Api T F
+val With-Applicative = T F applicative =>
     let open std.core in
     let open applicative in
     val struct
@@ -28,11 +30,12 @@ val With_Applicative = T F applicative =>
         val sequence = traverse id
     end
 
-sig With_Monad: (T:type -> type) -> (F:type -> type) -> category.monad.Api F -> Api T F
-val Over_Monad = T F monad =>
+sig With-Monad: (T:type -> type) -> (F:type -> type) -> category.monad.Api F -> Api T F
+val With-Monad = T F monad =>
     let open std.core in
     let open monad in
     val struct
         val traverse = bind
         val sequence = traverse id
     end
+

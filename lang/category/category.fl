@@ -31,6 +31,4 @@ val Category = _~>_ =>
             end
     end
 
-sig Api : (type -> type -> type) -> type
-val Api = Category
-
+sig Api =: sig of Category = Category

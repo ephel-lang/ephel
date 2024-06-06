@@ -3,6 +3,23 @@ val Nat =
     | Zero
     | Succ : Nat -> Nat
 
+sig Equals : std.equals.Api Nat
+val Equals =
+    let open std.bool in
+    val struct
+        val _==_ =
+            | Zero =>
+                begin
+                | Zero => true
+                | Succ _ => false
+                end
+            | Succ a =>
+                begin
+                | Zero => false
+                | Succ b => a == b
+                end
+    end
+
 sig Monoid : algebra.monoid.Api
 val Monoid =
     val struct

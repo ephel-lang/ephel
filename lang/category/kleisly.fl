@@ -20,5 +20,4 @@ val Kleisly = F =>
             end
     end
 
-sig Api : (type -> type) -> type
-val Api = Kleisly
+sig Api =: sig of Kleisly = Kleisly

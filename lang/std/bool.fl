@@ -3,6 +3,9 @@ val Bool =
     | True  : Bool
     | False : Bool
 
+val true : Bool = True
+val false : Bool = False
+
 sig _&&_ : Bool -> Bool -> Bool (infixl 100)
 val _&&_ =
     | True  => b => b

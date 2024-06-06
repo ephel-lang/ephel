@@ -1,0 +1,39 @@
+-{ Cf. https://homepages.inf.ed.ac.uk/wadler/papers/leibniz/leibniz.pdf }-
+
+-{ Liebnitz type definition }
+
+sig _:==:_ : {A:type} -> A -> A -> type
+val _:==:_ = {A} a b => (P : A -> type) -> P a -> P b
+
+-{ Reflexivity, Transitivity and Symmetry laws }-
+
+sig reflexive : {A:type}
+    -> {a:A}
+    -------------
+    -> a _:==:_ a
+
+val reflexive = P Pa =>
+    Pa
+
+sig transitive : {A:type}
+    -> {a b c:A}
+    -> a _:==:_ b
+    -> b _:==:_ c
+    -------------
+    -> a _:==:_ c
+
+val transitive = a=b b=c P Pa =>
+    b=c P (a=b P Pa)
+
+sig symmetric : {A:type}
+    -> {a b:A}
+    -> a _:==:_ b
+    -------------
+    -> b _:==:_ a
+
+val symmetric = {A a b} a=b P =>
+    let Q = A -> type in
+    let Q = c => P c -> P a in
+    let Qa : Q a = reflexive P in
+    let Qb : Q b = a=b Q Qa in
+    Qb

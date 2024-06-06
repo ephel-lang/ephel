@@ -10,5 +10,4 @@ val Arrow = _~>_ =>
         sig first : {A B C:type} -> A ~> B -> (A * C) ~> (B * C)
     end
 
-sig Api : (type -> type -> type) -> type
-val Api = Arrow
+sig Api : sig of Arrow = Arrow

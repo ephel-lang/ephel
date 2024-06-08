@@ -1,3 +1,7 @@
+-{ Prelude }-
+
+open std.core
+
 -{ Type definition }-
 
 sig _? : type -> type (infix 200)
@@ -10,12 +14,19 @@ val _? = A =>
 val none : {A:type} -> A? = None
 val some : {A:type} -> A -> A? = Some
 
+-{ Catamorphism }-
+
+sig fold : {A R:type} -> A? -> (unit -> R) -> (A -> R) -> A
+val fold =
+    | None   => l => _ => l unit
+    | Some a => _ => r => r a
+
 -{ Functor, Applicative and Monad }-
 
 val Functor : category.functor.Api _? =
     val struct
         val map = f =>
-            | None => None
+            | None   => None
             | Some a => Some $ f a
 
         val Laws =

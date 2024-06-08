@@ -1,3 +1,8 @@
+-{ Prelude }-
+
+open std.code
+open std.bool
+
 -{ Type definition }-
 
 sig [_] : type -> type (infix 500)
@@ -7,33 +12,37 @@ val [_] = A =>
 
 -- Example: 1::2::3::[] : [int]
 
+-{ Catamorphism }-
+
+sig fold : {A R:type} -> [A] -> (unit -> R) -> (A -> [A] -> R) -> R
+val fold =
+    | []     => f => _ => f unit
+    | a :: l => _ => f => f a l
+
 -{ Basic functions }-
 
-sig Core :
-    let open std.option in
-    sig struct
-        sig head : [A] -> A?
-        sig tail : [A] -> [A]?  -- Note [A]? = _? ([_] A)
-        sig size : [A] -> Int
-    end
-val Core =
-    let open std.option in
-    val struct
-        val head =
-            | []     => none
-            | h :: _ => some a
+sig nonEmpty : [A] -> Bool
+val nonEmpty =>
+    | [] => false
+    | _  => true
 
-        val tail =
-            | []     => none
-            | _ :: t => some t
+sig head : (l:[A]) -> {_: nonEmpty l :=: true} -> A
+val head =
+    | []     => . -- ex falso quolibet
+    | h :: _ => a
 
-        val size =
-            let size : Int -> [A] -> Int = acc =>
-                | []     => acc
-                | _ :: l => size (acc + 1) l
-            in
-            size 0
-    end
+sig tail : (l:[A]) -> {_: nonEmpty l :=: true} -> [A]
+val tail =
+    | []     => . -- ex falso quolibet
+    | _ :: t => t
+
+sig size : [A] -> Int
+val size =
+    let size : Int -> [A] -> Int = acc =>
+        | []     => acc
+        | _ :: l => size (acc + 1) l
+    in
+    size 0
 
 -{ Functor, Applicative and Monad }-
 

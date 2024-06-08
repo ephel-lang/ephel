@@ -11,6 +11,13 @@ val _Or_ = E A =>
 val inl : {E A:type} -> E -> E Or A = Inl
 val inr : {E A:type} -> A -> E Or A = Inr
 
+-{ Catamorphism }-
+
+sig fold : {E A R:type} -> E Or A -> (E -> R) -> (A -> R) -> A
+val fold =
+    | Inl e => l => _ => l e
+    | Inr a => _ => r => r a
+
 -{ Functor, Applicative and Monad }-
 
 val Functor : (E: type) -> category.functor.Api (E Or_) =

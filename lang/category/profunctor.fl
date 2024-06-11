@@ -61,4 +61,4 @@ val Profunctor = _~>_ =>
         end
     end
 
-sig Api =: sig of Profunctor = Profunctor
+val Api : sig of Profunctor = Profunctor

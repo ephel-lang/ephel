@@ -1,6 +1,7 @@
 -{ Propositional equality }-
 
-sig reflexive : {A:type}
+sig reflexive :
+    {A:type}
     -> {a:A}
     ----------
     -> a :=: a
@@ -8,7 +9,8 @@ sig reflexive : {A:type}
 val reflexive =
     refl
 
-sig symmetric : {A:type}
+sig symmetric :
+    {A:type}
     -> {a b:A}
     -> a :=: b
     ----------
@@ -17,7 +19,8 @@ sig symmetric : {A:type}
 val symmetric = a=b =>
     subst refl by a=b
 
-sig transitivity : {A:type}
+sig transitivity :
+    {A:type}
     -> {a b c :A}
     -> a :=: b
     -> b :=: c
@@ -27,7 +30,8 @@ sig transitivity : {A:type}
 val transitivity = a=b b=c =>
     subst (subst refl by a=b) by b=c
 
-sig congruent : {A B:type}
+sig congruent :
+    {A B:type}
     -> (f:A -> B)
     -> {a b:A}
     -> a :=: b
@@ -37,7 +41,8 @@ sig congruent : {A B:type}
 val congruent = f a=b =>
     subst refl by (a=b)
 
-sig congruent-2 : {A B C:type}
+sig congruent-2 :
+    {A B C:type}
     -> (f:A -> B -> C)
     -> {a b:A} -> {c d:B}
     -> a :=: b
@@ -48,7 +53,8 @@ sig congruent-2 : {A B C:type}
 val congruent-2 = f a=b c=d =>
     subst (subst refl by a=b) by c=d
 
-sig congruent-app : {A B:type}
+sig congruent-app :
+    {A B:type}
     -> (f g:A -> B)
     -> f :=: g
     -----------------------
@@ -57,7 +63,8 @@ sig congruent-app : {A B:type}
 val congruent-app = f g f=g =>
     subst refl by (f=g)
 
-sig substitution : {A:type}
+sig substitution :
+    {A:type}
     -> {x y:A}
     -> (P:A -> type)
     -> x :=: y
@@ -70,23 +77,26 @@ val substitution = P x=y px =>
 sig Dsl :
     -{ Inspired by Agda Cf. https://plfa.github.io/Equality }-
     sig struct
-        sig Proof_ : {A:type}
-             -> {a b:A}
-             -> a :=: b
-             ----------
-             -> b :=: a
+        sig Proof_ :
+            {A:type}
+            -> {a b:A}
+            -> a :=: b
+            ----------
+            -> b :=: a
 
-        sig _<<__>>_ : {A:type}
-           -> {a b c :A}
-           -> a :=: b
-           -> b :=: c
-           ----------
-           -> a :=: c
+        sig _<<__>>_ :
+            {A:type}
+            -> {a b c :A}
+            -> a :=: b
+            -> b :=: c
+            -------------
+            -> a :=: c
 
-        sig _Qed : {A:type}
-          -> {a:A}
-          ----------
-          -> a :=: a
+        sig _Qed :
+            {A:type}
+            -> {a:A}
+            ----------
+            -> a :=: a
     end
 
 val Dsl =

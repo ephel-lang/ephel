@@ -28,4 +28,4 @@ val Functor  = F =>
             end
     end
 
-sig Api =: sig of Functor = Functor
+val Api : sig of Functor = Functor

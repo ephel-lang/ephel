@@ -37,4 +37,4 @@ val Monad = F =>
             end
     end
 
-sig Api = sig of Monad = Monad
+val Api : sig of Monad = Monad

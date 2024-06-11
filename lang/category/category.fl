@@ -34,4 +34,4 @@ val Category = _~>_ =>
             end
     end
 
-sig Api =: sig of Category = Category
+val Api : sig of Category = Category

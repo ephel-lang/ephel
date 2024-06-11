@@ -37,4 +37,4 @@ val Applicative = F =>
             end
     end
 
-sig Api : sig of Applicative = Applicative
+val Api : sig of Applicative = Applicative

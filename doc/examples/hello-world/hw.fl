@@ -2,10 +2,10 @@ sig Console : sig struct
     sig println : String -> Unit
 end
 
+sig () : Ambient Process -- Inactivity
+
 val println : String -> Ambient Process = s =>
     let _ = Console println s in ()
-
-sig () : Ambient Process -- Inactivity
 
 val basic : Ambient Process =
     println "Hello World!"

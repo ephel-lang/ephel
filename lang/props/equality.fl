@@ -84,7 +84,7 @@ sig Dsl :
             ----------
             -> b :=: a
 
-        sig _<<__>>_ :
+        sig _<<_>> :
             {A:type}
             -> {a b c :A}
             -> a :=: b
@@ -92,7 +92,7 @@ sig Dsl :
             -------------
             -> a :=: c
 
-        sig _Qed :
+        sig Qed :
             {A:type}
             -> {a:A}
             ----------
@@ -102,7 +102,7 @@ sig Dsl :
 val Dsl =
     val struct
         val Proof_ = symmetric
-        val _<<_>>_ = transitive
-        val _Qed = refl
+        val _<<_>> = transitive
+        val Qed    = refl
     end
 

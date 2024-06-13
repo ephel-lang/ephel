@@ -84,25 +84,26 @@ sig Dsl :
             ----------
             -> b :=: a
 
-        sig _<<_>> :
+        sig _<<_>>_ :
             {A:type}
-            -> {a b c :A}
+            -> (a:A)
+            -> {b c :A}
             -> a :=: b
             -> b :=: c
             -------------
             -> a :=: c
 
-        sig Qed :
+        sig _Qed :
             {A:type}
-            -> {a:A}
+            -> (a:A)
             ----------
             -> a :=: a
     end
 
 val Dsl =
     val struct
-        val Proof_ = symmetric
-        val _<<_>> = transitive
-        val Qed    = refl
+        val Proof_  = symmetric
+        val _<<_>>_ = transitive
+        val _Qed    = refl
     end
 

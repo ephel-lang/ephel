@@ -103,7 +103,7 @@ sig Dsl :
 val Dsl =
     val struct
         val Proof_  = symmetric
-        val _<<_>>_ = transitive
-        val _Qed    = refl
+        val _<<_>>_ = {A} a => transitive {A a}
+        val _Qed    = {A} a => refl {A a}
     end
 

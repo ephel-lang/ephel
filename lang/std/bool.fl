@@ -23,3 +23,20 @@ val ~ =
 
 sig _==>_ : Bool -> Bool -> Bool (infixl 200)
 val _==>_ = a b => ~a || b
+
+sig Equals : std.equals.Api Nat
+val Equals =
+    let open std.bool in
+    val struct
+        val _==_ =
+            | True =>
+                begin
+                | True  => true
+                | False => false
+                end
+            | False =>
+                begin
+                | True  => false
+                | False => true
+                end
+    end

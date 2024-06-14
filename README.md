@@ -6,6 +6,7 @@ The functional paradigm is dedicated to the expression of behaviors, while the a
 
 ## Functional programming layer
 
+References:
 - [Parsing Mixfix Operators](https://www.cse.chalmers.se/~nad/publications/danielsson-norell-mixfix.pdf)
 - [The calculus of constructions](https://hal.inria.fr/inria-00076024/document)
 - [A simple type-theoretic language: Mini-TT](https://www.cse.chalmers.se/~bengt/papers/GKminiTT.pdf)
@@ -18,7 +19,6 @@ The functional paradigm is dedicated to the expression of behaviors, while the a
 The functional layer is strongly statically typed with dependent types.
 
 It covers:
-
 - the core lambda calculus
 - dependent function types,
 - dependent product types,

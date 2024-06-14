@@ -4,7 +4,7 @@ val id = x => x
 sig _$_ : {A B:type} -> (A -> B) -> A -> B (infixl 1000)
 val _$_ = id
 
-sig _<|_ : {A B C:type} -> (B -> C) -> (A -> B) -> (A -> C) (infixl 200)
+sig _<|_ : {A B C:type} -> (B -> C) -> (A -> B) -> (A -> C) (infixr 200)
 val _<|_ = f g => x => f (g x)
 
 sig _|>_ : {A B C:type} -> (A -> B) -> (B -> C) -> (A -> C) (infixl 200)

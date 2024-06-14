@@ -44,10 +44,13 @@ val Applicative : (E: type) -> category.applicative.Api (E Or_) =
 
         val pure = inl
         val product =
+            let open dsl.begin_end in
             | Inl l => _ => Inl l
             | Inr f =>
+                begin
                 | Inl l => Inl l
                 | Inr a => Inr (f,a)
+                end
 
        val Laws = val struct end
     end

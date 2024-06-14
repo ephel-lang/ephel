@@ -31,7 +31,8 @@ val Monoid : A =>
                      -> a :=: a + neutral
 
                 sig ''(a + b) + c = a + (b + c)'' :
-                    (a:A -> {b c:A}
+                    (a:A)
+                     -> {b c:A}
                     ---------------------------
                     -> (a + b) + c :=: a + (b + c)
             end

@@ -116,3 +116,11 @@ val Dsl =
         val _Qed   = refl
     end
 
+-{
+    Example of proof term using the Dsl (No a real case):
+    ```
+    Proof
+        a =[ congruent-+ ] a :=: b
+    Qed
+    ```
+}-

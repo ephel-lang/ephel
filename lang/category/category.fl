@@ -5,9 +5,7 @@ val Category = _~>_ =>
     sig struct
       sig id: {A:type} -> A ~> A
       sig compose : {A B C:type} -> B ~> C -> A ~> B -> A ~> C
-      sig _<|_ : sig of compose = compose
-
-      val _<<<_ : sig of compose = compose
+      val _<|_ : sig of compose = compose
 
       sig Laws =
             sig struct

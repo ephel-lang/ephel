@@ -6,6 +6,7 @@ val Nat =
 sig Equals : std.equals.Api Nat
 val Equals =
     let open std.bool in
+    let open dsl.begin-end in
     val struct
         val _==_ =
             | Zero =>

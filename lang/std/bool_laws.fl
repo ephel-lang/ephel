@@ -4,9 +4,10 @@ open dsl.-match-
 
 val And-Laws : type =
     sig struct
-        sig commute : {A B:Bool}
-            --------------------
-            -> A && B :=: B && A
+        sig commute :
+            {A B:Bool}
+            -----------------
+         -> A && B :=: B && A
 
         val commute = {A B} =>
             A match
@@ -21,24 +22,27 @@ val And-Laws : type =
                 | False => refl
                 end
 
-        sig left : {A:Bool}
-            -----------------------
-            -> False && A :=: False
+        sig left :
+            {A:Bool}
+            --------------------
+         -> False && A :=: False
 
         val left = refl
 
-        sig right : {A:Bool}
-            -----------------------
-            -> A && False :=: False
+        sig right :
+            {A:Bool}
+            --------------------
+         -> A && False :=: False
 
         val right = subst left by commute
     end
 
 val Or-Laws : type =
     sig struct
-        sig commute : {A B:Bool}
-            --------------------
-            -> A || B :=: B || A
+        sig commute :
+            {A B:Bool}
+            -----------------
+         -> A || B :=: B || A
 
         val commute = {A B} =>
             A match
@@ -53,15 +57,17 @@ val Or-Laws : type =
                 | False => refl
                 end
 
-        sig left : {A:Bool}
-            ---------------------
-            -> True || A :=: True
+        sig left :
+            {A:Bool}
+            ------------------
+         -> True || A :=: True
 
         val left = refl
 
-        sig right : {A:Bool}
-            ---------------------
-            -> A || True :=: True
+        sig right :
+            {A:Bool}
+            ------------------
+         -> A || True :=: True
 
         val right = subst left by commute
     end

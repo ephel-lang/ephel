@@ -2,74 +2,74 @@
 
 sig reflexive :
     {A:type}
-    -> {a:A}
-    ----------
-    -> a :=: a
+ -> {a:A}
+    -------
+ -> a :=: a
 
 val reflexive =
     refl
 
 sig symmetric :
     {A:type}
-    -> {a b:A}
-    -> a :=: b
-    ----------
-    -> b :=: a
+ -> {a b:A}
+ -> a :=: b
+    -------
+ -> b :=: a
 
 val symmetric = a=b =>
     subst refl by a=b
 
 sig transitivity :
     {A:type}
-    -> {a b c :A}
-    -> a :=: b
-    -> b :=: c
-    ----------
-    -> a :=: c
+ -> {a b c :A}
+ -> a :=: b
+ -> b :=: c
+    -------
+ -> a :=: c
 
 val transitivity = a=b b=c =>
     subst (subst refl by a=b) by b=c
 
 sig congruent :
     {A B:type}
-    -> (f:A -> B)
-    -> {a b:A}
-    -> a :=: b
-    --------------
-    -> f a :=: f b
+ -> (f:A -> B)
+ -> {a b:A}
+ -> a :=: b
+    -----------
+ -> f a :=: f b
 
 val congruent = f a=b =>
     subst refl by (a=b)
 
 sig congruent-2 :
     {A B C:type}
-    -> (f:A -> B -> C)
-    -> {a b:A} -> {c d:B}
-    -> a :=: b
-    -> c :=: d
-    ------------------
-    -> f a c :=: f b d
+ -> (f:A -> B -> C)
+ -> {a b:A} -> {c d:B}
+ -> a :=: b
+ -> c :=: d
+    ---------------
+ -> f a c :=: f b d
 
 val congruent-2 = f a=b c=d =>
     subst (subst refl by a=b) by c=d
 
 sig congruent-app :
     {A B:type}
-    -> (f g:A -> B)
-    -> f :=: g
-    -----------------------
-    -> {a:A} -> f a :=: g a
+ -> (f g:A -> B)
+ -> f :=: g
+    --------------------
+ -> {a:A} -> f a :=: g a
 
 val congruent-app = f g f=g =>
     subst refl by (f=g)
 
 sig substitution :
     {A:type}
-    -> {x y:A}
-    -> (P:A -> type)
-    -> x :=: y
-    -------------
-    -> P x -> P y
+ -> {x y:A}
+ -> (P:A -> type)
+ -> x :=: y
+    ----------
+ -> P x -> P y
 
 val substitution = P x=y px =>
     subst px by x=y
@@ -79,18 +79,18 @@ sig Dsl :
     sig struct
         sig Proof_ :
             {A:type}
-            -> {a b:A}
-            -> a :=: b
-            ----------
-            -> b :=: a
+         -> {a b:A}
+         -> a :=: b
+            -------
+         -> b :=: a
 
         sig _=[]_ :
             {A:type}
-            -> (a:A)
-            -> {b:A}
-            -> a :=: b
-            ----------
-            -> b :=: a
+         -> (a:A)
+         -> {b:A}
+         -> a :=: b
+            -------
+         -> b :=: a
 
         sig _=[_]_ :
             {A:type}

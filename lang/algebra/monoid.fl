@@ -22,19 +22,19 @@ val Monoid : A =>
             sig struct
                 sig ''a = neutral + a'' :
                     (a:A)
-                    ---------------------
-                     -> a :=: neutral + a
+                    -----------------
+                 -> a :=: neutral + a
 
                 sig ''a = a + neutral'' :
                     (a:A)
-                    ---------------------
-                     -> a :=: a + neutral
+                    -----------------
+                 -> a :=: a + neutral
 
                 sig ''(a + b) + c = a + (b + c)'' :
                     (a:A)
-                     -> {b c:A}
+                 -> {b c:A}
                     ---------------------------
-                    -> (a + b) + c :=: a + (b + c)
+                 -> (a + b) + c :=: a + (b + c)
             end
     end
 

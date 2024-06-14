@@ -113,7 +113,7 @@ val Dsl =
         val Proof_ = symmetric
         val _=[]_  = {A} a => symmetric {A a}
         val _=[_]_ = {A} a => transitive {A a}
-        val _Qed   = refl
+        val _Qed   = {A} a => refl {A a}
     end
 
 -{

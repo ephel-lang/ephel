@@ -1,0 +1,120 @@
+-{
+    https://www.cambridge.org/core/journals/journal-of-functional-programming/article/data-types-a-la-carte/14416CB20C4637164EA9F77097909409
+
+    Paper Abstract
+    "This paper describes a technique for assembling both data types and functions from isolated individual components.
+     We also explore how the same technology can be used to combine free monads and, as a result, structure Haskell's
+     monolithic IO monad."
+} -
+
+-{ 1. Data type for expressions }-
+
+val Expr : (type -> type) -> type = f =>
+    | In : f (Expr f) -> Expr f
+
+val Val : type -> type = _ =>
+    | IntVal : Int -> Val
+
+val IntExpr : type = Expr Val
+
+val Add : type -> type = e =>
+    | Plus : e -> e -> Add e
+
+val AddExpr : type = Expr Add
+
+val _:+:_ : (f g:type -> type) -> type -> type = f g e =>
+    | Inl : f e -> (f :+: g) e
+    | Inr : g e -> (f :+: g) e
+
+-{ 2. Functors corner }-
+
+open category
+
+val FunctorVal : functor.Api Val =
+    val struct
+        val map = f => | IntVal x => IntVal x
+
+        -- Laws should be provided here
+    end
+
+val FunctorAdd : functor.Api Add =
+    val struct
+        val map = f => | Plus l r = Plus (f l) (f r)
+
+        -- Laws should be provided here
+    end
+
+sig Functor:+: : {f g:type -> type}
+            -> functor.Api f -> functor.Api g -> functor.Api (f :+: g)
+val Functor:+: = F G =>
+    val struct
+        val map = f => | Inl e => Inl (F.map f e)
+                       | Inr e => Inr (G.map f e)
+
+        -- Laws should be provided here
+    end
+
+-{ 3. Fold expression }-
+
+sig foldExpr : {f:type -> type}
+            -> functor.Api f -> (f a -> a) -> Expr f -> a
+val foldExpr = F f => | In t => f (F.map (foldExpr F f) t)
+
+-{ 4. Eval algebra }-
+
+sig Eval : (f:type -> type) ->
+    sig struct
+        sig functor : functor.Api f
+        sig evalAlgebra : f Int -> Int
+    end
+
+val EvalVal : Eval Val =
+    val struct
+        val functor = FunctorVal
+        val evalAlgebra = | Val x => x
+    end
+
+val EvalAdd : Eval Add =
+    val struct
+        val functor = FunctorAdd
+        val evalAlgebra = | Plus x y => x Int.+ y
+    end
+
+sig Eval:+: : {f g:type -> type} -> Eval f -> Eval g -> Eval (f :+: g)
+val Eval:+: = F G =>
+    val struct
+        val functor = Functor:+: {f g} F G
+        val evalAlgebra = | Inl x => F.eval x
+                          | Inr y => G.eval y
+    end
+
+sig eval : {f:type -> type} -> Eval f -> Expr f -> Int
+val eval = E => foldExpr E.functor E.evalAlgebra
+
+-{ 5. Injection }-
+
+sig _:<:_ : (sub sup:type -> type) -> type
+val _:<:_ = Sub Sup =>
+    sig struct
+        sig inj : {a:type} -> Sub a -> Sup a
+    end
+
+val Id:<: : {f : type -> type} -> (f :<: f) =
+    val struct
+        sig inj = std.core.id
+    end
+
+val Inl:<: : (f g: type -> type) -> f :<: (f :+: g) =
+    val struct
+        sig inj = Inl
+    end
+
+val Inr:<: : (f g h: type -> type) -> f :<: g -> f :<: (h :+: g) = f:<:g =>
+    val struct
+        sig inj = Inr <| f:<:g.inj
+    end
+
+sig inject : {f g: type -> type} -> g :<: f -> g (Expr f) -> Expr f
+val inject = g:<:f => Exp <| g:<:f.inj
+
+-- TBC

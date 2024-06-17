@@ -54,16 +54,17 @@ val Functor = F =>
             sig struct
                 sig ''map id :=: id'' :
                     {A:type}
-                    -> (a:F A)
-                    -----------------
-                    -> map id a :=: a
+                 -> (a:F A)
+                    --------------
+                 -> map id a :=: a
 
                 sig ''map f <| map g :=: map (f <| g)'' :
                     {A B C:type}
-                    -> {f:B -> C} -> {g:A -> B}
-                    -> (a:F A)
-                    ----------------------------------------
-                    -> (map f <| map g) a :=: map (f <| g) a
+                 -> {f:B -> C}
+                 -> {g:A -> B}
+                 -> (a:F A)
+                    -------------------------------------
+                 -> (map f <| map g) a :=: map (f <| g) a
             end
     end
 

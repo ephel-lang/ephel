@@ -44,7 +44,8 @@ val congruent = f a=b =>
 sig congruent-2 :
     {A B C:type}
  -> (f:A -> B -> C)
- -> {a b:A} -> {c d:B}
+ -> {a b:A}
+ -> {c d:B}
  -> a :=: b
  -> c :=: d
     ---------------
@@ -94,18 +95,18 @@ sig Dsl :
 
         sig _=[_]_ :
             {A:type}
-            -> (a:A)
-            -> {b c :A}
-            -> a :=: b
-            -> b :=: c
-            -------------
-            -> a :=: c
+         -> (a:A)
+         -> {b c :A}
+         -> a :=: b
+         -> b :=: c
+            -------
+         -> a :=: c
 
         sig _Qed :
             {A:type}
-            -> (a:A)
-            ----------
-            -> a :=: a
+         -> (a:A)
+            -------
+         -> a :=: a
     end
 
 val Dsl =

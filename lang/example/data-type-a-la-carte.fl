@@ -94,9 +94,9 @@ val eval = E => foldExpr E.functor E.evalAlgebra
 -{ 5. Injection }-
 
 sig _:<:_ : (sub sup:type -> type) -> type
-val _:<:_ = Sub Sup =>
+val _:<:_ = sub sup =>
     sig struct
-        sig inj : {a:type} -> Sub a -> Sup a
+        sig inj : {a:type} -> sub a -> sup a
     end
 
 val Id:<: : {f : type -> type} -> (f :<: f) =
@@ -116,5 +116,3 @@ val Inr:<: : (f g h: type -> type) -> f :<: g -> f :<: (h :+: g) = f:<:g =>
 
 sig inject : {f g: type -> type} -> g :<: f -> g (Expr f) -> Expr f
 val inject = g:<:f => Exp <| g:<:f.inj
-
--- TBC

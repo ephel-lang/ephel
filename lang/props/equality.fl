@@ -13,7 +13,7 @@ sig symmetric :
     {A:type}
  -> {a b:A}
  -> a :=: b
-    -------
+    --------
  -> b :=: a
 
 val symmetric = a=b =>
@@ -24,7 +24,7 @@ sig transitivity :
  -> {a b c :A}
  -> a :=: b
  -> b :=: c
-    -------
+    ----------
  -> a :=: c
 
 val transitivity = a=b b=c =>

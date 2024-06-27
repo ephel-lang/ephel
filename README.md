@@ -77,8 +77,8 @@ In the type `map id a :=: a` the operator `:=:` refers to the propositional equa
 #### Module option
 
 We can now propose an implementation of optional expression. For this purpose we 
-propose the type definion thanks to the postix operator `_?` in order to retrieve
-the expressivity offered by other langages like Swift, Dart or Kotlin for example.
+propose the type definition thanks to the postfix operator `_?` to retrieve
+the expressivity offered by other languages like Swift, Dart or Kotlin for example.
 
 ```ocaml
 -{ Type definition }-
@@ -96,7 +96,7 @@ val some : {A:type} -> A -> A? = Some
 
 Then we can propose a functor implementation dedicated to optional expressions.
 This implementation should provide a `map` but also an incarnation of the inner
-structure called Laws. Here proofs are really trivial proceeding by structural
+structure called Laws. Here proofs are trivial proceeding by structural
 induction and applying `refl` for reflexivity.
 
 ```ocaml

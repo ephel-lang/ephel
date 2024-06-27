@@ -55,8 +55,8 @@ val Functor = F =>
                 sig ''map id :=: id'' :
                     {A:type}
                  -> (a:F A)
-                    --------------
-                 -> map id a :=: a
+                    -----------------
+                 -> map id a :=: id a
 
                 sig ''map f <| map g :=: map (f <| g)'' :
                     {A B C:type}

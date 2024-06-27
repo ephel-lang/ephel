@@ -241,7 +241,7 @@ val play = {A} who to_a from_a a =>
     let open dsl.-match- in
     from_a a match
     | Zero   => <who>
-    | Succ n => <x:A>.(play who fa from_a a) | <to_a n>
+    | Succ n => <x:A>.(play who to_a from_a a) | <to_a n>
 
 val main : ambient process =
     let open std.core in

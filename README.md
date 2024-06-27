@@ -235,16 +235,18 @@ val pong_to_nat : pong -> nat =
 
 -{ Game defintion }-
 
-sig play : {A:type} -> string -> (nat -> A) -> (A -> nat) -> nat -> ambient process
-val play = {A} who to_a from_a =>
+sig play : {A:type} -> string -> (nat -> A) -> (A -> nat) -> A -> ambient process
+val play = {A} who to_a from_a a =>
     let open std.core in
+    let open dsl.-match- in
+    from_a a match
     | Zero   => <who>
-    | Succ n => <x:A>.(play who fa from_a $ from_a a) | <to_a n>
+    | Succ n => <x:A>.(play who fa from_a a) | <to_a n>
 
 val main : ambient process =
     let open std.core in
-    <n:pong>.(play "Bob"   Ping pong_to_nat $ pong_to_nat n) | 
-    <n:ping>.(play "Alice" Pong ping_to_nat $ ping_to_nat n) |
+    <n:pong>.(play "Bob"   Ping pong_to_nat n) | 
+    <n:ping>.(play "Alice" Pong ping_to_nat n) |
     <x:string>.(io.println x)                                |
     <Pong 42>
 ```

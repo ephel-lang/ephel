@@ -9,7 +9,8 @@ C :=
     open M
     C.C
 P :=
-    ()
+    new n in P
+    z0
     P | P
     M[ P ]
     C.P
@@ -22,7 +23,7 @@ val name : ambient name =
     `test
 
 val zero : ambient process =
-    ()
+    z0
 
 val parallel : ambient process -> ambient process -> ambient process
     = fun p1 p2 -> p1 | p2
@@ -38,3 +39,5 @@ val open_cap : ambient name -> ambient process -> ambient process
 
 val go : ambient capability -> ambient process -> ambient process
     = c p => go c.p
+
+-- etc.

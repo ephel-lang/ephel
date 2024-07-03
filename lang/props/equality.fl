@@ -13,7 +13,7 @@ sig symmetric :
     {A:type}
  -> {a b:A}
  -> a :=: b
-    --------
+    -------
  -> b :=: a
 
 val symmetric = a=b =>
@@ -21,10 +21,10 @@ val symmetric = a=b =>
 
 sig transitivity :
     {A:type}
- -> {a b c :A}
+ -> {a b c:A}
  -> a :=: b
  -> b :=: c
-    ----------
+    -------
  -> a :=: c
 
 val transitivity = a=b b=c =>
@@ -118,7 +118,7 @@ val Dsl =
     end
 
 -{
-    Example of proof term using the Dsl (No a real case):
+    Example of proof term using the Dsl (Not a real case):
     ```
     Proof
         a =[ congruent-+ ] a :=: b

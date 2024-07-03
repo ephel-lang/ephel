@@ -22,7 +22,7 @@ val ~ =
     | False => True
 
 sig _==>_ : Bool -> Bool -> Bool (infixl 200)
-val _==>_ = a b => ~a || b
+val _==>_ = a b => ~ a || b
 
 sig Equals : std.equals.Api Nat
 val Equals =

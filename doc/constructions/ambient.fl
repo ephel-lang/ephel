@@ -1,43 +1,19 @@
 -- Ambient calculus as first class citizen
 
 ```ebnf
-M := `id
+M := `id            -- Ambient name
 C :=
-    M
-    in M
-    out M
-    open M
-    C.C
+    in M            -- Enter capability
+    out M           -- Exit capability
+    open M          -- Open capability
+    C.C             -- Capability chain
 P :=
-    new n in P
-    z0
-    P | P
-    M[ P ]
-    C.P
-    go (C).P
-    <e>
-    <e:e> -> e
+    new M in P      -- Restriction
+    z0              -- Inactivity
+    P | P           -- Composition
+    M[ P ]          -- Ambient
+    C.P             -- Action
+    go (C).P        -- Direct action
+    <e:e>           -- Message
+    <e:e>.e         -- Input action
 ```
-
-val name : ambient name =
-    `test
-
-val zero : ambient process =
-    z0
-
-val parallel : ambient process -> ambient process -> ambient process
-    = fun p1 p2 -> p1 | p2
-
-val in_cap : ambient name -> ambient process -> ambient process
-    = fun name p -> in name.p
-
-val out_cap : ambient name -> ambient process -> ambient process
-    = fun name p -> out name.p
-
-val open_cap : ambient name -> ambient process -> ambient process
-    = fun name p -> open name.p
-
-val go : ambient capability -> ambient process -> ambient process
-    = c p => go c.p
-
--- etc.

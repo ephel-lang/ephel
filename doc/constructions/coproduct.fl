@@ -73,7 +73,6 @@ val Expr : type -> type = A =>
 -{
     With such GADT we can write the following term:
     If (Bool true) Then (Int 1) Else
-
 }-
 
 -- Absurd

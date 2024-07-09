@@ -24,8 +24,7 @@ sig vector : int -> int -> Vector
 val vector = x y => val struct
     sig x = x
     sig y = y
-    sig _+_ = v => vector $ v x + x $ v y + y
-    -- = ((vector $ (v x + x)) $ (v y + y)) = vector (v x + x) (v y + y)
+    sig _+_ = v => vector (v x + x) (v y + y)
 end
 
 sig Vector : type

@@ -9,6 +9,16 @@ val SemiGroup : A =>
     sig struct
         sig compose : A -> A -> A
         val _+_ : sig of compose = compose
+
+        -- Laws
+        sig Laws-SemiGroup :
+            sig struct
+                sig ''(a + b) + c = a + (b + c)'' :
+                    (a:A)
+                 -> {b c:A}
+                    ---------------------------
+                 -> (a + b) + c :=: a + (b + c)
+            end
     end
 
 sig Monoid : type -> type
@@ -18,7 +28,7 @@ val Monoid : A =>
         open SemiGroup A
 
         -- Laws
-        sig Laws :
+        sig Laws-Monoid :
             sig struct
                 sig ''a = neutral + a'' :
                     (a:A)
@@ -29,12 +39,6 @@ val Monoid : A =>
                     (a:A)
                     -----------------
                  -> a :=: a + neutral
-
-                sig ''(a + b) + c = a + (b + c)'' :
-                    (a:A)
-                 -> {b c:A}
-                    ---------------------------
-                 -> (a + b) + c :=: a + (b + c)
             end
     end
 

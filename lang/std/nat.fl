@@ -29,7 +29,14 @@ val Monoid =
             | Zero => std.core.id
             | Succ a => b => Succ (combine a b)
 
-        val Laws =
+        val Laws-SemiGroup =
+            val struct
+                val ''(a + b) + c = a + (b + c)'' =
+                    | Zero    => refl
+                    | Succ a' => {b c} => congruent Succ (''(a + b) + c = a + (b + c)'' a' {b c})
+            end
+
+        val Laws-Monoid =
             val struct
                 val ''a = neutral + a'' =
                     refl
@@ -37,9 +44,5 @@ val Monoid =
                 val ''a = a + neutral'' =
                     | Zero    => refl
                     | Succ a' => congruent Succ (''a = a + neutral'' a')
-
-                val ''(a + b) + c = a + (b + c)'' =
-                    | Zero    => {_ _} => refl
-                    | Succ a' => {b c} => congruent Succ (''(a + b) + c = a + (b + c)'' a' {b c})
             end
     end

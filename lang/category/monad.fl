@@ -8,9 +8,20 @@ val Return = F =>
 sig Bind : (type -> type) -> type = F =>
 val Bind = F =>
     sig struct
-        sig bind : {A B:type} -> A -> (A -> F B) -> F B
+        sig bind : {A B:type} -> F A -> (A -> F B) -> F B
         val _>>=_ : sig of bind = bind
+        val let*_in_ : sig of bind = bind
     end
+
+-{
+    For instance with options, this syntax simplifies expressivity
+
+    ```
+    let* Some 1 in x =>
+    let* Some 2 in y =>
+        Some (1 + 2)
+    ```
+}-
 
 sig Join : (type -> type) -> type
 val Join = F =>

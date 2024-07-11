@@ -3,7 +3,18 @@ val Map = F =>
     sig struct
         sig map : {A B:type} -> (A -> B) -> F A -> F B
         val _<$>_ : sig of map = map
+        val let+_in_ : {A B:type} -> F A -> (A -> B) -> F B = ma f => map f ma
     end
+
+-{
+    For instance with options, this syntax simplifies expressivity
+
+    ```
+    let+ Some 1 in x =>
+    let+ Some 2 in y =>
+        1 + 2
+    ```
+}-
 
 sig Functor : (type -> type) -> type
 val Functor  = F =>

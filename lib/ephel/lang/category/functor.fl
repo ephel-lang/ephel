@@ -7,7 +7,8 @@ val Map = F =>
     end
 
 -{
-    For instance with options, this syntax simplifies expressivity
+    For instance with options, this syntax simplifies expressiveness
+    mimicking traditional let binding
 
     ```
     let+ Some 1 in x =>
@@ -22,7 +23,7 @@ val Functor  = F =>
     sig struct
         open Map F
 
-        sig Laws :
+        sig Laws-Functor :
             sig struct
                 sig ''map id = id'' :
                     {A:type}

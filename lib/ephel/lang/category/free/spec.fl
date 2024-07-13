@@ -1,0 +1,6 @@
+-{ Based on functions to constructors reification }-
+
+sig Free : (type -> type) -> type -> type
+val Free = T A =>
+    | Return : A -> Free T A
+    | Bind : T (Free T A) -> Free T A

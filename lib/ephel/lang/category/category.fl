@@ -7,7 +7,7 @@ val Category = _~>_ =>
       sig compose : {A B C:type} -> B ~> C -> A ~> B -> A ~> C
       val _<|_ : sig of compose = compose
 
-      sig Laws =
+      sig Laws-Category =
             sig struct
                 sig ''h <| (g <| f) = (h <| g) <| f'' =
                     {A B C D:type}

@@ -14,7 +14,7 @@ val Kleisly = F =>
     sig struct
         open Compose F
 
-        sig Laws =
+        sig Law-Kleisly =
             sig struct
                 -- Laws are missing here
             end

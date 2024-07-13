@@ -32,7 +32,7 @@ val Applicative = F =>
 
         val _<*>_ = f a => (p => fst p $ snd p) <$> product f a
 
-        sig Laws =
+        sig Laws-Applicative =
             sig struct
                 -- Laws are missing here
             end

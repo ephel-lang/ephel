@@ -12,7 +12,7 @@ val Profunctor = _~>_ =>
         sig rmap : {A B C:type} -> (B -> C) -> A ~> B -> A ~> C -- aka map_snd
         val rmap = dimap id
 
-        sig Laws =
+        sig Laws-Profunctor =
             sig struct
             sig ''dimap id id = id'' :
                 {A B:type}

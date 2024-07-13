@@ -14,7 +14,8 @@ val Bind = F =>
     end
 
 -{
-    For instance with options, this syntax simplifies expressivity
+    For instance with options, this syntax simplifies expressiveness
+    mimicking traditional let binding
 
     ```
     let* Some 1 in x =>
@@ -42,7 +43,7 @@ val Monad = F =>
             let open std.core in
             f <$> a |> join
 
-        sig Laws =
+        sig Laws-Monad =
             sig struct
                 -- Laws are missing here
             end

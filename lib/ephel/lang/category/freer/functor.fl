@@ -1,12 +1,6 @@
 open std.core
 open category
-
--{ Based on functions to constructors reification }-
-
-sig Freer : (type -> type) -> type -> type
-val Freer = T A =>
-    | Return : A -> Free T A
-    | Bind : {B:type} -> T B - > (B -> Freer T A) -> Free T A
+open freer.spec
 
 sig Functor : (T:type -> type) -> functor.Api T -> functor.Api (Free T)
 val Functor : T F =>

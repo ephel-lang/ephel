@@ -22,7 +22,7 @@ This first compiler written in Nethra produces Mitch bytecode.
 
 ### Stage 3: Ocaml Mitch Runtime
 
-Such a runtime allows Ephel code to be executed in another runtime. For this purpose, the Rust, Go, Java, C#, C++ and Javascript runtimes should also be targeted.
+Such a runtime allows Ephel code to be executed in another runtime. For this purpose, the Rust, Go, Java, C#, C++, Javascript and WASM runtimes should also be targeted.
 
 ## Extensions
 

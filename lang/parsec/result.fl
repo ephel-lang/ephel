@@ -3,7 +3,7 @@ open std.option
 
 sig Result :
     sig struct
-        sig t : type -> type -> type
+        sig t : (element:type) -> (source:type) -> type
         sig fold : {A S B:type}
                 -> (result:t A S)
                 -> (onSuccess:A -> Bool -> S -> B)

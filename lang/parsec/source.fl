@@ -6,12 +6,11 @@ sig Source :
         sig e : type
         sig t : type
 
-        sig Construct :
-            sig struct
-                sig c : type
-                sig create : (filename:String?) -> c -> t Or String
-                -- Here the variable name is just for the documentation
-            end
-
         sig next : t -> e? * t
+    end
+
+sig Construct :
+    sig struct
+        sig t : type
+        sig create : (filename:String?) -> t -> (S:Source)*S.t Or String
     end

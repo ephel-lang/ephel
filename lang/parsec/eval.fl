@@ -1,6 +1,7 @@
 open std.unit
 open std.option
 open dsl.-if-then-else-
+open dsl.begin-end
 open parsec.result
 open parsec.parser
 
@@ -15,10 +16,12 @@ sig Eval : (P:Parser) ->
 
 val Eval = P =>
     val struct
-        val eos = (source,value) =>                             -- unpack
-            source.next value match
-            | Some e, s => Failure none false (source,value)    -- pack
-            | None, s => Success unit false (source,value)      -- pack
+        val eos =
+            | source, value =>                                      -- unpack
+                begin source.next value match
+                | Some e, s => Failure none false (source,value)    -- pack
+                | None, s => Success unit false (source,value)      -- pack
+                end
 
         val return = result => Success result false -- Source is implicit / Point free
 

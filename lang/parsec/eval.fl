@@ -11,7 +11,10 @@ sig Eval : (P:Parser) ->
         sig return : {A:type} -> A -> (P A)
         sig fails : {A:type} -> String? -> P A
         sig satisfy : {A:type} -> P A -> (predicate:A -> Bool) -> P A
+        sig lazy : {A:type} -> (Unit -> P A) -> P A
         sig try : {A:type} -> P A -> P A
+        sig lookahead : {A:type} -> P A -> P A
+        sig fix : {A:type} -> (P A -> P A) -> P A
     end
 
 val Eval = P =>
@@ -36,9 +39,18 @@ val Eval = P =>
                 )
                 Failure
 
+        val lazy = parser => source => parser unit source
+
         val try = parser => source =>
             fold (parser source)
                 Success
                 (reason _ source => Failure reason false source)
+
+       val lookahead = parser => source =>
+            fold (parser source)
+                (element _ _ => Success element false source)
+                (reason _ _ => Failure reason false source)
+
+       val fix = f => source => f (fix f) source
     end
 

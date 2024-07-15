@@ -10,6 +10,7 @@ sig Result :
                 -> (onFailure:String? -> Bool -> S -> B)
                 -> B
     end
+
 val Result =
     val struct
         val t = A S =>

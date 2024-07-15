@@ -1,0 +1,22 @@
+sig Atom : (P : Parser) ->
+    let e = P.source.e in sig struct
+    sig any : (P e).t
+    val atom : e -> (P e).t
+    val not : {A:type} -> (P A).t -> (P e).t
+end
+
+val Atom = P => val struct
+    val any = source =>
+        P.Source.next source match
+        | Some e, s => Success e true s
+        | None, s => Failure (Some "Empty stream") false s
+
+    val atom = element => source =>
+        let open parsec.eval.Eval.Infix in
+        any <?> element =_
+
+    val not = parser => source =>
+        fold (parser source)
+            (_ _ s => Failure None false s)
+            (_ _ s => any s)
+end

@@ -3,19 +3,19 @@ open std.option
 
 sig Result : sig struct
     sig t : (element:type) -> (source:type) -> type
-    sig fold : {A S B:type}
-            -> (result:t A S)
-            -> (onSuccess:A -> Bool -> S -> B)
+    sig fold : {E S B:type}
+            -> (result:t E S)
+            -> (onSuccess:E -> Bool -> S -> B)
             -> (onFailure:String? -> Bool -> S -> B)
             -> B
 end
 
 val Result = val struct
-    val t = A S =>
-        | Success : (element:A) -> (consumed:Bool) -> (source:S) -> Result A S
-        | Failure : (reason:String?) -> (consumed:Bool) -> (source:S) -> Result A S
+    val t = E S =>
+        | Success : (element:E) -> (consumed:Bool) -> (source:S) -> Result E S
+        | Failure : (reason:String?) -> (consumed:Bool) -> (source:S) -> Result E S
 
     val fold =
-        | Success a c s => onSuccess _ => onSuccess a c s
+        | Success e c s => onSuccess _ => onSuccess e c s
         | Failure r c s => _ onFailure => onFailure r c s
 end

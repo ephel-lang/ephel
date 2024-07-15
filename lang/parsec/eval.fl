@@ -7,22 +7,26 @@ open parsec.parser
 
 sig Eval : (P:Parser) -> sig struct
     sig eos : P Unit
-    sig return : {A:type} -> A -> (P A)
-    sig fails : {A:type} -> String? -> P A
-    sig satisfy : {A:type} -> P A -> (predicate:A -> Bool) -> P A
-    sig lazy : {A:type} -> (Unit -> P A) -> P A
-    sig try : {A:type} -> P A -> P A
-    sig lookahead : {A:type} -> P A -> P A
-    sig fix : {A:type} -> (P A -> P A) -> P A
+    sig return : {A:type} -> A -> (P A).t
+    sig fails : {A:type} -> String? -> (P A).t
+    sig satisfy : {A:type} -> (P A).t -> (predicate:A -> Bool) -> (P A).t
+    sig lazy : {A:type} -> (Unit -> (P A).t) -> (P A).t
+    sig try : {A:type} -> (P A).t -> (P A).t
+    sig lookahead : {A:type} -> (P A).t -> (P A).t
+    sig fix : {A:type} -> ((P A).t -> (P A).t) -> (P A).t
+
+    sig Infix : sig struct
+        sig _<?>_ : sig of satisfy
+        val _<?>_ = satisfy
+    end
 end
 
 val Eval = P => val struct
-    val eos =
-        | source, value =>                                      -- unpack
-            begin source.next value match
-            | Some e, s => Failure none false (source,value)    -- pack
-            | None, s => Success unit false (source,value)      -- pack
-            end
+    val eos = source =>
+        begin P.Source.next source match
+        | Some e, s => Failure none false source
+        | None, s => Success unit false source
+        end
 
     val return = result => Success result false -- Source is implicit / Point free
 

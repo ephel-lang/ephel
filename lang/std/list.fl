@@ -16,8 +16,8 @@ val [_] = A =>
 
 sig fold : {A R:type} -> [A] -> (unit -> R) -> (A -> [A] -> R) -> R
 val fold =
-    | []     => f => _ => f unit
-    | a :: l => _ => f => f a l
+    | []     => f _ => f unit
+    | a :: l => _ f => f a l
 
 -{ Basic functions }-
 

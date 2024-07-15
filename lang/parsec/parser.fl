@@ -1,0 +1,8 @@
+open parser.result
+open parser.source
+
+sig Parser : (A:type) ->
+    sig struct
+        sig Source : Source
+        sig t : Source.t -> Result.t A Source.t
+    end

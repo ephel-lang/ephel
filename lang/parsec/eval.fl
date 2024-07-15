@@ -1,0 +1,41 @@
+open std.core.unit
+open std.core.option
+open dsl.-if-then-else-
+open parsec.result
+open parsec.parser
+
+sig Eval : (P:Parser) ->
+    sig struct
+        sig eos : (P Unit).t
+        sig return : {A:type} -> A -> (P A).t
+        sig fails : {A:type} -> String? -> (P A).t
+        sig satisfy : {A:type} -> (P A).t -> (A -> Bool) -> (P A).t
+        sig try : {A:type} -> (P A).t -> (P A).t
+    end
+
+val Eval = P =>
+    val struct
+        val eos = source =>
+            P.Source.next source match
+            | Some e, s => Failure none false source
+            | None, s => Success unit false source
+
+        val return = result => Success result false -- Source is implicit / Point free
+
+        val fails = reason => Failure reason false -- Source is implicit / Point free
+
+        val satisfy = parser predicate => source =>
+            fold (parser source)
+                (element consumed source =>
+                    if predicate element
+                    then (_ => Success element consumed source)
+                    else (_ => Failure none false source)
+                )
+                Failure
+
+        val try = parser => source =>
+            fold (parser source)
+                Success
+                (reason _ source => Failure reason false source)
+    end
+

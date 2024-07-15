@@ -1,0 +1,15 @@
+open std.core.option
+
+sig Source :
+    sig struct
+        sig e : type
+        sig t : type
+
+        sig Construct :
+            sig struct
+                sig c : type
+                sig create : String? -> c - t
+            end
+
+        sig next : t -> e? * t
+    end

@@ -1,0 +1,18 @@
+open std.core.bool
+open std.core.option
+
+sig Result :
+    sig struct
+        sig t : type -> type -> type
+        sig fold : {A S B:type} -> t A S -> (A -> Bool -> S -> B) -> (String? -> Bool -> S -> B) -> B
+    end
+val Result =
+    val struct
+        val t = A S =>
+            | Success : A -> Bool -> S -> Result A S
+            | Failure : String? -> Bool -> S -> Result A S
+
+        val fold =
+            | Success output consumed source => onSuccess _ => onSuccess output consumed source
+            | Failure reason consumed source => _ onFailure => onFailure reason consumed source
+    end

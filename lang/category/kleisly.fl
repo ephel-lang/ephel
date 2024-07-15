@@ -1,23 +1,20 @@
 sig Compose : (type -> type) -> type
-val Compose = F =>
-    sig struct
-        open category.monad.Api F
+val Compose = F => sig struct
+    open category.monad.Api F
 
-        sig _>=>_ : {A B C:type} -> (A -> F B) -> (B -> F C) -> (A -> F C)
-        val _>=>_ =
-            let open std.core in
-            fa fb => fa |> $ fb =<<_
-    end
+    sig _>=>_ : {A B C:type} -> (A -> F B) -> (B -> F C) -> (A -> F C)
+    val _>=>_ =
+        let open std.core in
+        fa fb => fa |> $ fb =<<_
+end
 
 sig Kleisly : (type -> type) -> type
-val Kleisly = F =>
-    sig struct
-        open Compose F
+val Kleisly = F => sig struct
+    open Compose F
 
-        sig Law-Kleisly =
-            sig struct
-                -- Laws are missing here
-            end
+    sig Law-Kleisly = sig struct
+        -- Laws are missing here
     end
+end
 
 val Api : sig of Kleisly = Kleisly

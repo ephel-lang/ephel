@@ -25,45 +25,45 @@ val _?_:_ : sig of fold = fold (infix 150)
 
 -{ Functor, Applicative and Monad }-
 
-val Functor : category.functor.Api _? =
-    val struct
-        val map = f =>
+sig Functor : category.functor.Api _?
+val Functor = val struct
+    val map = f =>
+        | None   => None
+        | Some a => Some $ f a
+
+    val Laws-Functor =
+        val struct
+            val ''map id = id'' =
+                | None   => refl
+                | Some _ => refl
+
+            val ''map f <| map g = map (f <| g)'' =
+                | None   => refl
+                | Some _ => refl
+        end
+end
+
+sig Applicative : category.applicative.Api _?
+val Applicative = val struct
+    open Functor
+
+    val pure = some
+    val product =
+        | None   => _ => None
+        | Some f =>
             | None   => None
-            | Some a => Some $ f a
+            | Some a => Some (f,a)
 
-        val Laws-Functor =
-            val struct
-                val ''map id = id'' =
-                    | None   => refl
-                    | Some _ => refl
+    val Laws-Applicative = val struct end
+end
 
-                val ''map f <| map g = map (f <| g)'' =
-                    | None   => refl
-                    | Some _ => refl
-            end
-    end
+sig Monad : category.monad.Api _?
+val Monad = val struct
+    open Applicative
 
-val Applicative : category.applicative.Api _? =
-    val struct
-        open Functor
+    val join =
+        | None   => None
+        | Some a => a
 
-        val pure = some
-        val product =
-            | None   => _ => None
-            | Some f =>
-                | None   => None
-                | Some a => Some (f,a)
-
-        val Laws-Applicative = val struct end
-    end
-
-val Monad : category.monad.Api _? =
-    val struct
-        open Applicative
-
-        val join =
-            | None   => None
-            | Some a => a
-
-        val Laws-Monad = val struct end
-   end
+    val Laws-Monad = val struct end
+end

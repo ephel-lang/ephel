@@ -1,41 +1,36 @@
 sig Pure : (type -> type) -> type
-val Pure = F =>
-    sig struct
-        sig pure : {A:type} -> A -> F a
-    end
+val Pure = F => sig struct
+    sig pure : {A:type} -> A -> F a
+end
 
 sig Product : (type -> type) -> type
-val Product = F =>
-    sig struct
-        sig product : {A B:type} -> F A -> F B -> F (A * B)
-    end
+val Product = F => sig struct
+    sig product : {A B:type} -> F A -> F B -> F (A * B)
+end
 
 sig Apply : (type -> type) -> type
-val Apply = F =>
-    sig struct
-        sig apply : {A B:type} -> F (A -> B) -> F A -> F B
-        sig _<*>_ : sig of apply = apply
+val Apply = F => sig struct
+    sig apply : {A B:type} -> F (A -> B) -> F A -> F B
+    sig _<*>_ : sig of apply = apply
 
-        sig _<**>_ : {A B:type} -> F A -> F (A -> B) -> F B
-        val _<**>_ = a f => f <*> a
-    end
+    sig _<**>_ : {A B:type} -> F A -> F (A -> B) -> F B
+    val _<**>_ = a f => f <*> a
+end
 
 sig Applicative : (type -> type) -> type
-val Applicative = F =>
-    let open std.core in
-    sig struct
-        open functor.Api F
+val Applicative = F => let open std.core in sig struct
+    open functor.Api F
 
-        open Pure F
-        open Product F
-        open Apply F
+    open Pure F
+    open Product F
+    open Apply F
 
-        val _<*>_ = f a => (p => fst p $ snd p) <$> product f a
+    val _<*>_ = f a => (p => fst p $ snd p) <$> product f a
 
-        sig Laws-Applicative =
-            sig struct
-                -- Laws are missing here
-            end
-    end
+    sig Laws-Applicative =
+        sig struct
+            -- Laws are missing here
+        end
+end
 
 val Api : sig of Applicative = Applicative

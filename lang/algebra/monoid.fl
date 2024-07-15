@@ -5,42 +5,38 @@ val Neutral : A =>
     end
 
 sig SemiGroup : type -> type
-val SemiGroup : A =>
-    sig struct
-        sig compose : A -> A -> A
-        val _+_ : sig of compose = compose
+val SemiGroup : A => sig struct
+    sig compose : A -> A -> A
+    val _+_ : sig of compose = compose
 
-        -- Laws
-        sig Laws-SemiGroup :
-            sig struct
-                sig ''(a + b) + c = a + (b + c)'' :
-                    (a:A)
-                 -> {b c:A}
-                    ---------------------------
-                 -> (a + b) + c :=: a + (b + c)
-            end
+    -- Laws
+    sig Laws-SemiGroup : sig struct
+        sig ''(a + b) + c = a + (b + c)'' :
+            (a:A)
+         -> {b c:A}
+            ---------------------------
+         -> (a + b) + c :=: a + (b + c)
     end
+end
 
 sig Monoid : type -> type
-val Monoid : A =>
-    sig struct
-        open Neutral A
-        open SemiGroup A
+val Monoid : A => sig struct
+    open Neutral A
+    open SemiGroup A
 
-        -- Laws
-        sig Laws-Monoid :
-            sig struct
-                sig ''a = neutral + a'' :
-                    (a:A)
-                    -----------------
-                 -> a :=: neutral + a
+    -- Laws
+    sig Laws-Monoid : sig struct
+        sig ''a = neutral + a'' :
+            (a:A)
+            -----------------
+         -> a :=: neutral + a
 
-                sig ''a = a + neutral'' :
-                    (a:A)
-                    -----------------
-                 -> a :=: a + neutral
-            end
+        sig ''a = a + neutral'' :
+            (a:A)
+            -----------------
+         -> a :=: a + neutral
     end
+end
 
 sig Api : type
 val Api = Monoid

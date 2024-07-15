@@ -20,48 +20,47 @@ val fold =
 
 -{ Functor, Applicative and Monad }-
 
-val Functor : (E: type) -> category.functor.Api (E Or_) =
-    val struct
-        val map = f =>
-            | Inl e => Inl e
-            | Inr a => Inr $ f a
+sig Functor : (E: type) -> category.functor.Api (E Or_)
+val Functor = val struct
+    val map = f =>
+        | Inl e => Inl e
+        | Inr a => Inr $ f a
 
-        val Laws =
-            val struct
-                val ''map id = id'' =
-                    | Inl _ => refl
-                    | Inr _ => refl
+    val Laws-Functor = val struct
+        val ''map id = id'' =
+            | Inl _ => refl
+            | Inr _ => refl
 
-                val ''(map f) <| (map g) = map (f <| g)'' =
-                    | Inl _ => refl
-                    | Inr _ => refl
-            end
+        val ''(map f) <| (map g) = map (f <| g)'' =
+            | Inl _ => refl
+            | Inr _ => refl
     end
+end
 
-val Applicative : (E: type) -> category.applicative.Api (E Or_) =
-    val struct
-        open Functor
+sig Applicative : (E: type) -> category.applicative.Api (E Or_)
+val Applicative = val struct
+    open Functor
 
-        val pure = inl
-        val product =
-            let open dsl.begin-end in
-            | Inl l => _ => Inl l
-            | Inr f =>
-                begin
-                | Inl l => Inl l
-                | Inr a => Inr (f,a)
-                end
-
-       val Laws = val struct end
-    end
-
-val Monad : (E: type) -> category.monad.Api (E Or_) =
-    val struct
-        open Applicative
-
-        val join =
+    val pure = inl
+    val product =
+        let open dsl.begin-end in
+        | Inl l => _ => Inl l
+        | Inr f =>
+            begin
             | Inl l => Inl l
-            | Inr a => a
+            | Inr a => Inr (f,a)
+            end
 
-        val Laws = val struct end
-   end
+   val Laws-Applicative = val struct end
+end
+
+sig Monad : (E: type) -> category.monad.Api (E Or_)
+val Monad = val struct
+    open Applicative
+
+    val join =
+        | Inl l => Inl l
+        | Inr a => a
+
+    val Laws-Monad = val struct end
+end

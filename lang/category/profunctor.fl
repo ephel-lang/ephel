@@ -1,70 +1,67 @@
 -{ Local mixfix to be considered here }-
 
 sig Profunctor : (_~>_ : type -> type -> type) -> type
-val Profunctor = _~>_ =>
-    let open std.core in
-    sig struct
-        sig dimap : {A B C D:type} -> (A -> B) -> (C -> D) -> B ~> C -> A ~> D
+val Profunctor = _~>_ => let open std.core in sig struct
+    sig dimap : {A B C D:type} -> (A -> B) -> (C -> D) -> B ~> C -> A ~> D
 
-        sig lmap : {A B C:type} -> (A -> B) -> B ~> C -> A ~> C -- aka contramap_fst
-        val lmap = f => dimap f id
+    sig lmap : {A B C:type} -> (A -> B) -> B ~> C -> A ~> C -- aka contramap_fst
+    val lmap = f => dimap f id
 
-        sig rmap : {A B C:type} -> (B -> C) -> A ~> B -> A ~> C -- aka map_snd
-        val rmap = dimap id
+    sig rmap : {A B C:type} -> (B -> C) -> A ~> B -> A ~> C -- aka map_snd
+    val rmap = dimap id
 
-        sig Laws-Profunctor =
-            sig struct
-            sig ''dimap id id = id'' :
-                {A B:type}
-             -> {f:A -> B}
-             -> (a:A)
-                --------------------------
-             -> dimap id id f a :=: id f a
+    sig Laws-Profunctor = sig struct
+        sig ''dimap id id = id'' :
+            {A B:type}
+         -> {f:A -> B}
+         -> (a:A)
+            --------------------------
+         -> dimap id id f a :=: id f a
 
-            sig ''lmap id = id'' :
-                (a:A)
-                ------------------
-             -> lmap id a :=: id a
+        sig ''lmap id = id'' :
+            (a:A)
+            ------------------
+         -> lmap id a :=: id a
 
-            sig ''rmap id = id'' :
-                (a:A)
-                ------------------
-             -> rmap id a :=: id a
+        sig ''rmap id = id'' :
+            (a:A)
+            ------------------
+         -> rmap id a :=: id a
 
-            sig ''dimap f g = lmap f <| rmap g'' :
-                {A B C D:type}
-             -> {f:B -> C}
-             -> {g:A -> B}
-             -> (a:A)
-                --------------------------------------
-             -> (dimap f g) a :=: (lmap f <| rmap g) a
+        sig ''dimap f g = lmap f <| rmap g'' :
+            {A B C D:type}
+         -> {f:B -> C}
+         -> {g:A -> B}
+         -> (a:A)
+            --------------------------------------
+         -> (dimap f g) a :=: (lmap f <| rmap g) a
 
-            sig ''dimap (f <| g) (h <| i) = dimap g h <| dimap f i'' :
-                {A B C D E F:type}
-             -> {f:B -> C}
-             -> {g:A -> B}
-             -> {h:E -> F}
-             -> {i:D -> E}
-             -> (a:A)
-                --------------------------------------------------------
-             -> dimap (f <| g) (h <| i) a :=: (dimap g h <| dimap f i) a
+        sig ''dimap (f <| g) (h <| i) = dimap g h <| dimap f i'' :
+            {A B C D E F:type}
+         -> {f:B -> C}
+         -> {g:A -> B}
+         -> {h:E -> F}
+         -> {i:D -> E}
+         -> (a:A)
+            --------------------------------------------------------
+         -> dimap (f <| g) (h <| i) a :=: (dimap g h <| dimap f i) a
 
-            sig ''lmap (f <| g) = lmap g <| lmap f'' :
-                {A B C:type}
-             -> {f:B -> C}
-             -> {g:A -> B}
-             -> (a:A)
-                ----------------------------------------
-             -> lmap (f <| g) a :=: (lmap g <| lmap f) a
+        sig ''lmap (f <| g) = lmap g <| lmap f'' :
+            {A B C:type}
+         -> {f:B -> C}
+         -> {g:A -> B}
+         -> (a:A)
+            ----------------------------------------
+         -> lmap (f <| g) a :=: (lmap g <| lmap f) a
 
-            sig ''rmap (f <| g) = rmap f <| rmap g'' :
-                {A B C:type}
-             -> {f:B -> C}
-             -> {g:A -> B}
-             -> (a:A)
-                ----------------------------------------
-             -> rmap (f <| g) a :=: (rmap f <| rmap g) a
-        end
+        sig ''rmap (f <| g) = rmap f <| rmap g'' :
+            {A B C:type}
+         -> {f:B -> C}
+         -> {g:A -> B}
+         -> (a:A)
+            ----------------------------------------
+         -> rmap (f <| g) a :=: (rmap f <| rmap g) a
     end
+end
 
 val Api : sig of Profunctor = Profunctor

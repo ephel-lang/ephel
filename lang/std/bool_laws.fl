@@ -2,72 +2,70 @@ open std.bool
 open dsl.begin-end
 open dsl.-match-
 
-val And-Laws : type =
-    sig struct
-        sig commute :
-            {A B:Bool}
-            -----------------
-         -> A && B :=: B && A
+val And-Laws : type = sig struct
+    sig commute :
+        {A B:Bool}
+        -----------------
+     -> A && B :=: B && A
 
-        val commute = {A B} =>
-            A match
-            | True  =>
-                begin B match
-                | True  => refl
-                | False => refl
-                end
-            | False =>
-                begin B match
-                | True  => refl
-                | False => refl
-                end
+    val commute = {A B} =>
+        A match
+        | True  =>
+            begin B match
+            | True  => refl
+            | False => refl
+            end
+        | False =>
+            begin B match
+            | True  => refl
+            | False => refl
+            end
 
-        sig left :
-            {A:Bool}
-            --------------------
-         -> False && A :=: False
+    sig left :
+        {A:Bool}
+        --------------------
+     -> False && A :=: False
 
-        val left = refl
+    val left = refl
 
-        sig right :
-            {A:Bool}
-            --------------------
-         -> A && False :=: False
+    sig right :
+        {A:Bool}
+        --------------------
+     -> A && False :=: False
 
-        val right = subst left by commute
-    end
+    val right = subst left by commute
+end
 
-val Or-Laws : type =
-    sig struct
-        sig commute :
-            {A B:Bool}
-            -----------------
-         -> A || B :=: B || A
+val Or-Laws : type = sig struct
+    sig commute :
+        {A B:Bool}
+        -----------------
+     -> A || B :=: B || A
 
-        val commute = {A B} =>
-            A match
-            | True  =>
-                begin B match
-                | True  => refl
-                | False => refl
-                end
-            | False =>
-                begin B match
-                | True  => refl
-                | False => refl
-                end
+    val commute = {A B} =>
+        A match
+        | True  =>
+            begin B match
+            | True  => refl
+            | False => refl
+            end
+        | False =>
+            begin B match
+            | True  => refl
+            | False => refl
+            end
 
-        sig left :
-            {A:Bool}
-            ------------------
-         -> True || A :=: True
+    sig left :
+        {A:Bool}
+        ------------------
+     -> True || A :=: True
 
-        val left = refl
+    val left = refl
 
-        sig right :
-            {A:Bool}
-            ------------------
-         -> A || True :=: True
+    sig right :
+        {A:Bool}
+        ------------------
+     -> A || True :=: True
 
-        val right = subst left by commute
-    end
+    val right = subst left by commute
+end

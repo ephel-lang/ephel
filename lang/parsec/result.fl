@@ -1,23 +1,21 @@
 open std.bool
 open std.option
 
-sig Result :
-    sig struct
-        sig t : (element:type) -> (source:type) -> type
-        sig fold : {A S B:type}
-                -> (result:t A S)
-                -> (onSuccess:A -> Bool -> S -> B)
-                -> (onFailure:String? -> Bool -> S -> B)
-                -> B
-    end
+sig Result : sig struct
+    sig t : (element:type) -> (source:type) -> type
+    sig fold : {A S B:type}
+            -> (result:t A S)
+            -> (onSuccess:A -> Bool -> S -> B)
+            -> (onFailure:String? -> Bool -> S -> B)
+            -> B
+end
 
-val Result =
-    val struct
-        val t = A S =>
-            | Success : (element:A) -> (consumed:Bool) -> (source:S) -> Result A S
-            | Failure : (reason:String?) -> (consumed:Bool) -> (source:S) -> Result A S
+val Result = val struct
+    val t = A S =>
+        | Success : (element:A) -> (consumed:Bool) -> (source:S) -> Result A S
+        | Failure : (reason:String?) -> (consumed:Bool) -> (source:S) -> Result A S
 
-        val fold =
-            | Success a c s => onSuccess _ => onSuccess a c s
-            | Failure r c s => _ onFailure => onFailure r c s
-    end
+    val fold =
+        | Success a c s => onSuccess _ => onSuccess a c s
+        | Failure r c s => _ onFailure => onFailure r c s
+end

@@ -5,36 +5,35 @@ val Id = e => e
 
 -{ Functor, Applicative and Monad }-
 
-val Functor : category.functor.Api Id =
-    val struct
-        val map = a f => f a
+sig Functor : category.functor.Api Id
+val Functor = val struct
+    val map = a f => f a
 
-        val Laws =
-            val struct
-                val ''map id = id'' =
-                    refl
+    val Laws-Functor = val struct
+        val ''map id = id'' =
+            refl
 
-                val ''(map f) <| (map g) = map (f <| g)'' =
-                    refl
-            end
+        val ''(map f) <| (map g) = map (f <| g)'' =
+            refl
     end
+end
 
-val Applicative : category.applicative.Api Id =
-    val struct
-        open Functor
+sig Applicative : category.applicative.Api Id
+val Applicative = val struct
+    open Functor
 
-        val pure = std.core.id
-        val product = f a => (f,a)
+    val pure = std.core.id
+    val product = f a => (f,a)
 
-        val Laws = val struct end
-    end
+    val Laws-Applicative = val struct end
+end
 
-val Monad : category.monad.Api Id =
-    val struct
-        open Applicative
+sig Monad : category.monad.Api Id
+val Monad = val struct
+    open Applicative
 
-        val join = std.core.id
+    val join = std.core.id
 
-        val Laws = val struct end
-   end
+    val Laws-Monad = val struct end
+end
 

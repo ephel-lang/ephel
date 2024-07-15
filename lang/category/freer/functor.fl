@@ -3,11 +3,10 @@ open category
 open freer.spec
 
 sig Functor : (T:type -> type) -> functor.Api T -> functor.Api (Free T)
-val Functor : T F =>
-    val struct
-        open functor.Api (Free T)
+val Functor : T F => val struct
+    open functor.Api (Free T)
 
-        sig map = f =>
-            | Return v => Return (f v)
-            | Bind {B} b g => Bind {B} b (map f <| g)
-    end
+    sig map = f =>
+        | Return v => Return (f v)
+        | Bind {B} b g => Bind {B} b (map f <| g)
+end

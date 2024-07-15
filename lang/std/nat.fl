@@ -22,27 +22,24 @@ val Equals =
     end
 
 sig Monoid : algebra.monoid.Api
-val Monoid =
-    val struct
-        val neutral = Zero
-        val combine =
-            | Zero => std.core.id
-            | Succ a => b => Succ (combine a b)
+val Monoid = val struct
+    val neutral = Zero
+    val combine =
+        | Zero => std.core.id
+        | Succ a => b => Succ (combine a b)
 
-        val Laws-SemiGroup =
-            val struct
-                val ''(a + b) + c = a + (b + c)'' =
-                    | Zero    => refl
-                    | Succ a' => {b c} => congruent Succ (''(a + b) + c = a + (b + c)'' a' {b c})
-            end
-
-        val Laws-Monoid =
-            val struct
-                val ''a = neutral + a'' =
-                    refl
-
-                val ''a = a + neutral'' =
-                    | Zero    => refl
-                    | Succ a' => congruent Succ (''a = a + neutral'' a')
-            end
+    val Laws-SemiGroup = val struct
+        val ''(a + b) + c = a + (b + c)'' =
+            | Zero    => refl
+            | Succ a' => {b c} => congruent Succ (''(a + b) + c = a + (b + c)'' a' {b c})
     end
+
+    val Laws-Monoid = val struct
+        val ''a = neutral + a'' =
+            refl
+
+        val ''a = a + neutral'' =
+            | Zero    => refl
+            | Succ a' => congruent Succ (''a = a + neutral'' a')
+    end
+end

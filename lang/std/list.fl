@@ -46,20 +46,19 @@ val size =
 
 -{ Functor, Applicative and Monad }-
 
-val Functor : category.functor.Api [_] =
-    val struct
-        val map = f =>
-            | []     => []
-            | h :: t => f h :: map f t
+sig Functor : category.functor.Api [_]
+val Functor = val struct
+    val map = f =>
+        | []     => []
+        | h :: t => f h :: map f t
 
-        val Laws =
-            val struct
-                val ''map id = id'' =
-                    | []     => refl
-                    | h :: t => congruent (h ::_) (''map id = id'' t)
+    val Laws-Functor = val struct
+        val ''map id = id'' =
+            | []     => refl
+            | h :: t => congruent (h ::_) (''map id = id'' t)
 
-                val ''map f <| map g = map (f <| g)'' =
-                    | []     => refl
-                    | h :: t => congruent ((f <| g) h ::_) (''map f <| map g = map (f <| g)'' t)
-            end
+        val ''map f <| map g = map (f <| g)'' =
+            | []     => refl
+            | h :: t => congruent ((f <| g) h ::_) (''map f <| map g = map (f <| g)'' t)
     end
+end

@@ -1,7 +1,6 @@
 sig Equals : type -> type
-val Equals = F =>
-    sig struct
-        _==_ : F -> F -> std.bool.Bool
-    end
+val Equals = F => sig struct
+    _==_ : F -> F -> std.bool.Bool
+end
 
 val Api : sig of Equals = Equals

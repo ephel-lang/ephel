@@ -1,21 +1,18 @@
 sig Traverse : (type -> type) -> (type -> type) -> type
-val Traverse = T F =>
-    sig struct
-        sig traverse : {A B:type} -> (A -> F B) -> T A -> F (T B)
-    end
+val Traverse = T F => sig struct
+    sig traverse : {A B:type} -> (A -> F B) -> T A -> F (T B)
+end
 
 sig Sequence : (type -> type) -> (type -> type) -> type
-val Sequence = T F =>
-    sig struct
-        sig sequence : {A:type} -> T (F A) -> F (T A)
-    end
+val Sequence = T F => sig struct
+    sig sequence : {A:type} -> T (F A) -> F (T A)
+end
 
 sig Traversable : (type -> type) -> (type -> type) -> type
-val Api = T F =>
-    sig struct
-        open Traverse T F
-        open Sequence T F
-    end
+val Api = T F => sig struct
+    open Traverse T F
+    open Sequence T F
+end
 
 sig Api =: sig of Traversable = Traversable
 
@@ -38,4 +35,3 @@ val WithMonad = T F monad =>
         val traverse = bind
         val sequence = traverse id
     end
-

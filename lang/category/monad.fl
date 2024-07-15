@@ -1,17 +1,15 @@
 sig Return : (type -> type) -> type
-val Return = F =>
-    sig struct
-        open applicative.Pure F
-        val return : sig of pure = pure
-    end
+val Return = F => sig struct
+    open applicative.Pure F
+    val return : sig of pure = pure
+end
 
 sig Bind : (type -> type) -> type = F =>
-val Bind = F =>
-    sig struct
-        sig bind : {A B:type} -> F A -> (A -> F B) -> F B
-        val _>>=_ : sig of bind = bind
-        val let*_in_ : sig of bind = bind
-    end
+val Bind = F => sig struct
+    sig bind : {A B:type} -> F A -> (A -> F B) -> F B
+    val _>>=_ : sig of bind = bind
+    val let*_in_ : sig of bind = bind
+end
 
 -{
     For instance with options, this syntax simplifies expressiveness
@@ -25,28 +23,25 @@ val Bind = F =>
 }-
 
 sig Join : (type -> type) -> type
-val Join = F =>
-    sig struct
-        sig join : {A:type} -> F (F A) -> F A
-    end
+val Join = F => sig struct
+    sig join : {A:type} -> F (F A) -> F A
+end
 
 sig Monad : (type -> type) -> type
-val Monad = F =>
-    sig struct
-        open category.applicative.Api F
+val Monad = F => sig struct
+    open category.applicative.Api F
 
-        open Return F
-        open Bind F
-        open Join F
+    open Return F
+    open Bind F
+    open Join F
 
-        val bind = a f =>
-            let open std.core in
-            f <$> a |> join
+    val bind = a f =>
+        let open std.core in
+        f <$> a |> join
 
-        sig Laws-Monad =
-            sig struct
-                -- Laws are missing here
-            end
+    sig Laws-Monad = sig struct
+        -- Laws are missing here
     end
+end
 
 val Api : sig of Monad = Monad

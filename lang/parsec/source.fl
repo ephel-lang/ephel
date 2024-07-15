@@ -1,16 +1,14 @@
 open std.option
 open std.or
 
-sig Source :
-    sig struct
-        sig e : type
-        sig t : type
+sig Source : sig struct
+    sig e : type
+    sig t : type
 
-        sig next : t -> e? * t
-    end
+    sig next : t -> e? * t
+end
 
-sig Construct :
-    sig struct
-        sig t : type
-        sig create : (filename:String?) -> t -> (S:Source)*S.t Or String
-    end
+sig Construct : sig struct
+    sig t : type
+    sig create : (filename:String?) -> t -> (S:Source)*S.t Or String
+end

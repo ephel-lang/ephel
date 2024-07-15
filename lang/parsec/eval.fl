@@ -5,52 +5,50 @@ open dsl.begin-end
 open parsec.result
 open parsec.parser
 
-sig Eval : (P:Parser) ->
-    sig struct
-        sig eos : P Unit
-        sig return : {A:type} -> A -> (P A)
-        sig fails : {A:type} -> String? -> P A
-        sig satisfy : {A:type} -> P A -> (predicate:A -> Bool) -> P A
-        sig lazy : {A:type} -> (Unit -> P A) -> P A
-        sig try : {A:type} -> P A -> P A
-        sig lookahead : {A:type} -> P A -> P A
-        sig fix : {A:type} -> (P A -> P A) -> P A
-    end
+sig Eval : (P:Parser) -> sig struct
+    sig eos : P Unit
+    sig return : {A:type} -> A -> (P A)
+    sig fails : {A:type} -> String? -> P A
+    sig satisfy : {A:type} -> P A -> (predicate:A -> Bool) -> P A
+    sig lazy : {A:type} -> (Unit -> P A) -> P A
+    sig try : {A:type} -> P A -> P A
+    sig lookahead : {A:type} -> P A -> P A
+    sig fix : {A:type} -> (P A -> P A) -> P A
+end
 
-val Eval = P =>
-    val struct
-        val eos =
-            | source, value =>                                      -- unpack
-                begin source.next value match
-                | Some e, s => Failure none false (source,value)    -- pack
-                | None, s => Success unit false (source,value)      -- pack
-                end
+val Eval = P => val struct
+    val eos =
+        | source, value =>                                      -- unpack
+            begin source.next value match
+            | Some e, s => Failure none false (source,value)    -- pack
+            | None, s => Success unit false (source,value)      -- pack
+            end
 
-        val return = result => Success result false -- Source is implicit / Point free
+    val return = result => Success result false -- Source is implicit / Point free
 
-        val fails = reason => Failure reason false -- Source is implicit / Point free
+    val fails = reason => Failure reason false -- Source is implicit / Point free
 
-        val satisfy = parser predicate => source =>
-            fold (parser source)
-                (element consumed source =>
-                    if predicate element
-                    then (_ => Success element consumed source)
-                    else (_ => Failure none false source)
-                )
-                Failure
+    val satisfy = parser predicate => source =>
+        fold (parser source)
+            (element consumed source =>
+                if predicate element
+                then (_ => Success element consumed source)
+                else (_ => Failure none false source)
+            )
+            Failure
 
-        val lazy = parser => source => parser unit source
+    val lazy = parser => source => parser unit source
 
-        val try = parser => source =>
-            fold (parser source)
-                Success
-                (reason _ source => Failure reason false source)
+    val try = parser => source =>
+        fold (parser source)
+            Success
+            (reason _ source => Failure reason false source)
 
-       val lookahead = parser => source =>
-            fold (parser source)
-                (element _ _ => Success element false source)
-                (reason _ _ => Failure reason false source)
+   val lookahead = parser => source =>
+        fold (parser source)
+            (element _ _ => Success element false source)
+            (reason _ _ => Failure reason false source)
 
-       val fix = f => source => f (fix f) source
-    end
+   val fix = f => source => f (fix f) source
+end
 

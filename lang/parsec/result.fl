@@ -1,5 +1,5 @@
-open std.core.bool
-open std.core.option
+open std.bool
+open std.option
 
 sig Result :
     sig struct

@@ -1,5 +1,5 @@
-open std.core.unit
-open std.core.option
+open std.unit
+open std.option
 open dsl.-if-then-else-
 open parsec.result
 open parsec.parser

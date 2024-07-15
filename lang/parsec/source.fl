@@ -1,4 +1,5 @@
-open std.core.option
+open std.option
+open std.or
 
 sig Source :
     sig struct
@@ -8,7 +9,8 @@ sig Source :
         sig Construct :
             sig struct
                 sig c : type
-                sig create : String? -> c - t
+                sig create : (filename:String?) -> c -> t Or String
+                -- Here the variable name is just for the documentation
             end
 
         sig next : t -> e? * t

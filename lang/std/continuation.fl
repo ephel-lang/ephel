@@ -1,0 +1,43 @@
+-- Work in progress
+
+-{ Prelude }-
+
+open std.core
+
+-{ Continuation type definition }
+
+sig Continuation : type -> type
+val Continuation = A => {R:Type} -> (A -> R) -> R
+
+-{ Functor, Applicative and Monad }-
+
+sig Functor : category.functor.Api Continuation
+val Functor = val struct
+    val map = f c => k => c (f |> k)
+
+    val Laws-Functor =
+        val struct
+            val ''map id = id'' = ??
+
+            val ''map f <| map g = map (f <| g)'' = ??
+        end
+end
+
+sig Applicative : category.applicative.Api Continuation
+val Applicative = val struct
+    open Functor
+
+    val pure = c => k => k c
+    val product = ca cb => k => ca (a => cb (b => k (a, b)))
+
+    val Laws-Applicative = val struct end
+end
+
+sig Monad : category.monad.Api Continuation
+val Monad = val struct
+    open Applicative
+
+    val join = c => k => c (c' => c' k)
+
+    val Laws-Monad = val struct end
+end

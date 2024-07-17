@@ -21,7 +21,7 @@ val Defer = let open unit in A => Unit -> A
 
 -{ Explicit type annotation }-
 
-sig <_>_ : (A:type) -> A -> A (infix 200)
-val <_>_ = _ => id
+sig {a}_as_{A} : (A:type) -> (a:A) -> A (linfix 200)
+val _as_ = _ => id
 
---  Examples: <Int> 1, <Type> Int, <<Type> Int> 1
+--  Examples: 1 as Int, Int as Type, 1 as Int as Type

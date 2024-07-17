@@ -1,8 +1,10 @@
+open parsec.parser
+
 sig Atom : (P : Parser) ->
     let e = P.source.e in sig struct
-    sig any : (P e).t
-    val atom : e -> (P e).t
-    val not : {A:type} -> (P A).t -> (P e).t
+    sig any : P.t e
+    val atom : e -> P.t e
+    val not : {A:type} -> P.t A -> P.t e
 end
 
 val Atom = P => val struct

@@ -2,7 +2,7 @@ open parser.result
 open parser.source
 
 sig Parser : type -> type
-val Parser = A => sig struct
+val Parser = sig struct
     sig source: Source
-    sig t: source.t -> Result.t A source.t
+    sig t: (A:type) -> source.t -> Result.t A source.t
 end

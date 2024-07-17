@@ -77,3 +77,14 @@ val example : Option String =
 -- Of course such mixfix prohibits by construction snake case naming convention.
 -- Nevertheless, the language accept kebab case as illustrated with the `to-string` function.
 
+-{ Variable identification }-
+
+-- Sometime we would like to change the order of the variables.
+-- This can be done thanks to a template where names are given
+-- and each name should be reflected in the type in ordert to
+-- find the right order when desugaring terms
+
+sig {a}_as_{A} : (A:type) -> (a:A) -> A (linfix 200)
+val _as_ = _ => id
+
+-- 1 as Int == _as_ Int 1

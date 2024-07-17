@@ -9,6 +9,6 @@ sig Source : sig struct
 end
 
 sig Construct : sig struct
-    sig t : type
-    sig create : (filename:String?) -> t -> (S:Source)*S.t Or String
+    sig c : type
+    sig create : (filename:String?) -> t -> (source:Source)*source.t Or String
 end

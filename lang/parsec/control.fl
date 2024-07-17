@@ -1,0 +1,52 @@
+-{ Prelude }-
+
+open std.core
+open parsec.parser
+
+-{ Functor, Applicative and Monad }-
+
+sig Functor : category.functor.Api Parser.t
+val Functor = val struct
+    val map = f =>
+        | Success e c s => Success (f e) c s
+        | Failure r c s => Failure r c s
+
+    val Laws-Functor =
+        val struct
+            val ''map id = id'' =
+                | Success _ _ _ => refl
+                | Failure _ _ _ => refl
+
+            val ''map f <| map g = map (f <| g)'' =
+                | Success _ _ _ => refl
+                | Failure _ _ _ => refl
+        end
+end
+
+sig Applicative : category.applicative.Api Parser.t
+val Applicative = val struct
+    open Functor
+
+    val pure = some
+    val product =
+        let open dsl.begin-end in
+        | Success f c1 s =>
+            begin
+            | Success e c2 s => Success (f e) c s
+            | Failure r c s => Failure r c s
+            end
+        | Failure r c s => Failure r c s
+
+    val Laws-Applicative = val struct end
+end
+
+sig Monad : category.monad.Api Parser.t
+val Monad = val struct
+    open Applicative
+
+    val join =
+        | Success a _ _ => a
+        | Failure r c s => Failure r c s
+
+    val Laws-Monad = val struct end
+end

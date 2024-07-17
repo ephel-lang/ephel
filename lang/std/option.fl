@@ -49,10 +49,13 @@ val Applicative = val struct
 
     val pure = some
     val product =
+        let open dsl.begin-end in
         | None   => _ => None
         | Some f =>
+            begin
             | None   => None
             | Some a => Some (f,a)
+            end
 
     val Laws-Applicative = val struct end
 end

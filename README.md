@@ -8,6 +8,7 @@ The functional paradigm is dedicated to the expression of behaviors, while the a
 
 References:
 - [Parsing Mixfix Operators](https://www.cse.chalmers.se/~nad/publications/danielsson-norell-mixfix.pdf)
+- [Parsing Mixfix Expressions](https://d-nb.info/1000360903/34)
 - [The calculus of constructions](https://hal.inria.fr/inria-00076024/document)
 - [A simple type-theoretic language: Mini-TT](https://www.cse.chalmers.se/~bengt/papers/GKminiTT.pdf)
 - [ΠΣ: Dependent Types without the Sugar](http://www.cs.nott.ac.uk/~psztxa/publ/pisigma-new.pdf)

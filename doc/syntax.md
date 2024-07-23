@@ -9,7 +9,7 @@ signature ::=
     'sig' id ':' term infix?
     
 value ::=
-    'val' id (':' term infix?)? =' term
+    'val' id (':' term infix?)? '=' term
 
 term ::=
     literal
@@ -66,15 +66,15 @@ structural ::=  -- To be reconsidered ...
 open ::=
     'open' term
     
- equality ::=
+equality ::=
     'refl'
     'subst' term 'by' term
     term '=' term
     
- type ::=
+type ::=
     'type'   
     
- ambient ::=
+ambient ::=
     name
     capability
     process

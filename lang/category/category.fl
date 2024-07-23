@@ -1,6 +1,6 @@
 -{ Local mixfix to be considered here }-
 
-sig Category : (_~>_: type -> type -> type) -> type
+sig Category : (_~>_: type -> type -> type (infix 200)) -> type
 val Category = _~>_ => sig struct
   sig id: {A:type} -> A ~> A
   sig compose : {A B C:type} -> B ~> C -> A ~> B -> A ~> C

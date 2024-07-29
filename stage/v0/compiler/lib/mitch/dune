@@ -1,0 +1,5 @@
+(library
+ (name mitch)
+ (public_name mitch)
+ (libraries mitch.lang mitch.ir mitch.transpiler)
+ (modules_without_implementation mitch))

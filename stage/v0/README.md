@@ -1,7 +1,9 @@
 # Stage 0
 
 This is the first minimal language to be compiled. It does not manage types and accept 
-the code without any kind of verification.
+the code without any kind of verification. 
+
+Source: 
 
 ### Concrete Syntax
 
@@ -13,13 +15,12 @@ value ::=
     'val' id '= term
 
 term ::=
+    group
     literal
     id
     functional
     product
     coproduct
-    type
-    group
 
 group ::= 
     '(' term ')' 
@@ -31,8 +32,7 @@ literal ::=
   
 functional_term ::= 
     -- abstraction and PM
-    (id)+ '=>' term
-    ('|' term => term)+
+    (id)+ '=>' term   
     -- application   
     term term
     -- let binding
@@ -41,7 +41,12 @@ functional_term ::=
 product ::=
     term ',' term
     'fst' term
-    'snd' term    
+    'snd' term  
+    
+coproduct ::=
+    'case' id term term
+    'inl' term
+    'inr' term      
 ```
 
 ### Abstract Syntax Tree

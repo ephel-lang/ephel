@@ -1,0 +1,5 @@
+(library
+ (name mitch_lang)
+ (public_name mitch.lang)
+ (libraries mitch.utils)
+ (modules_without_implementation term))

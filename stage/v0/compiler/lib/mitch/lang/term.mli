@@ -22,3 +22,5 @@ type _ t =
   (* Extension *)
   | Let : string * 'a t * 'b t -> 'b t
   | Rec : string * ('a, 'b) tFun t -> ('a, 'b) tFun t
+  (* FFI *)
+  | Ffi : string * int -> 'a t

@@ -22,3 +22,5 @@ type t =
   | DUP of int * string
   | DROP of int * string
   | SWAP
+  (* Foreign Function Interface *)
+  | FFI of string * int

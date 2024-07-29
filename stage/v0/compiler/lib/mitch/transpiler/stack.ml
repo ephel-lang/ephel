@@ -4,6 +4,14 @@ type t =
 
 let fold ~value ~variable = function VAL s -> value s | VAR s -> variable s
 
+let rec remove n s =
+  if n = 0
+  then Ok s
+  else
+    match s with
+    | [] -> Error "Cannot remove from an empty stack"
+    | _ :: s -> remove (n - 1) s
+
 let rec render_stack ppf =
   let open Format in
   function

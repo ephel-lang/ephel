@@ -63,44 +63,54 @@ and compile :
     (o, VAL n :: s)
   (* Sum *)
   | Inl e ->
-    let+ o, s = compile e s in
-    (o @ [ LEFT ], VAL "left" :: List.tl s)
+    let* o, s = compile e s in
+    let+ s = remove 1 s in
+    (o @ [ LEFT ], VAL "left" :: s)
   | Inr e ->
-    let+ o, s = compile e s in
-    (o @ [ RIGHT ], VAL "right" :: List.tl s)
+    let* o, s = compile e s in
+    let+ s = remove 1 s in
+    (o @ [ RIGHT ], VAL "right" :: s)
   | Case (e, Abs (n, l), Abs (m, r)) ->
     let* e_o, s = compile e s in
-    let* l_o, _ = compile_binding n l (List.tl s) in
-    let+ r_o, _ = compile_binding m r (List.tl s) in
-    (e_o @ [ CASE (l_o, r_o) ], VAL "case" :: List.tl s)
+    let* s = remove 1 s in
+    let* l_o, _ = compile_binding n l s in
+    let+ r_o, _ = compile_binding m r s in
+    (e_o @ [ CASE (l_o, r_o) ], VAL "case" :: s)
   (* Product *)
   | Pair (l, r) ->
     let* r_o, _ = compile r s in
     let+ l_o, _ = compile l (VAL "cdr" :: s) in
     (r_o @ l_o @ [ PAIR ], VAL "pair" :: s)
   | Fst o ->
-    let+ l_o, s = compile o s in
-    (l_o @ [ FST ], VAL "fst" :: List.tl s)
+    let* l_o, s = compile o s in
+    let+ s = remove 1 s in
+    (l_o @ [ FST ], VAL "fst" :: s)
   | Snd o ->
-    let+ l_o, s = compile o s in
-    (l_o @ [ SND ], VAL "snd" :: List.tl s)
+    let* l_o, s = compile o s in
+    let+ s = remove 1 s in
+    (l_o @ [ SND ], VAL "snd" :: s)
   (* Abstraction and Application *)
   | Abs (n, e) ->
     let+ o, _ = compile_binding n e [] in
     ([ LAMBDA (n, o) ], VAL "lambda" :: s)
   | Let (n, e, f) ->
     let* e_o, s = compile e s in
-    let+ l_o, s = compile_binding n f (List.tl s) in
+    let* s' = remove 1 s in
+    let+ l_o, s = compile_binding n f s' in
     (e_o @ l_o, s)
   | App (l, r) ->
     (* TODO: Track partial applications *)
     let* o_l, s = compile l s in
-    let+ o_r, s = compile r s in
-    (o_l @ o_r @ [ APPLY ], VAL "app" :: List.tl (List.tl s))
+    let* o_r, s = compile r s in
+    let+ s = remove 2 s in
+    (o_l @ o_r @ [ APPLY ], VAL "app" :: s)
   | Rec (f, Abs (n, e)) ->
     let* o, s = compile_binding n e [ VAR f ] in
     let+ g, _ = garbage f s in
     ([ LAMBDA_REC (f, n, o @ [ g ]) ], VAL "lambda-rec" :: s)
+  | Ffi (f, a) ->
+    let+ s = remove a s in
+    ([ FFI (f, a) ], VAR "ffi" :: s)
   | _ -> Error ("Cannot compile expression: " ^ Render.Term.to_string e)
 
 let run : type a. a Term.t -> (Objcode.t list, string) result =

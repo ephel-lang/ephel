@@ -12,7 +12,7 @@ flowchart TD
 ```
 
 This compiler is a simple and basic runtime dedicated
-to the interpretation of Nethra like source code.
+to the interpretation of a subset of Ephel source code.
 
 ### Stage 2: Ephel Compiler
 

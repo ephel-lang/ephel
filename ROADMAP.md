@@ -4,15 +4,15 @@
 
 ```mermaid
 flowchart TD
-subgraph v1
-A[Ephel Compiler source code] --> B{{OCaml Ephel Compiler}}
-B --> C[Ephel Compiler ObjCode]
-end
-subgraph v2
-C --> D{{Ocaml ObjCode Interpret}}
-A .-> D
-D --> F[Ephel Compiler ObjCode]
-end
+    Z[v0 - Ephel source code compiler in OCaml] --> Y{{OCaml Compiler}}
+    Y --> X{{v0 - Ephel source code compiler}}
+    G[Ephel ObjCode Interpet in Ocaml] --> H{{OCaml Compiler}}
+    H --> I{{OCaml ObjCode Interpet}}
+    A[V1 - Ephel source code compiler in Ephel] --> X
+    X --> C[v1 - Ephel source code compiler ObjCode]
+    C --> I
+    A .-> I
+    I --> F[v2 - Ephel source code compiler ObjCode]   
 ```
 
 ### Stage 1: Ocaml compiler

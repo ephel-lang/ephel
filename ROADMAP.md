@@ -2,18 +2,25 @@
 
 ## Bootstrap
 
-```mermaid
-flowchart LR
-    A[Source code] -->|Compiler| B(ObjCode)
-    B[ObjCode] -->|Runtime| C(Value)
-```
 
 ### Stage 1: Ocaml compiler
 
-oThis compiler is a simple and basic runtime dedicated
+```mermaid
+flowchart LR
+    A[Source code] -->|Ocaml Compiler| B(ObjCode)
+    B[ObjCode] -->|OCaml Runtime| C(Value)
+```
+
+This compiler is a simple and basic runtime dedicated
 to the interpretation of Nethra like source code.
 
 ### Stage 2: Ephel Compiler
+
+```mermaid
+flowchart LR
+    A[Ephel Compiler source code] -->|Ocaml Compiler| B(Ephel Compiler ObjCode)
+    B[Source code] -->|OCaml Runtime + Ephel Compiler ObjCode| C(ObjCode)
+```
 
 This first compiler written in Ephel produces Compiler bytecode.
 

@@ -2,6 +2,7 @@
 
 ## Bootstrap
 
+```mermaid
 flowchart TD
 subgraph v1
 A[Ephel Compiler source code] --> B{{OCaml Ephel Compiler}}
@@ -12,10 +13,9 @@ C --> D{{Ocaml ObjCode Interpret}}
 A .-> D
 D --> F[Ephel Compiler ObjCode]
 end
+```
 
 ### Stage 1: Ocaml compiler
-
-```mermaid
 
 This compiler is a simple and basic runtime dedicated
 to the interpretation of a subset of Ephel source code.

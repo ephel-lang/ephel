@@ -1,0 +1,4 @@
+(library
+ (name mitch_transpiler)
+ (public_name compiler.transpiler)
+ (libraries preface compiler.lang compiler.ir))

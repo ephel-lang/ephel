@@ -1,10 +1,10 @@
 (lang dune 3.4)
- (name mitch)
+ (name compiler)
  (version 0.1)
  (maintainers "d.plaindoux@free.fr")
  (generate_opam_files true)
  (package
-  (name mitch)
+  (name compiler)
   (synopsis "Compiler of extend lambda-calculus to STACK machine without GC")
   (description "Compiler of extend lambda-calculus to STACK machine without GC")
   (depends

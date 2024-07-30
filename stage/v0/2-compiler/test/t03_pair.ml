@@ -1,7 +1,7 @@
-open Mitch.Lang.Term
-open Mitch.Ir.Objcode
-open Mitch.Ir.Render
-open Mitch.Transpiler
+open Compiler.Lang.Term
+open Compiler.Ir.Objcode
+open Compiler.Ir.Render
+open Compiler.Transpiler
 
 open Preface.Result.Monad (struct
   type t = string

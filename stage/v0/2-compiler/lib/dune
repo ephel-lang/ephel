@@ -1,0 +1,5 @@
+(library
+ (name compiler)
+ (public_name compiler)
+ (libraries compiler.lang compiler.ir compiler.transpiler)
+ (modules_without_implementation compiler))

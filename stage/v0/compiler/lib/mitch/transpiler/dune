@@ -1,4 +1,0 @@
-(library
- (name mitch_transpiler)
- (public_name mitch.transpiler)
- (libraries preface mitch.lang mitch.ir))

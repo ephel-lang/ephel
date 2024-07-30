@@ -6,7 +6,7 @@
 ### Stage 1: Ocaml compiler
 
 ```mermaid
-flowchart LR
+flowchart TD
     A[Source code] -->|Ocaml Compiler| B(ObjCode)
     B[ObjCode] -->|OCaml Runtime| C(Value)
 ```
@@ -17,7 +17,7 @@ to the interpretation of Nethra like source code.
 ### Stage 2: Ephel Compiler
 
 ```mermaid
-flowchart LR
+flowchart TD
     A[Ephel Compiler source code] -->|Ocaml Compiler| B(Ephel Compiler ObjCode)
     B[Source code] -->|OCaml Runtime + Ephel Compiler ObjCode| C(ObjCode)
 ```

@@ -1,7 +1,7 @@
-open Compiler.Lang.Term
-open Compiler.Ir.Objcode
-open Compiler.Ir.Render
-open Compiler.Transpiler
+open Ephel_compiler_lang.Term
+open Ephel_compiler_ir.Objcode
+open Ephel_compiler_ir.Render
+open Ephel_compiler_transpiler
 
 open Preface.Result.Monad (struct
   type t = string

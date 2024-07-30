@@ -1,5 +1,5 @@
-open Mitch_ir
-open Mitch_lang
+open Ephel_compiler_ir
+open Ephel_compiler_lang
 
 module Monad = Preface.Result.Monad (struct
   type t = string

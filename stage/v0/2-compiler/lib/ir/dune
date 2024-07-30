@@ -1,5 +1,5 @@
 (library
- (name mitch_ir)
- (public_name compiler.ir)
- (libraries compiler.utils)
+ (name ephel_compiler_ir)
+ (public_name ephel.compiler.ir)
+ (libraries ephel.compiler.utils)
  (modules_without_implementation objcode))

@@ -1,0 +1,4 @@
+(library
+ (name ephel_parsec)
+ (public_name ephel.parsec)
+ (libraries ephel.parsec.source ephel.parsec.parser))

@@ -1,4 +1,4 @@
 (library
- (name mitch_transpiler)
- (public_name compiler.transpiler)
- (libraries preface compiler.lang compiler.ir))
+ (name ephel_compiler_transpiler)
+ (public_name ephel.compiler.transpiler)
+ (libraries preface ephel.compiler.lang ephel.compiler.ir))

@@ -1,10 +1,10 @@
 (lang dune 3.4)
- (name compiler)
+ (name ephel)
  (version 0.1)
  (maintainers "d.plaindoux@free.fr")
  (generate_opam_files true)
  (package
-  (name compiler)
+  (name ephel)
   (synopsis "Compiler of extend lambda-calculus to STACK machine without GC")
   (description "Compiler of extend lambda-calculus to STACK machine without GC")
   (depends

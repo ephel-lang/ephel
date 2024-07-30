@@ -2,25 +2,25 @@
 
 ## Bootstrap
 
+flowchart TD
+subgraph v1
+A[Ephel Compiler source code] --> B{{OCaml Ephel Compiler}}
+B --> C[Ephel Compiler ObjCode]
+end
+subgraph v2
+C --> D{{Ocaml ObjCode Interpret}}
+A .-> D
+D --> F[Ephel Compiler ObjCode]
+end
 
 ### Stage 1: Ocaml compiler
 
 ```mermaid
-flowchart TD
-    A[Source code] -->|Ocaml Compiler| B(ObjCode)
-    B[ObjCode] -->|OCaml Runtime| C(Value)
-```
 
 This compiler is a simple and basic runtime dedicated
 to the interpretation of a subset of Ephel source code.
 
 ### Stage 2: Ephel Compiler
-
-```mermaid
-flowchart TD
-    A[Ephel Compiler source code] -->|Ocaml Compiler| B(Ephel Compiler ObjCode)
-    B[Source code] -->|OCaml Runtime + Ephel Compiler ObjCode| C(ObjCode)
-```
 
 This first compiler written in Ephel produces Compiler bytecode.
 

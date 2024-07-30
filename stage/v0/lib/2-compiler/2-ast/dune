@@ -1,5 +1,5 @@
 (library
- (name ephel_compiler_lang)
- (public_name ephel.compiler.lang)
+ (name ephel_compiler_ast)
+ (public_name ephel.compiler.ast)
  (libraries ephel.compiler.utils)
  (modules_without_implementation term))

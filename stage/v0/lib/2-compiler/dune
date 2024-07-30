@@ -1,5 +1,5 @@
 (library
  (name ephel_compiler)
  (public_name ephel.compiler)
- (libraries ephel.compiler.lang ephel.compiler.ir ephel.compiler.transpiler)
+ (libraries ephel.compiler.ast ephel.compiler.ir ephel.compiler.transpiler)
  (modules_without_implementation ephel_compiler))

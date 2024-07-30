@@ -1,4 +1,4 @@
-open Ephel.Compiler.Lang.Term
+open Ephel.Compiler.Ast.Term
 open Ephel.Compiler.Ir.Objcode
 open Ephel.Compiler.Ir.Render
 open Ephel.Compiler.Transpiler

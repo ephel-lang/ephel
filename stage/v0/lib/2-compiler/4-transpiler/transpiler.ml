@@ -1,5 +1,5 @@
 open Ephel_compiler_ir
-open Ephel_compiler_lang
+open Ephel_compiler_ast
 
 module Monad = Preface.Result.Monad (struct
   type t = string

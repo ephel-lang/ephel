@@ -1,0 +1,5 @@
+(library
+ (name ephel_parser)
+ (public_name ephel.parser)
+ (libraries ephel.parser.parsec ephel.parser.source)
+ (modules_without_implementation ephel_parser))

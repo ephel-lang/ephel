@@ -28,7 +28,7 @@ It covers:
 - dependent recursive types.
 
 Cf. works on [Nehtra](https://github.com/lambe-lang/nethra) for the type checker and 
-[Mitch](https://github.com/lambe-lang/mitch/) for the execution.
+[Compiler](https://github.com/lambe-lang/mitch/) for the execution.
 
 ### A taste of Ephel functional programming layer
 

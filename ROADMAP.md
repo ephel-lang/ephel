@@ -3,30 +3,29 @@
 ## Bootstrap
 
 ```mermaid
-flowchart TD
-    A[Nethra IR] -->|Ocaml Interpreter| B(Value)
-    E[Nethra IR Compiler] -->|Ocaml Interpret| F(Mitch ObjCode Compiler)
-    C[Mitch ObjCode] -->|Ocaml Runtime| D(Value)
-    G[Nethra IR Compiler] -->|Ocaml Runtime + Mitch ObjCode Compiler| H(Mitch ObjCode Compiler) 
-    
+flowchart LR
+    A[Source code] -->|Compiler| B(ObjCode)
+    B[ObjCode] -->|Runtime| C(Value)
 ```
 
-### Stage 1: Ocaml Nethra Interpreter
+### Stage 1: Ocaml compiler
 
-This interpret is a simple and basic runtime dedicated
-to the interpretation of Nethra code.
+oThis compiler is a simple and basic runtime dedicated
+to the interpretation of Nethra like source code.
 
-### Stage 2: Nethra IR Compiler
+### Stage 2: Ephel Compiler
 
-This first compiler written in Nethra produces Mitch bytecode.
+This first compiler written in Ephel produces Compiler bytecode.
 
-### Stage 3: Ocaml Mitch Runtime
+### Stage 3: Ephel Runtime
 
-Such a runtime allows Ephel code to be executed in another runtime. For this purpose, the Rust, Go, Java, C#, C++, Javascript and WASM runtimes should also be targeted.
+Such a runtime allows Ephel source code to be executed in another runtime. 
+For this purpose, the Rust, Go, Java, C#, C++, Javascript and WASM runtimes 
+should also be targeted.
 
 ## Extensions
 
-### Stage 1: Nethra type checker
+### Stage 1: Type checker
 
-### Stage 2: Higher level language
+### Stage 2: Level language
 

@@ -1,0 +1,5 @@
+(library
+ (name ephel_compiler_lang)
+ (public_name ephel.compiler.lang)
+ (libraries preface ephel.parser ephel.compiler.ast)
+ (modules_without_implementation ephel_compiler_lang))

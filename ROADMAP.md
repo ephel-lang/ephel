@@ -5,30 +5,29 @@
 ```mermaid
 flowchart TD
     Z[v0 - Ephel source code compiler in OCaml] --> Y{{OCaml Compiler}}
-    Y --> X{{v0 - Ephel source code compiler}}
+    Y .-> X{{v0 - Ephel source code compiler}}
     G[Ephel ObjCode Interpet in Ocaml] --> H{{OCaml Compiler}}
-    H --> I{{OCaml ObjCode Interpet}}
+    H .-> I{{OCaml ObjCode Interpet}}
     A[V1 - Ephel source code compiler in Ephel] --> X
-    X --> C[v1 - Ephel source code compiler ObjCode]
+    X .-> C[v1 - Ephel source code compiler ObjCode]
     C --> I
-    A .-> I
-    I --> F[v2 - Ephel source code compiler ObjCode]   
+    A --> I
+    I .-> F[v2 - Ephel source code compiler ObjCode]
 ```
 
-### Stage 1: Ocaml compiler
+### Stage 0: In Ocaml
 
-This compiler is a simple and basic runtime dedicated
-to the interpretation of a subset of Ephel source code.
+A first compiler of a subset of Ephel source code and a runtime dedicated to the interpretation
+are proposed
 
-### Stage 2: Ephel Compiler
+### Stage 1: Ephel Compiler
 
-This first compiler written in Ephel produces Compiler bytecode.
+This first compiler written in Ephel producing Ephel bytecode. Its compilation produces an 
+Ephel source code compiler objcode
 
-### Stage 3: Ephel Runtime
+### Stage 2: Ephel Compiler once again
 
-Such a runtime allows Ephel source code to be executed in another runtime. 
-For this purpose, the Rust, Go, Java, C#, C++, Javascript and WASM runtimes 
-should also be targeted.
+We replay the compilation with the v1.
 
 ## Extensions
 

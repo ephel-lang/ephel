@@ -7,10 +7,10 @@ value ::=
 term ::=
     group
     literal
-    id
     functional
     product
     coproduct
+    ident
 
 group ::=
     '(' term ')'
@@ -20,11 +20,11 @@ literal ::=
 
 functional_term ::=
     -- abstraction and PM
-    (id)+ '=>' term
+    (ident)+ '=>' term
     -- application   
     term term
     -- let binding
-    'let' id = term 'in' term
+    'let' ident = term 'in' term
 
 product ::=
     term ',' term

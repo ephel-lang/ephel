@@ -37,6 +37,9 @@ struct
   let _LPAR_ = string "(" <&> const LPAR
   let _RPAR_ = string ")" <&> const RPAR
   let _IDENT_ = alpha <+> opt_rep (char '_' <|> digit <|> alpha) <&> to_ident
+
+  (* skipped characters *)
+
   let spaces = char_in_string " \t\n\r"
 
   let token =

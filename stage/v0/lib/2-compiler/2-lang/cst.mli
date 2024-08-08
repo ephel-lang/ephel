@@ -1,5 +1,3 @@
-open Ephel_parser_source
-
 type operation =
   | Inl
   | Inr
@@ -10,12 +8,14 @@ type literal =
   | Integer of int
   | String of string
 
-type term =
-  | Ident of string * Region.t
-  | Literal of literal * Region.t
-  | App of term list * Region.t
-  | Abs of string * term * Region.t
-  | Let of string list * term * term * Region.t
-  | BuildIn of operation * Region.t
-  | Pair of term * term * Region.t
-  | Case of string * term * term * Region.t
+type t =
+  | Ident of string
+  | Literal of literal
+  | App of t list
+  | Abs of string list * t
+  | Let of string * t * t
+  | BuildIn of operation
+  | Pair of t * t
+  | Case of string * t * t
+
+type with_location = t * Ephel_parser_source.Region.t

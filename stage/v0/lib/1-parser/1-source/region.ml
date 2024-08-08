@@ -2,6 +2,7 @@ type t = Location.t * Location.t
 
 module Construct = struct
   let create first last = (first, last)
+  let combine (first, _) (_, last) = (first, last)
 end
 
 module Access = struct

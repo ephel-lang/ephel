@@ -2,6 +2,7 @@ type t
 
 module Construct : sig
   val create : Location.t -> Location.t -> t
+  val combine : t -> t -> t
 end
 
 module Access : sig

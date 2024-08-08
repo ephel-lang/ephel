@@ -7,3 +7,6 @@ module Parsec : sig
 end
 
 module type PARSEC = module type of Parsec
+
+type ('a, 'b) parsec =
+  (module PARSEC with type Source.t = 'a and type Source.e = 'b)

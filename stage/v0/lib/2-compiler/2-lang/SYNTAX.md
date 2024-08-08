@@ -1,3 +1,4 @@
+```ebnf
 declaration ::=
     value
 
@@ -35,3 +36,4 @@ coproduct ::=
     'case' term term term
     'inl' term
     'inr' term
+```

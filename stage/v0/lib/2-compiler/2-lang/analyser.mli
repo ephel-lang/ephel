@@ -6,4 +6,9 @@ module Rules
 end
 
 val analyse :
-  (module Specs.PARSEC) -> ('a Ephel_compiler_ast.Term.t, string) result
+  'a.
+     (module Specs.PARSEC
+        with type Source.e = Token.with_location
+         and type Source.t = 'a )
+  -> 'a
+  -> (Cst.term, 'a) Ephel_parser_parsec.Response.t

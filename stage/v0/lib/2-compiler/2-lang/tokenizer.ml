@@ -57,3 +57,10 @@ struct
       <|> _RPAR_
       <|> _IDENT_ )
 end
+
+let tokenize (type a)
+    (module P : Ephel_parser_parsec.Specs.PARSEC
+      with type Source.t = a
+       and type Source.e = char ) =
+  let module M = Tokens (P) in
+  M.token

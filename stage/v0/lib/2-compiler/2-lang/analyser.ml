@@ -38,10 +38,10 @@ struct
 
   let operations =
     token Token.INL
-    <&> (fun (_, r) -> (Cst.BuildIn Cst.Inl, r))
-    <|> (token Token.INR <&> fun (_, r) -> (Cst.BuildIn Cst.Inr, r))
-    <|> (token Token.FST <&> fun (_, r) -> (Cst.BuildIn Cst.Fst, r))
-    <|> (token Token.SND <&> fun (_, r) -> (Cst.BuildIn Cst.Snd, r))
+    <&> (fun r -> (Cst.BuildIn Cst.Inl, snd r))
+    <|> (token Token.INR <&> fun r -> (Cst.BuildIn Cst.Inr, snd r))
+    <|> (token Token.FST <&> fun r -> (Cst.BuildIn Cst.Fst, snd r))
+    <|> (token Token.SND <&> fun r -> (Cst.BuildIn Cst.Snd, snd r))
 
   (* Functional *)
 
@@ -53,9 +53,9 @@ struct
     let t = List.map fst t in
     (Cst.Abs (h :: t, e), Region.Construct.combine r0 r1)
 
-  let application simple_term term =
+  let application term =
     (* term term+ *)
-    ?!(simple_term term <+> term)
+    ?!(term <+> term)
     <+> opt_rep term
     <&> fun (((h, r0), (g, r1)), t) ->
     let r1 = List.fold_left (fun _ (_, r) -> r) r1 t in
@@ -76,8 +76,8 @@ struct
   (* Product *)
 
   (* term ',' term *)
-  let product simple_term term =
-    ?!(simple_term term <+< token Token.PRODUCT)
+  let product term =
+    ?!(term <+< token Token.PRODUCT)
     <+> term
     <&> fun ((lhd, r0), (rhd, r1)) ->
     (Cst.Pair (lhd, rhd), Region.Construct.combine r0 r1)
@@ -106,8 +106,8 @@ struct
     fix (fun term ->
         simple_term term
         <|> abstraction term
-        <|> product simple_term term
-        <|> application simple_term term )
+        <|> product (simple_term term)
+        <|> application (simple_term term) )
 end
 
 let analyse (type a)

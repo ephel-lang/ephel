@@ -11,4 +11,4 @@ val analyse :
         with type Source.t = 'a
          and type Source.e = Token.with_location )
   -> 'a
-  -> (Cst.with_location, 'a) Ephel_parser_parsec.Response.t
+  -> (Cst.with_location, 'a) Response.t

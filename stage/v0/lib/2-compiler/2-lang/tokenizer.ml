@@ -37,25 +37,28 @@ struct
   let _LPAR_ = string "(" <&> const LPAR
   let _RPAR_ = string ")" <&> const RPAR
   let _IDENT_ = alpha <+> opt_rep (char '_' <|> digit <|> alpha) <&> to_ident
+  let spaces = char_in_string " \t\n\r"
 
   let token =
-    localized
-      ( _INL_
-      <|> _INR_
-      <|> _CASE_
-      <|> _VAL_
-      <|> _LET_
-      <|> _IN_
-      <|> _FST_
-      <|> _SND_
-      <|> _INTEGER_
-      <|> _STRING_
-      <|> _IMPLY_
-      <|> _EQUAL_
-      <|> _PRODUCT_
-      <|> _LPAR_
-      <|> _RPAR_
-      <|> _IDENT_ )
+    spaces
+    >+> localized
+          ( _INL_
+          <|> _INR_
+          <|> _CASE_
+          <|> _VAL_
+          <|> _LET_
+          <|> _IN_
+          <|> _FST_
+          <|> _SND_
+          <|> _INTEGER_
+          <|> _STRING_
+          <|> _IMPLY_
+          <|> _EQUAL_
+          <|> _PRODUCT_
+          <|> _LPAR_
+          <|> _RPAR_
+          <|> _IDENT_ )
+    <+< spaces
 end
 
 let tokenize (type a)

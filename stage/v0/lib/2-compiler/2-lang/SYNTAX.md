@@ -22,7 +22,7 @@ functional_term ::=
     -- abstraction and PM
     (ident)+ '=>' term
     -- application   
-    term term
+    term term+
     -- let binding
     'let' ident = term 'in' term
 

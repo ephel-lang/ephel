@@ -24,22 +24,90 @@ struct
   let token e = any <?> function t, _ -> t = e
   let key s = token (Token.IDENT s)
 
-  (* Production rules *)
+  (* Identifier *)
+
+  let ident = expect identifier
+
+  (* Group, Literal and variable *)
 
   let group term = key "(" >+> term <+< key ")"
   let literal = expect string_or_int
-  let ident = expect identifier
+  let variable = ident <&> fun (s, r) -> (Cst.Ident s, r)
 
-  let functional term =
+  (* Operation *)
+
+  let operations =
+    token Token.INL
+    <&> (fun (_, r) -> (Cst.BuildIn Cst.Inl, r))
+    <|> (token Token.INR <&> fun (_, r) -> (Cst.BuildIn Cst.Inr, r))
+    <|> (token Token.FST <&> fun (_, r) -> (Cst.BuildIn Cst.Fst, r))
+    <|> (token Token.SND <&> fun (_, r) -> (Cst.BuildIn Cst.Snd, r))
+
+  (* Functional *)
+
+  let abstraction term =
+    (* (ident)+ '=>' term *)
     ?!(ident <+> opt_rep ident <+< token Token.IMPLY)
     <+> term
     <&> fun (((h, r0), t), (e, r1)) ->
     let t = List.map fst t in
     (Cst.Abs (h :: t, e), Region.Construct.combine r0 r1)
 
-  (* Main production rule *)
+  let application simple_term term =
+    (* term term+ *)
+    ?!(simple_term term <+> term)
+    <+> opt_rep term
+    <&> fun (((h, r0), (g, r1)), t) ->
+    let r1 = List.fold_left (fun _ (_, r) -> r) r1 t in
+    let t = List.map fst t in
+    (Cst.App (h :: g :: t), Region.Construct.combine r0 r1)
 
-  let term = fix (fun term -> group term <|> literal <|> functional term)
+  let let_binding term =
+    (* 'let' ident = term 'in' term *)
+    token Token.LET
+    >+> ident
+    <+< token Token.EQUAL
+    <+> term
+    <+< token Token.IN
+    <+> term
+    <&> fun (((id, r0), (v, _)), (b, r1)) ->
+    (Cst.Let (id, v, b), Region.Construct.combine r0 r1)
+
+  (* Product *)
+
+  (* term ',' term *)
+  let product simple_term term =
+    ?!(simple_term term <+< token Token.PRODUCT)
+    <+> term
+    <&> fun ((lhd, r0), (rhd, r1)) ->
+    (Cst.Pair (lhd, rhd), Region.Construct.combine r0 r1)
+
+  (* case ident term term *)
+  let case term =
+    token Token.CASE
+    >+> ident
+    <+> term
+    <+> term
+    <&> fun (((id, r0), (left, _)), (right, r1)) ->
+    (Cst.Case (id, left, right), Region.Construct.combine r0 r1)
+
+  (* Main rule *)
+
+  let simple_term term =
+    fix (fun simple_term ->
+        group term
+        <|> operations
+        <|> literal
+        <|> variable
+        <|> let_binding term
+        <|> case simple_term )
+
+  let term =
+    fix (fun term ->
+        simple_term term
+        <|> abstraction term
+        <|> product simple_term term
+        <|> application simple_term term )
 end
 
 let analyse (type a)

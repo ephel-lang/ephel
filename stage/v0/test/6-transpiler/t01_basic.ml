@@ -126,9 +126,9 @@ let cases =
     ; test_case "compile O3" `Quick compile_03
     ; test_case "compile O4" `Quick compile_04
     ; test_case "compile O5" `Quick compile_05
-    ; test_case "compile O6" `Quick
-        compile_06 (*; test_case "compile O7" `Quick compile_07*)
-    ; test_case "compile O8" `Quick
-        compile_08 (*; test_case "compile O9" `Quick compile_09*)
+    ; test_case "compile O6" `Quick compile_06
+      (*; test_case "compile O7" `Quick compile_07*)
+    ; test_case "compile O8" `Quick compile_08
+      (*; test_case "compile O9" `Quick compile_09*)
     ; test_case "compile 10" `Quick compile_10
     ] )

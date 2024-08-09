@@ -1,0 +1,5 @@
+(library
+ (name ephel_compiler_analyzer)
+ (public_name ephel.compiler.analyzer)
+ (libraries preface ephel.parser ephel.compiler.tokenizer)
+ (modules_without_implementation cst ephel_compiler_analyzer))

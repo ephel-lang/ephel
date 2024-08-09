@@ -1,0 +1,4 @@
+(library
+ (name ephel_compiler_optimiser)
+ (public_name ephel.compiler.optimiser)
+ (libraries preface ephel.compiler.ir))

@@ -1,0 +1,4 @@
+(library
+ (name ephel_compiler_normaliser)
+ (public_name ephel.compiler.normaliser)
+ (libraries preface ephel.compiler.ir))

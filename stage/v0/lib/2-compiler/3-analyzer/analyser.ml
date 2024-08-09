@@ -2,6 +2,7 @@
 
 open Ephel_parser_source
 open Ephel_parser_parsec
+open Ephel_compiler_tokenizer
 
 module Rules (Parsec : Specs.PARSEC with type Source.e = Token.with_location) =
 struct

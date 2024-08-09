@@ -6,6 +6,7 @@ open Ephel_parser_parsec
 module Rules (Parsec : Specs.PARSEC with type Source.e = Token.with_location) =
 struct
   open Ephel_parser_parsec.Core (Parsec)
+  open Preface_core.Fun
 
   (* Basic matchers *)
 
@@ -45,25 +46,22 @@ struct
 
   (* Functional *)
 
+  (* (ident)+ '=>' term *)
   let abstraction term =
-    (* (ident)+ '=>' term *)
     ?!(ident <+> opt_rep ident <+< token Token.IMPLY)
     <+> term
     <&> fun (((h, r0), t), (e, r1)) ->
     let t = List.map fst t in
     (Cst.Abs (h :: t, e), Region.Construct.combine r0 r1)
 
+  (* term term+ *)
   let application term =
-    (* term term+ *)
-    ?!(term <+> term)
-    <+> opt_rep term
-    <&> fun (((h, r0), (g, r1)), t) ->
-    let r1 = List.fold_left (fun _ (_, r) -> r) r1 t in
-    let t = List.map fst t in
-    (Cst.App (h :: g :: t), Region.Construct.combine r0 r1)
+    term
+    <&> fun (rhd, r1) (lhd, r0) ->
+    (Cst.App (lhd, rhd), Region.Construct.combine r0 r1)
 
+  (* 'let' ident = term 'in' term *)
   let let_binding term =
-    (* 'let' ident = term 'in' term *)
     token Token.LET
     >+> ident
     <+< token Token.EQUAL
@@ -77,9 +75,9 @@ struct
 
   (* term ',' term *)
   let product term =
-    ?!(term <+< token Token.PRODUCT)
-    <+> term
-    <&> fun ((lhd, r0), (rhd, r1)) ->
+    token Token.PRODUCT
+    >+> term
+    <&> fun (rhd, r1) (lhd, r0) ->
     (Cst.Pair (lhd, rhd), Region.Construct.combine r0 r1)
 
   (* case ident term term *)
@@ -91,7 +89,7 @@ struct
     <&> fun (((id, r0), (left, _)), (right, r1)) ->
     (Cst.Case (id, left, right), Region.Construct.combine r0 r1)
 
-  (* Main rule *)
+  (* Main rules *)
 
   let simple_term term =
     fix (fun simple_term ->
@@ -100,15 +98,14 @@ struct
         <|> literal
         <|> variable
         <|> let_binding term
-        <|> case simple_term )
+        <|> case simple_term
+        <|> abstraction term )
 
   let term =
     fix (fun term ->
-        let simple_term = simple_term term in
-        abstraction term
-        <|> product simple_term
-        <|> application simple_term
-        <|> simple_term )
+        simple_term term
+        <+> (product term <|> application term <|> return id)
+        <&> fun (e, f) -> f e )
 end
 
 let analyse (type a)

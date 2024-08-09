@@ -11,7 +11,7 @@ type literal =
 type t =
   | Ident of string
   | Literal of literal
-  | App of t list
+  | App of t * t
   | Abs of string list * t
   | Let of string * t * t
   | BuildIn of operation

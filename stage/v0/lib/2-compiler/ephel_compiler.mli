@@ -6,3 +6,4 @@ module Transpiler = Ephel_compiler_transpiler
 module Expander = Ephel_compiler_expander
 module Optimiser = Ephel_compiler_optimiser
 module Simplifier = Ephel_compiler_simplifier
+module Normaliser = Ephel_compiler_normaliser

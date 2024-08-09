@@ -9,5 +9,6 @@ module Operator = Operator.Operator
 module Syntax = Syntax.Syntax
 module Literal = Literal.Literal
 module Occurrence = Occurrence.Occurrence
+module Localise = Localise.Localise
 module Parsec = Parsers.Parsec
 module Core = Core.Core

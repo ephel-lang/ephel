@@ -2,6 +2,7 @@ module Tokens
     (Parsec : Ephel_parser_parsec.Specs.PARSEC with type Source.e = char) =
 struct
   open Ephel_parser_parsec.Core (Parsec)
+  open Ephel_parser_parsec.Localise (Parsec)
   open Ephel_parser_parsec.Literal (Parsec)
   open Ephel_parser_source.Utils
   open Preface_core.Fun
@@ -40,20 +41,6 @@ struct
     <+> opt_rep (char_in_string "_-" <|> digit <|> alpha)
     <&> fun (c, l) -> string_of_chars (c :: l)
 
-  (* Token localization *)
-
-  let localized p s =
-    let open Ephel_parser_parsec.Response.Destruct in
-    let open Ephel_parser_parsec.Response.Construct in
-    let open Ephel_parser_source.Region.Construct in
-    let start = Parsec.Source.Access.location s in
-    fold
-      ~success:(fun (a, b, s) ->
-        let finish = Parsec.Source.Access.location s in
-        success ((a, create start finish), b, s) )
-      ~failure:(fun (a, b, s) -> failure (a, b, s))
-      (p s)
-
   (* tokens *)
 
   let _INTEGER_ = integer <&> fun s -> INTEGER s
@@ -70,7 +57,7 @@ struct
 
   let token =
     spaces
-    >+> localized
+    >+> localise
           ( _INTEGER_
           <|> _STRING_
           <|> _IMPLY_

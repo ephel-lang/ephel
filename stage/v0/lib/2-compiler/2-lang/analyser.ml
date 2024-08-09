@@ -104,10 +104,11 @@ struct
 
   let term =
     fix (fun term ->
-        simple_term term
-        <|> abstraction term
-        <|> product (simple_term term)
-        <|> application (simple_term term) )
+        let simple_term = simple_term term in
+        abstraction term
+        <|> product simple_term
+        <|> application simple_term
+        <|> simple_term )
 end
 
 let analyse (type a)

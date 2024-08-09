@@ -20,10 +20,10 @@ literal ::=
     STRING
 
 functional_term ::=
-    -- abstraction and PM
+    -- abstraction
     (ident)+ '=>' term
     -- application   
-    term term+
+    term term
     -- let binding
     'let' ident = term 'in' term
 

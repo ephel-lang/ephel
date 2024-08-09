@@ -48,13 +48,14 @@ struct
 
   (* (ident)+ '=>' term *)
   let abstraction term =
-    ?!(ident <+> opt_rep ident <+< token Token.IMPLY)
+    ?!(rep ident <+< token Token.IMPLY)
     <+> term
-    <&> fun (((h, r0), t), (e, r1)) ->
+    <&> fun (t, (e, r1)) ->
     let t = List.map fst t in
-    (Cst.Abs (h :: t, e), Region.Construct.combine r0 r1)
+    let r0 = List.fold_right (fun _ r -> r) t r1 in
+    (Cst.Abs (t, e), Region.Construct.combine r0 r1)
 
-  (* term term+ *)
+  (* term term *)
   let application term =
     term
     <&> fun (rhd, r1) (lhd, r0) ->

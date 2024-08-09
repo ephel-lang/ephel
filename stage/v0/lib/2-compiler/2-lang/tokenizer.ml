@@ -7,7 +7,17 @@ struct
   open Preface_core.Fun
   open Token
 
-  let to_ident (c, l) = IDENT (string_of_chars (c :: l))
+  let to_token s =
+    match s with
+    | "inl" -> INL
+    | "inr" -> INR
+    | "case" -> CASE
+    | "val" -> VAL
+    | "let" -> LET
+    | "in" -> IN
+    | "fst" -> FST
+    | "snd" -> SND
+    | s -> STRING s
 
   let localized p s =
     let open Ephel_parser_parsec.Response.Destruct in
@@ -21,14 +31,21 @@ struct
       ~failure:(fun (a, b, s) -> failure (a, b, s))
       (p s)
 
-  let _INL_ = string "inl" <&> const INL
-  let _INR_ = string "inr" <&> const INR
-  let _CASE_ = string "case" <&> const CASE
-  let _VAL_ = string "val" <&> const VAL
-  let _LET_ = string "let" <&> const LET
-  let _IN_ = string "in" <&> const IN
-  let _FST_ = string "fst" <&> const FST
-  let _SND_ = string "snd" <&> const SND
+  (* skipped characters *)
+
+  let spaces = char_in_string " \t\n\r"
+
+  let operator =
+    rep (char_in_string "^$+-*/%~@#&!-_?.:*¨°><=[]{}\\|")
+    <&> fun l -> string_of_chars l
+
+  let alpha_num =
+    alpha
+    <+> opt_rep (char_in_string "_-" <|> digit <|> alpha)
+    <&> fun (c, l) -> string_of_chars (c :: l)
+
+  (* tokens *)
+
   let _INTEGER_ = integer <&> fun s -> INTEGER s
   let _STRING_ = Delimited.string <&> fun s -> STRING s
   let _IMPLY_ = string "=>" <&> const IMPLY
@@ -36,30 +53,22 @@ struct
   let _PRODUCT_ = string "," <&> const PRODUCT
   let _LPAR_ = string "(" <&> const LPAR
   let _RPAR_ = string ")" <&> const RPAR
-  let _IDENT_ = alpha <+> opt_rep (char '_' <|> digit <|> alpha) <&> to_ident
+  let _OPERATOR_ = operator <&> fun s -> IDENT s
+  let _IDENT_ = alpha_num <&> to_token
 
-  (* skipped characters *)
-
-  let spaces = char_in_string " \t\n\r"
+  (* Main entry *)
 
   let token =
     spaces
     >+> localized
-          ( _INL_
-          <|> _INR_
-          <|> _CASE_
-          <|> _VAL_
-          <|> _LET_
-          <|> _IN_
-          <|> _FST_
-          <|> _SND_
-          <|> _INTEGER_
+          ( _INTEGER_
           <|> _STRING_
           <|> _IMPLY_
           <|> _EQUAL_
           <|> _PRODUCT_
           <|> _LPAR_
           <|> _RPAR_
+          <|> _OPERATOR_
           <|> _IDENT_ )
     <+< spaces
 end

@@ -6,18 +6,41 @@ struct
   open Ephel_parser_source.Utils
   open Preface_core.Fun
   open Token
+  module StringMap = Map.Make (String)
+
+  let keywords =
+    StringMap.of_seq
+    @@ List.to_seq
+         [
+           ("inl", INL)
+         ; ("inr", INR)
+         ; ("case", CASE)
+         ; ("fst", IN)
+         ; ("snd", IN)
+         ; ("val", VAL)
+         ; ("let", LET)
+         ; ("in", IN)
+         ]
 
   let to_token s =
-    match s with
-    | "inl" -> INL
-    | "inr" -> INR
-    | "case" -> CASE
-    | "val" -> VAL
-    | "let" -> LET
-    | "in" -> IN
-    | "fst" -> FST
-    | "snd" -> SND
-    | s -> STRING s
+    match StringMap.find_opt s keywords with Some e -> e | None -> STRING s
+
+  (* skipped characters *)
+
+  let spaces = char_in_string " \t\n\r"
+
+  (* basic parsers *)
+
+  let operator =
+    rep (char_in_string "^$+-*/%~@#&!-_?.:*¨°><=[]{}\\|")
+    <&> fun l -> string_of_chars l
+
+  let alpha_num =
+    alpha
+    <+> opt_rep (char_in_string "_-" <|> digit <|> alpha)
+    <&> fun (c, l) -> string_of_chars (c :: l)
+
+  (* Token localization *)
 
   let localized p s =
     let open Ephel_parser_parsec.Response.Destruct in
@@ -30,19 +53,6 @@ struct
         success ((a, create start finish), b, s) )
       ~failure:(fun (a, b, s) -> failure (a, b, s))
       (p s)
-
-  (* skipped characters *)
-
-  let spaces = char_in_string " \t\n\r"
-
-  let operator =
-    rep (char_in_string "^$+-*/%~@#&!-_?.:*¨°><=[]{}\\|")
-    <&> fun l -> string_of_chars l
-
-  let alpha_num =
-    alpha
-    <+> opt_rep (char_in_string "_-" <|> digit <|> alpha)
-    <&> fun (c, l) -> string_of_chars (c :: l)
 
   (* tokens *)
 

@@ -2,12 +2,14 @@ open Ephel.Compiler.Ast.Term
 open Ephel.Compiler.Objcode.Objcode
 open Ephel.Compiler.Objcode.Render
 open Ephel.Compiler.Transpiler
+open Ephel.Compiler.Expander
+open Ephel.Compiler.Optimiser
 
 open Preface.Result.Monad (struct
   type t = string
 end)
 
-let compile s = return s >>= Transpiler.run
+let compile s = return s >>= Transpiler.run <&> Expander.run >>= Optimiser.run
 
 let compile_01 () =
   let result = compile (Pair (Int 1, Int 2))
@@ -19,7 +21,7 @@ let compile_01 () =
 
 let compile_02 () =
   let result = compile (Fst (Pair (Int 1, Int 2)))
-  and expected = [ PUSH (INT 2); PUSH (INT 1); PAIR; FST ] in
+  and expected = [ PUSH (INT 1) ] in
   Alcotest.(check (result string string))
     "compile fst (1,2)"
     (return expected <&> to_string)
@@ -27,7 +29,7 @@ let compile_02 () =
 
 let compile_03 () =
   let result = compile (Snd (Pair (Int 1, Int 2)))
-  and expected = [ PUSH (INT 2); PUSH (INT 1); PAIR; SND ] in
+  and expected = [ PUSH (INT 2) ] in
   Alcotest.(check (result string string))
     "compile snd (1,2)"
     (return expected <&> to_string)

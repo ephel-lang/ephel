@@ -1,4 +1,4 @@
-open Ephel_compiler_ir
+open Ephel_compiler_objcode
 
 type t =
   | Var of string

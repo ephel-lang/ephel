@@ -1,4 +1,4 @@
 (library
  (name ephel_compiler_simplifier)
  (public_name ephel.compiler.simplifier)
- (libraries ephel.compiler.ir))
+ (libraries ephel.Compiler.Objcode))

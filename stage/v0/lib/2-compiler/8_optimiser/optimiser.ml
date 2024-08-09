@@ -1,4 +1,4 @@
-open Ephel_compiler_ir
+open Ephel_compiler_objcode
 open Objvalue
 
 module Monad = Preface.Result.Monad (struct

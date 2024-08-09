@@ -1,1 +1,1 @@
-val run : Ephel_compiler_ir.Objcode.t list -> Ephel_compiler_ir.Objcode.t list
+val run : Ephel_compiler_objcode.Objcode.t list -> Ephel_compiler_objcode.Objcode.t list

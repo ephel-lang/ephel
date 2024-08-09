@@ -1,4 +1,4 @@
 (library
  (name ephel_compiler_expander)
  (public_name ephel.compiler.expander)
- (libraries preface ephel.compiler.ir))
+ (libraries preface ephel.Compiler.Objcode))

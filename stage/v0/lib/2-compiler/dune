@@ -5,7 +5,7 @@
   ephel.compiler.tokenizer
   ephel.compiler.analyzer
   ephel.compiler.ast
-  ephel.compiler.ir
+  ephel.Compiler.Objcode
   ephel.compiler.transpiler
   ephel.compiler.expander
   ephel.compiler.optimiser

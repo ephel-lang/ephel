@@ -1,4 +1,4 @@
-open Ephel_compiler_ir
+open Ephel_compiler_objcode
 
 let rec last =
   let open Preface.Option.Functor.Infix in

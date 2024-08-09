@@ -1,4 +1,4 @@
 (library
  (name ephel_compiler_transpiler)
  (public_name ephel.compiler.transpiler)
- (libraries preface ephel.compiler.ast ephel.compiler.ir))
+ (libraries preface ephel.compiler.ast ephel.Compiler.Objcode))

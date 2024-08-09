@@ -1,4 +1,4 @@
-open Ephel_compiler_ir
+open Ephel_compiler_objcode
 
 let rec simplify_sequence =
   let open Objcode in

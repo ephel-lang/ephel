@@ -1,6 +1,6 @@
 open Ephel.Compiler.Ast.Term
-open Ephel.Compiler.Ir.Objcode
-open Ephel.Compiler.Ir.Render
+open Ephel.Compiler.Objcode.Objcode
+open Ephel.Compiler.Objcode.Render
 open Ephel.Compiler.Transpiler
 open Ephel.Compiler.Expander
 open Ephel.Compiler.Optimiser

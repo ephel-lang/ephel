@@ -1,5 +1,5 @@
 (library
- (name ephel_compiler_ir)
- (public_name ephel.compiler.ir)
+ (name ephel_compiler_objcode)
+ (public_name ephel.Compiler.Objcode)
  (libraries ephel.compiler.utils)
  (modules_without_implementation objcode))

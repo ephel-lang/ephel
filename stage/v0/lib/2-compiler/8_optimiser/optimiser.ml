@@ -30,8 +30,7 @@ let generate (o, s) =
     | Pair (pl, pr) :: s -> PAIR |> push_in r |> generate (pl :: pr :: s)
     | Left a :: s -> LEFT |> push_in r |> generate (a :: s)
     | Right a :: s -> RIGHT |> push_in r |> generate (a :: s)
-    | IfLeft (a, pl, pr) :: s ->
-      CASE (pl, pr) |> push_in r |> generate (a :: s)
+    | IfLeft (a, pl, pr) :: s -> CASE (pl, pr) |> push_in r |> generate (a :: s)
   in
   generate s o
 

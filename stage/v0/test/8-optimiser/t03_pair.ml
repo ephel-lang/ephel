@@ -2,13 +2,12 @@ open Ephel.Compiler.Ast.Term
 open Ephel.Compiler.Ir.Objcode
 open Ephel.Compiler.Ir.Render
 open Ephel.Compiler.Transpiler
-open Ephel.Compiler.Expander
 
 open Preface.Result.Monad (struct
   type t = string
 end)
 
-let compile s = return s >>= Transpiler.run <&> Expander.run
+let compile s = return s >>= Transpiler.run
 
 let compile_01 () =
   let result = compile (Pair (Int 1, Int 2))

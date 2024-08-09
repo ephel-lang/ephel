@@ -2,13 +2,12 @@ open Ephel.Compiler.Ast.Term
 open Ephel.Compiler.Ir.Objcode
 open Ephel.Compiler.Ir.Render
 open Ephel.Compiler.Transpiler
-open Ephel.Compiler.Expander
 
 open Preface.Result.Monad (struct
   type t = string
 end)
 
-let compile s = return s >>= Transpiler.run <&> Expander.run
+let compile s = return s >>= Transpiler.run
 
 let compile_01 () =
   let result = compile (Rec ("f", Abs ("x", App (Var "f", Var "x"))))
@@ -43,15 +42,10 @@ let compile_02 () =
         , [
             DUP (0, "x")
           ; CASE
-              ( [ DUP (0, "y"); DROP (1, "y"); DROP (1, "x"); DROP (1, "f") ]
-              , [
-                  DUP (2, "f")
-                ; DUP (1, "y")
-                ; APPLY
-                ; DROP (1, "y")
-                ; DROP (1, "x")
-                ; DROP (1, "f")
-                ] )
+              ( [ DUP (0, "y"); DROP (1, "y") ]
+              , [ DUP (2, "f"); DUP (1, "y"); APPLY; DROP (1, "y") ] )
+          ; DROP (1, "x")
+          ; DROP (1, "f")
           ] )
     ]
   in

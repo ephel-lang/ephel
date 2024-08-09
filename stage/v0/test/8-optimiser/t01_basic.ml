@@ -3,12 +3,13 @@ open Ephel.Compiler.Ir.Objcode
 open Ephel.Compiler.Ir.Render
 open Ephel.Compiler.Transpiler
 open Ephel.Compiler.Expander
+open Ephel.Compiler.Optimiser
 
 open Preface.Result.Monad (struct
   type t = string
 end)
 
-let compile s = return s >>= Transpiler.run <&> Expander.run
+let compile s = return s >>= Transpiler.run <&> Expander.run >>= Optimiser.run
 
 let compile_01 () =
   let result = compile (Int 1)
@@ -36,9 +37,7 @@ let compile_03 () =
 
 let compile_04 () =
   let result = compile (App (Abs ("x", Var "x"), Int 1))
-  and expected =
-    [ LAMBDA ("x", [ DUP (0, "x"); DROP (1, "x") ]); PUSH (INT 1); APPLY ]
-  in
+  and expected = [ PUSH (INT 1) ] in
   Alcotest.(check (result string string))
     "compile (fun x -> x) 1"
     (return expected <&> to_string)
@@ -46,9 +45,7 @@ let compile_04 () =
 
 let compile_05 () =
   let result = compile (App (Abs ("x", Unit), Int 1))
-  and expected =
-    [ LAMBDA ("x", [ PUSH UNIT; DROP (1, "x") ]); PUSH (INT 1); APPLY ]
-  in
+  and expected = [ PUSH UNIT ] in
   Alcotest.(check (result string string))
     "compile (fun x -> unit) 1"
     (return expected <&> to_string)
@@ -56,16 +53,7 @@ let compile_05 () =
 
 let compile_06 () =
   let result = compile (App (App (Abs ("x", Abs ("y", Var "y")), Int 1), Int 2))
-  and expected =
-    [
-      LAMBDA
-        ("x", [ LAMBDA ("y", [ DUP (0, "y"); DROP (1, "y") ]); DROP (1, "x") ])
-    ; PUSH (INT 1)
-    ; APPLY
-    ; PUSH (INT 2)
-    ; APPLY
-    ]
-  in
+  and expected = [ PUSH (INT 2) ] in
   Alcotest.(check (result string string))
     "compile (fun x y -> y) 1 2"
     (return expected <&> to_string)
@@ -82,7 +70,7 @@ let compile_07 () =
 
 let compile_08 () =
   let result = compile (Let ("x", Int 1, Var "x"))
-  and expected = [ PUSH (INT 1); DUP (0, "x"); DROP (1, "x") ] in
+  and expected = [ PUSH (INT 1) ] in
   Alcotest.(check (result string string))
     "compile let x = 1 in x"
     (return expected <&> to_string)
@@ -100,18 +88,7 @@ let compile_09 () =
 let compile_10 () =
   let result = compile (Abs ("f", Let ("x", Int 1, App (Var "f", Var "x"))))
   and expected =
-    [
-      LAMBDA
-        ( "f"
-        , [
-            PUSH (INT 1)
-          ; DUP (1, "f")
-          ; DUP (1, "x")
-          ; APPLY
-          ; DROP (1, "x")
-          ; DROP (1, "f")
-          ] )
-    ]
+    [ LAMBDA ("f", [ DUP (0, "f"); PUSH (INT 1); APPLY; DROP (1, "f") ]) ]
   in
   Alcotest.(check (result string string))
     "compile (fun f -> let x = 1 in f x)"

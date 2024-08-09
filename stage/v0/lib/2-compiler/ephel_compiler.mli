@@ -4,3 +4,4 @@ module Tokenizer = Ephel_compiler_tokenizer
 module Analyser = Ephel_compiler_analyzer
 module Transpiler = Ephel_compiler_transpiler
 module Expander = Ephel_compiler_expander
+module Optimiser = Ephel_compiler_optimiser

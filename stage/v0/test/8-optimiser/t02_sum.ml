@@ -3,12 +3,13 @@ open Ephel.Compiler.Ir.Objcode
 open Ephel.Compiler.Ir.Render
 open Ephel.Compiler.Transpiler
 open Ephel.Compiler.Expander
+open Ephel.Compiler.Optimiser
 
 open Preface.Result.Monad (struct
   type t = string
 end)
 
-let compile s = return s >>= Transpiler.run <&> Expander.run
+let compile s = return s >>= Transpiler.run <&> Expander.run >>= Optimiser.run
 
 let compile_01 () =
   let result = compile (Inl (Int 1))
@@ -29,13 +30,7 @@ let compile_02 () =
 let compile_03 () =
   let result =
     compile (Case (Inl (Int 1), Abs ("x", Var "x"), Abs ("x", Var "x")))
-  and expected =
-    [
-      PUSH (INT 1)
-    ; LEFT
-    ; CASE ([ DUP (0, "x"); DROP (1, "x") ], [ DUP (0, "x"); DROP (1, "x") ])
-    ]
-  in
+  and expected = [ PUSH (INT 1) ] in
   Alcotest.(check (result string string))
     "compile case (inl 1) (fun x -> x) (fun x -> x)"
     (return expected <&> to_string)
@@ -44,13 +39,7 @@ let compile_03 () =
 let compile_04 () =
   let result =
     compile (Case (Inr (Int 1), Abs ("x", Var "x"), Abs ("x", Var "x")))
-  and expected =
-    [
-      PUSH (INT 1)
-    ; RIGHT
-    ; CASE ([ DUP (0, "x"); DROP (1, "x") ], [ DUP (0, "x"); DROP (1, "x") ])
-    ]
-  in
+  and expected = [ PUSH (INT 1) ] in
   Alcotest.(check (result string string))
     "compile case (inr 1) (fun x -> x) (fun x -> x)"
     (return expected <&> to_string)
@@ -58,13 +47,7 @@ let compile_04 () =
 
 let compile_05 () =
   let result = compile (Case (Inl (Int 1), Abs ("x", Int 2), Abs ("x", Var "x")))
-  and expected =
-    [
-      PUSH (INT 1)
-    ; LEFT
-    ; CASE ([ PUSH (INT 2); DROP (1, "x") ], [ DUP (0, "x"); DROP (1, "x") ])
-    ]
-  in
+  and expected = [ PUSH (INT 2) ] in
   Alcotest.(check (result string string))
     "compile case (inl 1) (fun x -> 2) (fun x -> x)"
     (return expected <&> to_string)
@@ -72,13 +55,7 @@ let compile_05 () =
 
 let compile_06 () =
   let result = compile (Case (Inr (Int 1), Abs ("x", Var "x"), Abs ("x", Int 2)))
-  and expected =
-    [
-      PUSH (INT 1)
-    ; RIGHT
-    ; CASE ([ DUP (0, "x"); DROP (1, "x") ], [ PUSH (INT 2); DROP (1, "x") ])
-    ]
-  in
+  and expected = [ PUSH (INT 2) ] in
   Alcotest.(check (result string string))
     "compile case (inr 1) (fun x -> x) (fun x -> 2)"
     (return expected <&> to_string)
@@ -91,21 +68,7 @@ let compile_07 () =
          ( Inl (Inr (Int 1))
          , Abs ("x", Case (Var "x", Abs ("y", Var "y"), Abs ("y", Int 2)))
          , Abs ("x", Int 3) ) )
-  and expected =
-    [
-      PUSH (INT 1)
-    ; RIGHT
-    ; LEFT
-    ; CASE
-        ( [
-            DUP (0, "x")
-          ; CASE
-              ( [ DUP (0, "y"); DROP (1, "y"); DROP (1, "x") ]
-              , [ PUSH (INT 2); DROP (1, "y"); DROP (1, "x") ] )
-          ]
-        , [ PUSH (INT 3); DROP (1, "x") ] )
-    ]
-  in
+  and expected = [ PUSH (INT 2) ] in
   Alcotest.(check (result string string))
     "compile case (inl inr 1) (fun x -> case x (fun y -> y) (fun y -> 2)) (fun \
      x -> 3)"
@@ -114,13 +77,7 @@ let compile_07 () =
 
 let compile_08 () =
   let result = compile (Case (Inl (Int 1), Abs ("x", Unit), Abs ("x", Var "x")))
-  and expected =
-    [
-      PUSH (INT 1)
-    ; LEFT
-    ; CASE ([ PUSH UNIT; DROP (1, "x") ], [ DUP (0, "x"); DROP (1, "x") ])
-    ]
-  in
+  and expected = [ PUSH UNIT ] in
   Alcotest.(check (result string string))
     "compile case (inl 1) (fun x -> unit) (fun x -> x)"
     (return expected <&> to_string)
@@ -170,19 +127,7 @@ let compile_11 () =
   let result =
     compile
       (Abs ("x", Case (Inl (Var "x"), Abs ("x", Var "x"), Abs ("x", Int 3))))
-  and expected =
-    [
-      LAMBDA
-        ( "x"
-        , [
-            DUP (0, "x")
-          ; LEFT
-          ; CASE
-              ( [ DUP (0, "x"); DROP (1, "x"); DROP (1, "x") ]
-              , [ PUSH (INT 3); DROP (1, "x"); DROP (1, "x") ] )
-          ] )
-    ]
-  in
+  and expected = [ LAMBDA ("x", [ DUP (0, "x"); DROP (1, "x") ]) ] in
   Alcotest.(check (result string string))
     "compile (fun x -> case (inl x) (fun x -> x) (fun _ -> 2))"
     (return expected <&> to_string)

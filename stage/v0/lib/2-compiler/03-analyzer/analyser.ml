@@ -11,11 +11,11 @@ struct
 
   (* Basic matchers *)
 
-  let identifier = function
+  let is_identifier = function
     | Token.IDENT s, r -> return (s, r)
     | _ -> fail ?consumed:None ?message:None
 
-  let string_or_int = function
+  let is_string_or_int = function
     | Token.STRING s, r -> return (Cst.Literal (Cst.String s), r)
     | Token.INTEGER s, r -> return (Cst.Literal (Cst.Integer s), r)
     | _ -> fail ?consumed:None ?message:None
@@ -28,12 +28,12 @@ struct
 
   (* Identifier *)
 
-  let ident = expect identifier
+  let ident = expect is_identifier
 
   (* Group, Literal and variable *)
 
   let group term = key "(" >+> term <+< key ")"
-  let literal = expect string_or_int
+  let literal = expect is_string_or_int
   let variable = ident <&> fun (s, r) -> (Cst.Ident s, r)
 
   (* Operation *)
@@ -108,6 +108,14 @@ struct
         simple_term term
         <+> (product term <|> application term <|> return id)
         <&> fun (e, f) -> f e )
+
+  let declarations =
+    opt_rep
+      ( token Token.VAL
+      >+> ident
+      <+< token Token.EQUAL
+      <+> term
+      <&> fun ((id, _), e) -> (id, e) )
 end
 
 let analyse (type a)
@@ -115,4 +123,4 @@ let analyse (type a)
       with type Source.t = a
        and type Source.e = Token.with_location ) =
   let module M = Rules (P) in
-  M.term
+  M.declarations

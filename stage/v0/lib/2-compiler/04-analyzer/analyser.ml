@@ -125,7 +125,7 @@ struct
     >+> ident
     <+< token Token.EQUAL
     <+> term
-    <&> fun ((id, _), e) -> (id, e)
+    <&> fun (id, e) -> (fst id, e)
 end
 
 let term (type a)

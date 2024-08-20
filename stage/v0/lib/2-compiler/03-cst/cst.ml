@@ -18,4 +18,13 @@ type t =
   | Pair of t * t * Ephel_parser_source.Region.t
   | Case of string * t * t * Ephel_parser_source.Region.t
 
-val region : t -> Ephel_parser_source.Region.t
+let region = function
+  | Ident (_, r)
+  | Literal (_, r)
+  | App (_, _, r)
+  | Abs (_, _, r)
+  | Let (_, _, _, r)
+  | BuildIn (_, r)
+  | Pair (_, _, r)
+  | Case (_, _, _, r) ->
+    r

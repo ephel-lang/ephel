@@ -17,8 +17,8 @@ struct
     | _ -> fail ?consumed:None ?message:None
 
   let is_string_or_int = function
-    | Token.STRING s, r -> return (Cst.Literal (Cst.String s), r)
-    | Token.INTEGER s, r -> return (Cst.Literal (Cst.Integer s), r)
+    | Token.STRING s, r -> return (Cst.Literal (Cst.String s, r))
+    | Token.INTEGER s, r -> return (Cst.Literal (Cst.Integer s, r))
     | _ -> fail ?consumed:None ?message:None
 
   (* Factories *)
@@ -40,17 +40,17 @@ struct
   let literal = expect is_string_or_int
 
   (* identifier *)
-  let variable = ident <&> fun (s, r) -> (Cst.Ident s, r)
+  let variable = ident <&> fun (s, r) -> Cst.Ident (s, r)
 
   (* Operation *)
 
   (* 'inl' | 'inr' | 'fst' | 'snd' *)
   let operations =
     token Token.INL
-    <&> (fun r -> (Cst.BuildIn Cst.Inl, snd r))
-    <|> (token Token.INR <&> fun r -> (Cst.BuildIn Cst.Inr, snd r))
-    <|> (token Token.FST <&> fun r -> (Cst.BuildIn Cst.Fst, snd r))
-    <|> (token Token.SND <&> fun r -> (Cst.BuildIn Cst.Snd, snd r))
+    <&> (fun r -> Cst.BuildIn (Cst.Inl, snd r))
+    <|> (token Token.INR <&> fun r -> Cst.BuildIn (Cst.Inr, snd r))
+    <|> (token Token.FST <&> fun r -> Cst.BuildIn (Cst.Fst, snd r))
+    <|> (token Token.SND <&> fun r -> Cst.BuildIn (Cst.Snd, snd r))
 
   (* Functional *)
 
@@ -58,16 +58,18 @@ struct
   let abstraction term =
     ?!(rep ident <+< token Token.IMPLY)
     <+> term
-    <&> fun (t, (e, r1)) ->
+    <&> fun (t, e) ->
     let t = List.map fst t in
+    let r1 = Cst.region e in
     let r0 = List.fold_right (fun _ r -> r) t r1 in
-    (Cst.Abs (t, e), Region.Construct.combine r0 r1)
+    Cst.Abs (t, e, Region.Construct.combine r0 r1)
 
   (* term term *)
   let application term =
     term
-    <&> fun (rhd, r1) (lhd, r0) ->
-    (Cst.App (lhd, rhd), Region.Construct.combine r0 r1)
+    <&> fun rhd lhd ->
+    Cst.App
+      (lhd, rhd, Region.Construct.combine (Cst.region lhd) (Cst.region rhd))
 
   (* 'let' ident = term 'in' term *)
   let let_binding term =
@@ -77,8 +79,8 @@ struct
     <+> term
     <+< token Token.IN
     <+> term
-    <&> fun (((id, r0), (v, _)), (b, r1)) ->
-    (Cst.Let (id, v, b), Region.Construct.combine r0 r1)
+    <&> fun ((id, v), b) ->
+    Cst.Let (fst id, v, b, Region.Construct.combine (snd id) (Cst.region b))
 
   (* Product *)
 
@@ -86,8 +88,9 @@ struct
   let product term =
     token Token.PRODUCT
     >+> term
-    <&> fun (rhd, r1) (lhd, r0) ->
-    (Cst.Pair (lhd, rhd), Region.Construct.combine r0 r1)
+    <&> fun rhd lhd ->
+    Cst.Pair
+      (lhd, rhd, Region.Construct.combine (Cst.region lhd) (Cst.region rhd))
 
   (* case ident term term *)
   let case term =
@@ -95,8 +98,9 @@ struct
     >+> ident
     <+> term
     <+> term
-    <&> fun (((id, r0), (left, _)), (right, r1)) ->
-    (Cst.Case (id, left, right), Region.Construct.combine r0 r1)
+    <&> fun ((id, left), right) ->
+    Cst.Case
+      (fst id, left, right, Region.Construct.combine (snd id) (Cst.region right))
 
   (* Main rules *)
 

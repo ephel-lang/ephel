@@ -2,4 +2,4 @@
  (name ephel_compiler_cst)
  (public_name ephel.compiler.cst)
  (libraries ephel.parser ephel.compiler.utils)
- (modules_without_implementation cst ephel_compiler_cst))
+ (modules_without_implementation ephel_compiler_cst))

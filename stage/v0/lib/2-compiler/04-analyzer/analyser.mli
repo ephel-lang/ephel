@@ -4,8 +4,8 @@ open Ephel_compiler_cst
 
 module Rules
     (Parsec : Specs.PARSEC with type Source.e = Token.with_location) : sig
-  val term : Cst.with_location Parsec.t
-  val declaration : (string * Cst.with_location) Parsec.t
+  val term : Cst.t Parsec.t
+  val declaration : (string * Cst.t) Parsec.t
 end
 
 val term :
@@ -14,7 +14,7 @@ val term :
         with type Source.t = 'a
          and type Source.e = Token.with_location )
   -> 'a
-  -> (Cst.with_location, 'a) Response.t
+  -> (Cst.t, 'a) Response.t
 
 val declaration :
   'a.
@@ -22,4 +22,4 @@ val declaration :
         with type Source.t = 'a
          and type Source.e = Token.with_location )
   -> 'a
-  -> (string * Cst.with_location, 'a) Response.t
+  -> (string * Cst.t, 'a) Response.t

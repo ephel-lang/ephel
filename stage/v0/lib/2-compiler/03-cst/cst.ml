@@ -1,3 +1,5 @@
+open Ephel_parser_source
+
 type operation =
   | Inl
   | Inr
@@ -9,14 +11,14 @@ type literal =
   | String of string
 
 type t =
-  | Ident of string * Ephel_parser_source.Region.t
-  | Literal of literal * Ephel_parser_source.Region.t
-  | App of t * t * Ephel_parser_source.Region.t
-  | Abs of string list * t * Ephel_parser_source.Region.t
-  | Let of string * t * t * Ephel_parser_source.Region.t
-  | BuildIn of operation * Ephel_parser_source.Region.t
-  | Pair of t * t * Ephel_parser_source.Region.t
-  | Case of string * t * t * Ephel_parser_source.Region.t
+  | Ident of string * Region.t
+  | Literal of literal * Region.t
+  | App of t * t * Region.t
+  | Abs of string list * t * Region.t
+  | Let of string * t * t * Region.t
+  | BuildIn of operation * Region.t
+  | Pair of t * t * Region.t
+  | Case of string * t * t * Region.t
 
 let region = function
   | Ident (_, r)

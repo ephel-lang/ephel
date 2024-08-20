@@ -1,3 +1,5 @@
+open Ephel_parser_source
+
 type t =
   | INL
   | INR
@@ -16,4 +18,4 @@ type t =
   | RPAR
   | IDENT of string
 
-type with_location = t * Ephel_parser_source.Region.t
+type with_location = t * Region.t

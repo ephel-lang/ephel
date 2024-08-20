@@ -3,6 +3,7 @@
 open Ephel_parser_source
 open Ephel_parser_parsec
 open Ephel_compiler_tokenizer
+open Ephel_compiler_cst
 
 module Rules (Parsec : Specs.PARSEC with type Source.e = Token.with_location) =
 struct
@@ -32,12 +33,18 @@ struct
 
   (* Group, Literal and variable *)
 
+  (* '(' term ')' *)
   let group term = key "(" >+> term <+< key ")"
+
+  (* INTEGER | STRING *)
   let literal = expect is_string_or_int
+
+  (* identifier *)
   let variable = ident <&> fun (s, r) -> (Cst.Ident s, r)
 
   (* Operation *)
 
+  (* 'inl' | 'inr' | 'fst' | 'snd' *)
   let operations =
     token Token.INL
     <&> (fun r -> (Cst.BuildIn Cst.Inl, snd r))
@@ -109,18 +116,24 @@ struct
         <+> (product term <|> application term <|> return id)
         <&> fun (e, f) -> f e )
 
-  let declarations =
-    opt_rep
-      ( token Token.VAL
-      >+> ident
-      <+< token Token.EQUAL
-      <+> term
-      <&> fun ((id, _), e) -> (id, e) )
+  let declaration =
+    token Token.VAL
+    >+> ident
+    <+< token Token.EQUAL
+    <+> term
+    <&> fun ((id, _), e) -> (id, e)
 end
 
-let analyse (type a)
+let term (type a)
     (module P : Ephel_parser_parsec.Specs.PARSEC
       with type Source.t = a
        and type Source.e = Token.with_location ) =
   let module M = Rules (P) in
-  M.declarations
+  M.term
+
+let declaration (type a)
+    (module P : Ephel_parser_parsec.Specs.PARSEC
+      with type Source.t = a
+       and type Source.e = Token.with_location ) =
+  let module M = Rules (P) in
+  M.declaration

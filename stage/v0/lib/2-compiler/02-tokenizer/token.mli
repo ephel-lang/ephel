@@ -9,7 +9,7 @@ type t =
   | IN
   | FST
   | SND
-  | INTEGER of int
+  | INT of int
   | STRING of string
   | IMPLY
   | EQUAL

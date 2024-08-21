@@ -18,7 +18,7 @@ struct
 
   let is_string_or_int = function
     | Token.STRING s, r -> return (Cst.Literal (Cst.String s, r))
-    | Token.INTEGER s, r -> return (Cst.Literal (Cst.Integer s, r))
+    | Token.INT s, r -> return (Cst.Literal (Cst.Integer s, r))
     | _ -> fail ?consumed:None ?message:None
 
   (* Factories *)

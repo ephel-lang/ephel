@@ -3,7 +3,7 @@ open Ephel_compiler_utils
 module Cst = struct
   open Cst
 
-  let rec render : type a. Format.formatter -> t -> unit =
+  let rec render : Format.formatter -> t -> unit =
    fun ppf ->
     let open Format in
     function

@@ -111,7 +111,7 @@ and compile :
   | Ffi (f, a) ->
     let+ s = remove a s in
     ([ FFI (f, a) ], VAR "ffi" :: s)
-  | _ -> Error ("Cannot compile expression: " ^ Render.Term.to_string e)
+  | _ -> Error ("Cannot compile expression: " ^ Render.to_string e)
 
 let run : type a. a Term.t -> (Objcode.t list, string) result =
  fun e ->

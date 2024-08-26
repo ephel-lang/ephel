@@ -5,7 +5,7 @@ open Ephel_parser_parsec
 open Ephel_compiler_tokenizer
 open Ephel_compiler_cst
 
-module Rules (Parsec : Specs.PARSEC with type Source.e = Token.with_location) =
+module Rules (Parsec : Specs.PARSEC with type Source.e = Token.with_region) =
 struct
   open Ephel_parser_parsec.Core (Parsec)
   open Preface_core.Fun
@@ -131,13 +131,13 @@ end
 let term (type a)
     (module P : Ephel_parser_parsec.Specs.PARSEC
       with type Source.t = a
-       and type Source.e = Token.with_location ) =
+       and type Source.e = Token.with_region ) =
   let module M = Rules (P) in
   M.term
 
 let declaration (type a)
     (module P : Ephel_parser_parsec.Specs.PARSEC
       with type Source.t = a
-       and type Source.e = Token.with_location ) =
+       and type Source.e = Token.with_region ) =
   let module M = Rules (P) in
   M.declaration

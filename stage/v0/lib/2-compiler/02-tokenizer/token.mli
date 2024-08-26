@@ -18,4 +18,4 @@ type t =
   | RPAR
   | IDENT of string
 
-type with_location = t * Region.t
+type with_region = t * Region.t

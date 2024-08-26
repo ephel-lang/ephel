@@ -1,7 +1,7 @@
 type t
 
 module Construct : sig
-  val create : Location.t -> Location.t -> t
+  val create : first:Location.t -> last:Location.t -> t
   val combine : t -> t -> t
 end
 

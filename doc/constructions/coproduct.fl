@@ -25,15 +25,15 @@ val not : Bool -> Bool = b =>
     | false -> true
     end
 
-val(infix 15) _&&_ : Bool -> Bool -> Bool =
+val _&&_ : Bool -> Bool -> Bool (infix 15) =
     | true  => b => b
     | false => _ => false
 
-val(infix 15) _||_ : Bool -> Bool -> Bool =
+val _||_ : Bool -> Bool -> Bool (infix 15) =
     | true  => _ => true
     | false => b => b
 
-val(infix 20) _==>_ : Bool -> Bool -> Bool = a b => not a or b
+val _==>_ : Bool -> Bool -> Bool (infix 20) = a b => not a or b
 
 -- Recursive CoProduct
 

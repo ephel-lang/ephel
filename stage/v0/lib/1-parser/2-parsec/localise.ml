@@ -7,7 +7,7 @@ module Localise (Parsec : Specs.PARSEC) = struct
     fold
       ~success:(fun (a, b, s) ->
         let finish = Parsec.Source.Access.location s in
-        success ((a, create start finish), b, s) )
+        success ((a, create ~first:start ~last:finish), b, s) )
       ~failure:(fun (a, b, s) -> failure (a, b, s))
       (p s)
 end

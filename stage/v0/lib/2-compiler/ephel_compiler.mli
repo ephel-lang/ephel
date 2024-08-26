@@ -1,6 +1,6 @@
 module Tokenizer = Ephel_compiler_tokenizer
 module Cst = Ephel_compiler_cst
-module Analyser = Ephel_compiler_analyzer
+module Analyzer = Ephel_compiler_analyzer
 module Ast = Ephel_compiler_ast
 module Objcode = Ephel_compiler_objcode
 module Transpiler = Ephel_compiler_transpiler

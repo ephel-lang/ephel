@@ -10,7 +10,7 @@
     Question: Is it necessary to have a rec/nonrec capability (like Ocaml)?
 }-
 
-sig(infixl 100) _$_ : {A B:type} -> (A -> B) -> A -> B
+sig _$_ : {A B:type} -> (A -> B) -> A -> B (infixl 100)
 val _$_ = id
 
 sig Vector : type

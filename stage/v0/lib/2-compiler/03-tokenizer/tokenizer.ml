@@ -6,7 +6,7 @@ struct
   open Ephel_parser_parsec.Literal (Parsec)
   open Ephel_parser_source.Utils
   open Preface_core.Fun
-  open Token
+  open Ephel_compiler_token.Token
   module StringMap = Map.Make (String)
 
   let keywords =

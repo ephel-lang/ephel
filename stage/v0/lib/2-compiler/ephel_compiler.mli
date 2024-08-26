@@ -1,3 +1,4 @@
+module Token = Ephel_compiler_token
 module Tokenizer = Ephel_compiler_tokenizer
 module Cst = Ephel_compiler_cst
 module Analyzer = Ephel_compiler_analyzer

@@ -1,4 +1,4 @@
-open Ephel.Compiler.Tokenizer
+open Ephel.Compiler.Token
 open Common
 
 let cases =

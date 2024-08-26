@@ -1,5 +1,6 @@
 open Ephel.Parser.Parsec
 open Ephel.Parser.Source
+open Ephel.Compiler.Token
 open Ephel.Compiler.Tokenizer
 open Preface.Option.Monad
 

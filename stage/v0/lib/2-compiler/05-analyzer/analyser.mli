@@ -1,5 +1,5 @@
 open Ephel_parser_parsec
-open Ephel_compiler_tokenizer
+open Ephel_compiler_token
 open Ephel_compiler_cst
 
 module Rules

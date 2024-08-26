@@ -1,4 +1,5 @@
 open Ephel_parser_parsec
+open Ephel_compiler_token
 
 module Tokens (Parsec : Specs.PARSEC with type Source.e = char) : sig
   val token : Token.with_region Parsec.t

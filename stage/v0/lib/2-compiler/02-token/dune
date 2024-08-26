@@ -1,0 +1,5 @@
+(library
+ (name ephel_compiler_token)
+ (public_name ephel.compiler.token)
+ (libraries ephel.parser ephel.compiler.utils)
+ (modules_without_implementation token ephel_compiler_token))

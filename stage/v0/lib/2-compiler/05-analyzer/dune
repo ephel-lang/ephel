@@ -5,6 +5,7 @@
   preface
   ephel.parser
   ephel.compiler.utils
+  ephel.compiler.token
   ephel.compiler.tokenizer
   ephel.compiler.cst)
  (modules_without_implementation ephel_compiler_analyzer))

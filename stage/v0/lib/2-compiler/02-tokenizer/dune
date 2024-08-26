@@ -1,5 +1,0 @@
-(library
- (name ephel_compiler_tokenizer)
- (public_name ephel.compiler.tokenizer)
- (libraries preface ephel.parser ephel.compiler.utils)
- (modules_without_implementation token ephel_compiler_tokenizer))

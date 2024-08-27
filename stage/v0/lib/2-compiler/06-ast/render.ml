@@ -12,8 +12,7 @@ let rec render : type a. Format.formatter -> a t -> unit =
   | Int i -> fprintf ppf "%d" i
   | Inl c -> fprintf ppf "inl (%a)" render c
   | Inr c -> fprintf ppf "inr (%a)" render c
-  | Case (c, l, r) ->
-    fprintf ppf "case (%a) (%a) (%a)" render c render l render r
+  | Case (c, l, r) -> fprintf ppf "case (%a) (%a) (%a)" render c render l render r
   | Pair (l, r) -> fprintf ppf "(%a, %a)" render l render r
   | Fst e -> fprintf ppf "fst (%a)" render e
   | Snd e -> fprintf ppf "snd (%a)" render e

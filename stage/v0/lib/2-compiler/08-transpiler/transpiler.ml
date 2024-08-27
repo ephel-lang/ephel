@@ -34,11 +34,7 @@ let garbage n s =
   garbage 0 s
 
 let rec compile_binding :
-    type a.
-       string
-    -> a Term.t
-    -> Stack.t list
-    -> (Objcode.t list * Stack.t list, string) result =
+    type a. string -> a Term.t -> Stack.t list -> (Objcode.t list * Stack.t list, string) result =
  fun n e s ->
   let open Monad in
   let open Stack in
@@ -46,9 +42,7 @@ let rec compile_binding :
   let+ g_o, s' = garbage n s' in
   (o @ [ g_o ], s')
 
-and compile :
-    type a.
-    a Term.t -> Stack.t list -> (Objcode.t list * Stack.t list, string) result =
+and compile : type a. a Term.t -> Stack.t list -> (Objcode.t list * Stack.t list, string) result =
  fun e s ->
   let open Monad in
   let open Term in

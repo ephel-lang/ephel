@@ -16,7 +16,7 @@ type t =
   | App of t * t * Region.t
   | Abs of string list * t * Region.t
   | Let of string * t * t * Region.t
-  | BuildIn of operation * Region.t
+  | Builtin of operation * Region.t
   | Pair of t * t * Region.t
   | Case of string * t * t * Region.t
 

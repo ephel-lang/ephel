@@ -6,12 +6,12 @@ value ::=
     'val' id '=' term
 
 term ::=
-    group
+    ident
     literal
-    functional
     product
     coproduct
-    ident
+    functional
+    group
 
 group ::=
     '(' term ')'
@@ -29,11 +29,11 @@ functional_term ::=
 
 product ::=
     term ',' term
-    'fst' term
-    'snd' term
+    'fst'
+    'snd'
 
 coproduct ::=
     'case' term term term
-    'inl' term
-    'inr' term
+    'inl'
+    'inr'
 ```

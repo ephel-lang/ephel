@@ -57,7 +57,7 @@ type lit =
   | Char of char
   | String of string
 
-type builtin =
+type Builtin =
   | Fst
   | Snd
   | Inl
@@ -75,8 +75,8 @@ type t =
   | Pair of t * t
   -- Sum data
   | Case of t * t * t
-  -- builtin
-  | BuiltIn of builtin * t
+  -- Builtin
+  | BuiltIn of Builtin * t
 ```
 
 ### Object Code

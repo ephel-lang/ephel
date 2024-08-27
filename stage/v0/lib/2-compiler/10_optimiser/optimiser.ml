@@ -19,8 +19,7 @@ let generate (o, s) =
     | [] -> Ok r
     | [ Var _ ] -> Ok r
     | Var f :: a :: s -> SWAP |> push_in r |> generate (a :: Var f :: s)
-    | Dup n :: s ->
-      get_index 0 n s <&> (fun i -> DUP (i, n)) <&> push_in r >>= generate s
+    | Dup n :: s -> get_index 0 n s <&> (fun i -> DUP (i, n)) <&> push_in r >>= generate s
     | Val a :: s -> PUSH a |> push_in r |> generate s
     | Code (n, a) :: s -> LAMBDA (n, a) |> push_in r |> generate s
     | RecCode (f, n, a) :: s -> LAMBDA_REC (f, n, a) |> push_in r |> generate s
@@ -71,14 +70,10 @@ let rec optimise_instruction s =
         then ([ DROP (i, n) ], s)
         else
           (* Dropped effects should be prohibited *)
-          match remove_at s i with
-          | Var _, _ -> ([ DROP (i, n) ], s)
-          | _, s -> ([], s) )
-  | SWAP ->
-    Ok (match s with a :: b :: s -> ([], b :: a :: s) | _ -> ([ SWAP ], s))
+          match remove_at s i with Var _, _ -> ([ DROP (i, n) ], s) | _, s -> ([], s) )
+  | SWAP -> Ok (match s with a :: b :: s -> ([], b :: a :: s) | _ -> ([ SWAP ], s))
   | LEFT -> Ok (match s with a :: s -> ([], Left a :: s) | [] -> ([ LEFT ], s))
-  | RIGHT ->
-    Ok (match s with a :: s -> ([], Right a :: s) | [] -> ([ RIGHT ], s))
+  | RIGHT -> Ok (match s with a :: s -> ([], Right a :: s) | [] -> ([ RIGHT ], s))
   | CASE (l, r) -> (
     match s with
     | Left v :: s -> optimise (v :: s) l
@@ -87,9 +82,8 @@ let rec optimise_instruction s =
       (* Not optimal code right now! *)
       let* l = optimise [] l >>= generate in
       let+ r = optimise [] r >>= generate in
-      if List.length s = 0
-      then ([ CASE (l, r) ], s)
-      else ([], IfLeft (List.hd s, l, r) :: List.tl s) )
+      if List.length s = 0 then ([ CASE (l, r) ], s) else ([], IfLeft (List.hd s, l, r) :: List.tl s)
+    )
   | FST ->
     Ok
       ( match s with
@@ -102,9 +96,7 @@ let rec optimise_instruction s =
       | Pair (_, a) :: s -> ([], a :: s)
       | a :: s -> ([], Cdr a :: s)
       | [] -> ([ SND ], s) )
-  | PAIR ->
-    Ok
-      (match s with a :: b :: s -> ([], Pair (a, b) :: s) | _ -> ([ PAIR ], s))
+  | PAIR -> Ok (match s with a :: b :: s -> ([], Pair (a, b) :: s) | _ -> ([ PAIR ], s))
   | a -> Ok ([ a ], s)
 
 and optimise s =
@@ -114,9 +106,7 @@ and optimise s =
   | a :: l ->
     let* o, s = optimise_instruction s a in
     (* review this part *)
-    if o = []
-    then optimise s l
-    else optimise [] l >>= generate <&> fun l -> (o @ l, s)
+    if o = [] then optimise s l else optimise [] l >>= generate <&> fun l -> (o @ l, s)
 
 let optimise o =
   let open Monad in

@@ -7,10 +7,7 @@ let render_value ppf =
 
 let rec render ppf =
   let open Format in
-  function
-  | [] -> ()
-  | [ a ] -> render_t ppf a
-  | a :: l -> fprintf ppf "%a; %a" render_t a render l
+  function [] -> () | [ a ] -> render_t ppf a | a :: l -> fprintf ppf "%a; %a" render_t a render l
 
 and render_string ppf s =
   let open Format in
@@ -34,8 +31,7 @@ and render_t ppf =
   | SND -> fprintf ppf "SND"
   | UNPAIR -> fprintf ppf "UNPAIR"
   | LAMBDA_REC (f, n, l) ->
-    fprintf ppf "LAMBDA_REC(%a, %a, [ %a ])" render_string f render_string n
-      render l
+    fprintf ppf "LAMBDA_REC(%a, %a, [ %a ])" render_string f render_string n render l
   | FFI (f, a) -> fprintf ppf "FFI(%a, %d)" render_string f a
 
 let to_string o = Render.to_string render o

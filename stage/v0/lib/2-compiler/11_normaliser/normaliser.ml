@@ -2,10 +2,7 @@ open Ephel_compiler_objcode
 
 let rec last =
   let open Preface.Option.Functor.Infix in
-  function
-  | [] -> None
-  | [ a ] -> Some (a, [])
-  | a :: l -> last l <&> fun (b, l) -> (b, a :: l)
+  function [] -> None | [ a ] -> Some (a, []) | a :: l -> last l <&> fun (b, l) -> (b, a :: l)
 
 let rec normalise_sequence =
   let open Objcode in

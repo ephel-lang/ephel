@@ -15,7 +15,5 @@ end
 module Render = struct
   let render ppf (f, _, l, c) =
     let open Format in
-    match f with
-    | None -> fprintf ppf "%d:%d" l c
-    | Some f -> fprintf ppf "%s:%d:%d" f l c
+    match f with None -> fprintf ppf "%d:%d" l c | Some f -> fprintf ppf "%s:%d:%d" f l c
 end

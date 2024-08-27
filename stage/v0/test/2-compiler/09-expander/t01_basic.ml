@@ -36,9 +36,7 @@ let compile_03 () =
 
 let compile_04 () =
   let result = compile (App (Abs ("x", Var "x"), Int 1))
-  and expected =
-    [ LAMBDA ("x", [ DUP (0, "x"); DROP (1, "x") ]); PUSH (INT 1); APPLY ]
-  in
+  and expected = [ LAMBDA ("x", [ DUP (0, "x"); DROP (1, "x") ]); PUSH (INT 1); APPLY ] in
   Alcotest.(check (result string string))
     "compile (fun x -> x) 1"
     (return expected <&> to_string)
@@ -46,9 +44,7 @@ let compile_04 () =
 
 let compile_05 () =
   let result = compile (App (Abs ("x", Unit), Int 1))
-  and expected =
-    [ LAMBDA ("x", [ PUSH UNIT; DROP (1, "x") ]); PUSH (INT 1); APPLY ]
-  in
+  and expected = [ LAMBDA ("x", [ PUSH UNIT; DROP (1, "x") ]); PUSH (INT 1); APPLY ] in
   Alcotest.(check (result string string))
     "compile (fun x -> unit) 1"
     (return expected <&> to_string)
@@ -58,8 +54,7 @@ let compile_06 () =
   let result = compile (App (App (Abs ("x", Abs ("y", Var "y")), Int 1), Int 2))
   and expected =
     [
-      LAMBDA
-        ("x", [ LAMBDA ("y", [ DUP (0, "y"); DROP (1, "y") ]); DROP (1, "x") ])
+      LAMBDA ("x", [ LAMBDA ("y", [ DUP (0, "y"); DROP (1, "y") ]); DROP (1, "x") ])
     ; PUSH (INT 1)
     ; APPLY
     ; PUSH (INT 2)
@@ -101,16 +96,7 @@ let compile_10 () =
   let result = compile (Abs ("f", Let ("x", Int 1, App (Var "f", Var "x"))))
   and expected =
     [
-      LAMBDA
-        ( "f"
-        , [
-            PUSH (INT 1)
-          ; DUP (1, "f")
-          ; DUP (1, "x")
-          ; APPLY
-          ; DROP (1, "x")
-          ; DROP (1, "f")
-          ] )
+      LAMBDA ("f", [ PUSH (INT 1); DUP (1, "f"); DUP (1, "x"); APPLY; DROP (1, "x"); DROP (1, "f") ])
     ]
   in
   Alcotest.(check (result string string))
@@ -127,9 +113,7 @@ let cases =
     ; test_case "compile O3" `Quick compile_03
     ; test_case "compile O4" `Quick compile_04
     ; test_case "compile O5" `Quick compile_05
-    ; test_case "compile O6" `Quick compile_06
-      (*; test_case "compile O7" `Quick compile_07*)
-    ; test_case "compile O8" `Quick compile_08
-      (*; test_case "compile O9" `Quick compile_09*)
+    ; test_case "compile O6" `Quick compile_06 (*; test_case "compile O7" `Quick compile_07*)
+    ; test_case "compile O8" `Quick compile_08 (*; test_case "compile O9" `Quick compile_09*)
     ; test_case "compile 10" `Quick compile_10
     ] )

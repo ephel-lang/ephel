@@ -8,8 +8,7 @@ module Eval (P : Specs.PARSEC) = struct
     let open P.Source.Access in
     let l0 = location s in
     fold
-      ~success:(fun (a, b, s) ->
-        success ((a, Region.create ~first:l0 ~last:(location s)), b, s) )
+      ~success:(fun (a, b, s) -> success ((a, Region.create ~first:l0 ~last:(location s)), b, s))
       ~failure:(fun (m, _, _) -> failure (m, false, s))
       (p s)
 
@@ -48,9 +47,8 @@ module Eval (P : Specs.PARSEC) = struct
     let open Response.Destruct in
     let open Response.Construct in
     fold
-      ~success:(fun (a, b, s') ->
-        if f a then success (a, b, s') else failure (None, false, s) )
-      ~failure:(fun (m, c, s) -> failure (m, c, s))
+      ~success:(fun (a, b, s') -> if f a then success (a, b, s') else failure (None, false, s))
+      ~failure:(fun (m, c, s') -> failure (m, c, s'))
       (p s)
 
   let rec fix f s = f (fix f) s

@@ -8,8 +8,7 @@ module Occurrence (P : Specs.PARSEC) = struct
     let open Response.Construct in
     fold
       ~success:(fun (a, b, s) -> success (Some a, b, s))
-      ~failure:(fun (m, b, s) ->
-        if b then failure (m, b, s) else success (None, b, s) )
+      ~failure:(fun (m, b, s) -> if b then failure (m, b, s) else success (None, b, s))
       (p s)
 
   let sequence optional p s =

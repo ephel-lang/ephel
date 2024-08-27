@@ -30,22 +30,13 @@ let compile_01 () =
 let compile_02 () =
   let result =
     compile
-      (Rec
-         ( "f"
-         , Abs
-             ( "x"
-             , Case
-                 (Var "x", Abs ("y", Var "y"), Abs ("y", App (Var "f", Var "y")))
-             ) ) )
+      (Rec ("f", Abs ("x", Case (Var "x", Abs ("y", Var "y"), Abs ("y", App (Var "f", Var "y"))))))
   and expected =
     [
       LAMBDA_REC
         ( "f"
         , "x"
-        , [
-            DUP (0, "x")
-          ; CASE ([ DROP (1, "x"); DROP (1, "f") ], [ DROP (1, "x"); APPLY ])
-          ] )
+        , [ DUP (0, "x"); CASE ([ DROP (1, "x"); DROP (1, "f") ], [ DROP (1, "x"); APPLY ]) ] )
     ]
   in
   Alcotest.(check (result string string))
@@ -56,7 +47,4 @@ let compile_02 () =
 let cases =
   let open Alcotest in
   ( "Lambda Compilation"
-  , [
-      test_case "compile O1" `Quick compile_01
-    ; test_case "compile O2" `Quick compile_02
-    ] )
+  , [ test_case "compile O1" `Quick compile_01; test_case "compile O2" `Quick compile_02 ] )

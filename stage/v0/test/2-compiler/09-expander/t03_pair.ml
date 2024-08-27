@@ -44,12 +44,7 @@ let compile_04 () =
 
 let compile_05 () =
   let result = compile (Abs ("p", App (Fst (Var "p"), Snd (Var "p"))))
-  and expected =
-    [
-      LAMBDA
-        ("p", [ DUP (0, "p"); FST; DUP (1, "p"); SND; APPLY; DROP (1, "p") ])
-    ]
-  in
+  and expected = [ LAMBDA ("p", [ DUP (0, "p"); FST; DUP (1, "p"); SND; APPLY; DROP (1, "p") ]) ] in
   Alcotest.(check (result string string))
     "compile (fun p -> (fst p) (snd p))"
     (return expected <&> to_string)
@@ -57,12 +52,7 @@ let compile_05 () =
 
 let compile_06 () =
   let result = compile (Abs ("p", App (Snd (Var "p"), Fst (Var "p"))))
-  and expected =
-    [
-      LAMBDA
-        ("p", [ DUP (0, "p"); SND; DUP (1, "p"); FST; APPLY; DROP (1, "p") ])
-    ]
-  in
+  and expected = [ LAMBDA ("p", [ DUP (0, "p"); SND; DUP (1, "p"); FST; APPLY; DROP (1, "p") ]) ] in
   Alcotest.(check (result string string))
     "compile (fun p -> (snd p) (fst p))"
     (return expected <&> to_string)
@@ -70,11 +60,7 @@ let compile_06 () =
 
 let compile_07 () =
   let result = compile (Abs ("p", Pair (Fst (Var "p"), Snd (Var "p"))))
-  and expected =
-    [
-      LAMBDA ("p", [ DUP (0, "p"); SND; DUP (1, "p"); FST; PAIR; DROP (1, "p") ])
-    ]
-  in
+  and expected = [ LAMBDA ("p", [ DUP (0, "p"); SND; DUP (1, "p"); FST; PAIR; DROP (1, "p") ]) ] in
   Alcotest.(check (result string string))
     "compile (fun p -> (fst p, snd p))"
     (return expected <&> to_string)

@@ -1,6 +1,4 @@
-module Tokens
-    (Parsec : Ephel_parser_parsec.Specs.PARSEC with type Source.e = char) =
-struct
+module Tokens (Parsec : Ephel_parser_parsec.Specs.PARSEC with type Source.e = char) = struct
   open Ephel_parser_parsec.Core (Parsec)
   open Ephel_parser_parsec.Localise (Parsec)
   open Ephel_parser_parsec.Literal (Parsec)
@@ -23,8 +21,7 @@ struct
          ; ("in", IN)
          ]
 
-  let to_token s =
-    match StringMap.find_opt s keywords with Some e -> e | None -> IDENT s
+  let to_token s = match StringMap.find_opt s keywords with Some e -> e | None -> IDENT s
 
   (* skipped characters *)
 
@@ -35,9 +32,7 @@ struct
   let identifier =
     let operators = "^$+-*/%~@#&!-_?.:*¨°><=[]{}\\|" in
     let first_only = alpha <|> char_in_string operators in
-    first_only
-    <+> opt_rep (digit <|> first_only)
-    <&> fun (c, l) -> string_of_chars (c :: l)
+    first_only <+> opt_rep (digit <|> first_only) <&> fun (c, l) -> string_of_chars (c :: l)
 
   (* tokens *)
 
@@ -67,8 +62,6 @@ struct
 end
 
 let tokenize (type a)
-    (module P : Ephel_parser_parsec.Specs.PARSEC
-      with type Source.t = a
-       and type Source.e = char ) =
+    (module P : Ephel_parser_parsec.Specs.PARSEC with type Source.t = a and type Source.e = char) =
   let module M = Tokens (P) in
   M.token

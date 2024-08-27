@@ -29,10 +29,8 @@ let rec render_value ppf =
   | Left a -> fprintf ppf "Left(%a)" render_value a
   | Right a -> fprintf ppf "Right(%a)" render_value a
   | IfLeft (a, l, r) ->
-    fprintf ppf "IfLeft(%a,%a,%a)" render_value a Render.render l Render.render
-      r
+    fprintf ppf "IfLeft(%a,%a,%a)" render_value a Render.render l Render.render r
 
 let rec render_values ppf =
   let open Format in
-  function
-  | [] -> () | a :: s -> fprintf ppf "%a; %a" render_value a render_values s
+  function [] -> () | a :: s -> fprintf ppf "%a; %a" render_value a render_values s

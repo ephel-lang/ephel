@@ -34,24 +34,21 @@ let parser_opt_rep_none () =
   let open Occurrence (Parsec) in
   let result = response @@ opt_rep any @@ Parsec.source []
   and expected = (Some [], false) in
-  Alcotest.(check (pair (option (list char)) bool))
-    "opt rep none" expected result
+  Alcotest.(check (pair (option (list char)) bool)) "opt rep none" expected result
 
 let parser_opt_rep_one () =
   let open Atomic (Parsec) in
   let open Occurrence (Parsec) in
   let result = response @@ opt_rep any @@ Parsec.source [ 'a' ]
   and expected = (Some [ 'a' ], true) in
-  Alcotest.(check (pair (option (list char)) bool))
-    "opt rep one" expected result
+  Alcotest.(check (pair (option (list char)) bool)) "opt rep one" expected result
 
 let parser_opt_rep_two () =
   let open Atomic (Parsec) in
   let open Occurrence (Parsec) in
   let result = response @@ opt_rep any @@ Parsec.source [ 'a'; 'b' ]
   and expected = (Some [ 'a'; 'b' ], true) in
-  Alcotest.(check (pair (option (list char)) bool))
-    "opt rep two" expected result
+  Alcotest.(check (pair (option (list char)) bool)) "opt rep two" expected result
 
 let cases =
   let open Alcotest in

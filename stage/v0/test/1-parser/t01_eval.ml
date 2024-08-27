@@ -63,8 +63,7 @@ let parser_satisfy_false () =
 
 let parser_satisfy_fail () =
   let open Eval (Parsec) in
-  let result =
-    response @@ satisfy (fail ~consumed:true) (( = ) 2) @@ Parsec.source []
+  let result = response @@ satisfy (fail ~consumed:true) (( = ) 2) @@ Parsec.source []
   and expected = (None, true) in
   Alcotest.(check (pair (option int) bool)) "satisfy fail" expected result
 

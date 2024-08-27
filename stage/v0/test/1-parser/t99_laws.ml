@@ -51,8 +51,7 @@ let monad_law3 t m g h =
   let s = Parsec.source [] in
   let l = response @@ lhd s
   and r = response @@ rhd s in
-  Alcotest.(check (pair (option t) bool))
-    "(m >>= g) >>= h = m >>= fun x -> g x >>= h" l r
+  Alcotest.(check (pair (option t) bool)) "(m >>= g) >>= h = m >>= fun x -> g x >>= h" l r
 
 (* Quick check should be used here *)
 
@@ -64,11 +63,8 @@ let cases =
       test_case "map id = id" `Quick (fun () -> functor_law1 int @@ return 1)
     ; test_case "map (f ° g) = (map f) ° (map g)" `Quick (fun () ->
           functor_law2 int (( + ) 1) int_of_string @@ return "1" )
-    ; test_case "return a >> h = h a" `Quick (fun () ->
-          monad_law1 int 1 @@ fun v -> return v )
+    ; test_case "return a >> h = h a" `Quick (fun () -> monad_law1 int 1 @@ fun v -> return v)
     ; test_case "m >> return = m" `Quick (fun () -> monad_law2 int @@ return 1)
     ; test_case "(m >>= g) >>= h = m >>= fun x -> g x >>= h" `Quick (fun () ->
-          monad_law3 int (return "1")
-            (fun v -> return @@ int_of_string v)
-            return )
+          monad_law3 int (return "1") (fun v -> return @@ int_of_string v) return )
     ] )

@@ -28,8 +28,7 @@ let compile_02 () =
     (result <&> to_string)
 
 let compile_03 () =
-  let result =
-    compile (Case (Inl (Int 1), Abs ("x", Var "x"), Abs ("x", Var "x")))
+  let result = compile (Case (Inl (Int 1), Abs ("x", Var "x"), Abs ("x", Var "x")))
   and expected = [ PUSH (INT 1) ] in
   Alcotest.(check (result string string))
     "compile case (inl 1) (fun x -> x) (fun x -> x)"
@@ -37,8 +36,7 @@ let compile_03 () =
     (result <&> to_string)
 
 let compile_04 () =
-  let result =
-    compile (Case (Inr (Int 1), Abs ("x", Var "x"), Abs ("x", Var "x")))
+  let result = compile (Case (Inr (Int 1), Abs ("x", Var "x"), Abs ("x", Var "x")))
   and expected = [ PUSH (INT 1) ] in
   Alcotest.(check (result string string))
     "compile case (inr 1) (fun x -> x) (fun x -> x)"
@@ -70,8 +68,7 @@ let compile_07 () =
          , Abs ("x", Int 3) ) )
   and expected = [ PUSH (INT 2) ] in
   Alcotest.(check (result string string))
-    "compile case (inl inr 1) (fun x -> case x (fun y -> y) (fun y -> 2)) (fun \
-     x -> 3)"
+    "compile case (inl inr 1) (fun x -> case x (fun y -> y) (fun y -> 2)) (fun x -> 3)"
     (return expected <&> to_string)
     (result <&> to_string)
 
@@ -84,8 +81,7 @@ let compile_08 () =
     (result <&> to_string)
 
 let compile_09 () =
-  let result =
-    compile (Abs ("y", Case (Var "y", Abs ("x", Unit), Abs ("x", Var "y"))))
+  let result = compile (Abs ("y", Case (Var "y", Abs ("x", Unit), Abs ("x", Var "y"))))
   and expected =
     [
       LAMBDA
@@ -104,8 +100,7 @@ let compile_09 () =
     (result <&> to_string)
 
 let compile_10 () =
-  let result =
-    compile (Abs ("y", Case (Var "y", Abs ("x", Unit), Abs ("x", Var "x"))))
+  let result = compile (Abs ("y", Case (Var "y", Abs ("x", Unit), Abs ("x", Var "x"))))
   and expected =
     [
       LAMBDA
@@ -124,9 +119,7 @@ let compile_10 () =
     (result <&> to_string)
 
 let compile_11 () =
-  let result =
-    compile
-      (Abs ("x", Case (Inl (Var "x"), Abs ("x", Var "x"), Abs ("x", Int 3))))
+  let result = compile (Abs ("x", Case (Inl (Var "x"), Abs ("x", Var "x"), Abs ("x", Int 3))))
   and expected = [ LAMBDA ("x", [ DUP (0, "x"); DROP (1, "x") ]) ] in
   Alcotest.(check (result string string))
     "compile (fun x -> case (inl x) (fun x -> x) (fun _ -> 2))"

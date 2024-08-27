@@ -19,7 +19,6 @@ module Render = struct
     and first = Access.first region
     and last = Access.first region in
     match file with
-    | Some file ->
-      fprintf ppf "in %s from %a to %a" file render first render last
+    | Some file -> fprintf ppf "in %s from %a to %a" file render first render last
     | None -> fprintf ppf "from %a to %a" render first render last
 end

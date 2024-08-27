@@ -70,8 +70,7 @@ module Literal (P : Specs.PARSEC with type Source.e = char) = struct
       let open Occurrence in
       let open Ephel_parser_source.Utils in
       char '"'
-      >+> opt_rep
-            (char '\\' >+> char '"' <&> Stdlib.Fun.const '"' <|> not (char '"'))
+      >+> opt_rep (char '\\' >+> char '"' <&> Stdlib.Fun.const '"' <|> not (char '"'))
       <+< char '"'
       <&> string_of_chars
 
@@ -79,9 +78,7 @@ module Literal (P : Specs.PARSEC with type Source.e = char) = struct
       let open Monad in
       let open Atomic in
       let open Operator in
-      char '\''
-      >+> (string "\\\'" <&> Stdlib.Fun.const '\'' <|> not (char '\''))
-      <+< char '\''
+      char '\'' >+> (string "\\\'" <&> Stdlib.Fun.const '\'' <|> not (char '\'')) <+< char '\''
 
     let string = string_delimited
     let char = char_delimited

@@ -10,12 +10,7 @@ open Preface.Result.Monad (struct
   type t = string
 end)
 
-let compile s =
-  return s
-  >>= Transpiler.run
-  <&> Expander.run
-  >>= Optimiser.run
-  <&> Simplifier.run
+let compile s = return s >>= Transpiler.run <&> Expander.run >>= Optimiser.run <&> Simplifier.run
 
 let compile_01 () =
   let result = compile (Pair (Int 1, Int 2))

@@ -11,8 +11,7 @@ let parser_seq () =
   in
   let result = response @@ p @@ Parsec.source []
   and expected = (Some ('a', 1), false) in
-  Alcotest.(check (pair (option (pair char int)) bool))
-    "sequence" expected result
+  Alcotest.(check (pair (option (pair char int)) bool)) "sequence" expected result
 
 let parser_seq_left () =
   let open Syntax (Parsec) in

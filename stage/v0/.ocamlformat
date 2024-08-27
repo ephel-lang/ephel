@@ -1,6 +1,6 @@
 version = 0.26.2
-margin = 80
-max-indent = 68
+margin = 100
+max-indent = 80
 
 assignment-operator = begin-line
 

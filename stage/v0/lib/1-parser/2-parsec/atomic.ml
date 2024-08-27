@@ -31,6 +31,5 @@ module Atomic (P : Specs.PARSEC) = struct
     let open Monad in
     let open Eval in
     let open Operator in
-    do_try
-      (fold_left (fun p e -> p <+< atom e) (return ()) l <&> Stdlib.Fun.const l)
+    do_try (fold_left (fun p e -> p <+< atom e) (return ()) l <&> Stdlib.Fun.const l)
 end

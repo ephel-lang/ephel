@@ -5,9 +5,7 @@ open Ephel.Compiler.Cst
 open Ephel.Compiler.Analyzer
 open Preface.Option.Monad
 
-let location =
-  Location.Construct.create ~file:None ~position:0 ~line:0 ~column:0
-
+let location = Location.Construct.create ~file:None ~position:0 ~line:0 ~column:0
 let region = Region.Construct.create ~first:location ~last:location
 
 module FromTokensWithRegion = FromList (struct
@@ -22,16 +20,14 @@ let response r =
 
 let test name input expected () =
   let module Parsec = Parsec (FromTokensWithRegion) in
-  let open Eval (Parsec) in
+  let module Core = Core (Parsec) in
   let result =
-    Analyser.term (module Parsec)
+    Core.(Analyser.term (module Parsec) <+< eos)
     @@ Parsec.source
     @@ List.map (fun e -> (e, region)) input
   and expected = Some expected in
   Alcotest.(check (option string))
-    name
-    (expected <&> Render.to_string)
+    name (expected <&> Render.to_string)
     (response result <&> Render.to_string)
 
-let test name input expected =
-  Alcotest.(test_case name `Quick (test name input expected))
+let test name input expected = Alcotest.(test_case name `Quick (test name input expected))

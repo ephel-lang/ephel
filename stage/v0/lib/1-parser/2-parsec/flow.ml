@@ -19,8 +19,7 @@ module Flow (P : Specs.PARSEC) = struct
     let open Functor in
     fold
       ~success:(fun (a, b, s) -> success (a, b, s))
-      ~failure:(fun (m, b, s) ->
-        if b then failure (m, b, s) else (p2 <&> fun e -> Either.Right e) s )
+      ~failure:(fun (m, b, s) -> if b then failure (m, b, s) else (p2 <&> fun e -> Either.Right e) s)
       ((p1 <&> fun e -> Either.Left e) s)
 
   let eager_choice p1 p2 s =

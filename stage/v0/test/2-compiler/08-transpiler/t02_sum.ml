@@ -26,14 +26,9 @@ let compile_02 () =
     (result <&> to_string)
 
 let compile_03 () =
-  let result =
-    compile (Case (Inl (Int 1), Abs ("x", Var "x"), Abs ("x", Var "x")))
+  let result = compile (Case (Inl (Int 1), Abs ("x", Var "x"), Abs ("x", Var "x")))
   and expected =
-    [
-      PUSH (INT 1)
-    ; LEFT
-    ; CASE ([ DUP (0, "x"); DROP (1, "x") ], [ DUP (0, "x"); DROP (1, "x") ])
-    ]
+    [ PUSH (INT 1); LEFT; CASE ([ DUP (0, "x"); DROP (1, "x") ], [ DUP (0, "x"); DROP (1, "x") ]) ]
   in
   Alcotest.(check (result string string))
     "compile case (inl 1) (fun x -> x) (fun x -> x)"
@@ -41,14 +36,9 @@ let compile_03 () =
     (result <&> to_string)
 
 let compile_04 () =
-  let result =
-    compile (Case (Inr (Int 1), Abs ("x", Var "x"), Abs ("x", Var "x")))
+  let result = compile (Case (Inr (Int 1), Abs ("x", Var "x"), Abs ("x", Var "x")))
   and expected =
-    [
-      PUSH (INT 1)
-    ; RIGHT
-    ; CASE ([ DUP (0, "x"); DROP (1, "x") ], [ DUP (0, "x"); DROP (1, "x") ])
-    ]
+    [ PUSH (INT 1); RIGHT; CASE ([ DUP (0, "x"); DROP (1, "x") ], [ DUP (0, "x"); DROP (1, "x") ]) ]
   in
   Alcotest.(check (result string string))
     "compile case (inr 1) (fun x -> x) (fun x -> x)"
@@ -58,11 +48,7 @@ let compile_04 () =
 let compile_05 () =
   let result = compile (Case (Inl (Int 1), Abs ("x", Int 2), Abs ("x", Var "x")))
   and expected =
-    [
-      PUSH (INT 1)
-    ; LEFT
-    ; CASE ([ PUSH (INT 2); DROP (1, "x") ], [ DUP (0, "x"); DROP (1, "x") ])
-    ]
+    [ PUSH (INT 1); LEFT; CASE ([ PUSH (INT 2); DROP (1, "x") ], [ DUP (0, "x"); DROP (1, "x") ]) ]
   in
   Alcotest.(check (result string string))
     "compile case (inl 1) (fun x -> 2) (fun x -> x)"
@@ -72,11 +58,7 @@ let compile_05 () =
 let compile_06 () =
   let result = compile (Case (Inr (Int 1), Abs ("x", Var "x"), Abs ("x", Int 2)))
   and expected =
-    [
-      PUSH (INT 1)
-    ; RIGHT
-    ; CASE ([ DUP (0, "x"); DROP (1, "x") ], [ PUSH (INT 2); DROP (1, "x") ])
-    ]
+    [ PUSH (INT 1); RIGHT; CASE ([ DUP (0, "x"); DROP (1, "x") ], [ PUSH (INT 2); DROP (1, "x") ]) ]
   in
   Alcotest.(check (result string string))
     "compile case (inr 1) (fun x -> x) (fun x -> 2)"
@@ -98,27 +80,21 @@ let compile_07 () =
     ; CASE
         ( [
             DUP (0, "x")
-          ; CASE
-              ([ DUP (0, "y"); DROP (1, "y") ], [ PUSH (INT 2); DROP (1, "y") ])
+          ; CASE ([ DUP (0, "y"); DROP (1, "y") ], [ PUSH (INT 2); DROP (1, "y") ])
           ; DROP (1, "x")
           ]
         , [ PUSH (INT 3); DROP (1, "x") ] )
     ]
   in
   Alcotest.(check (result string string))
-    "compile case (inl inr 1) (fun x -> case x (fun y -> y) (fun y -> 2)) (fun \
-     x -> 3)"
+    "compile case (inl inr 1) (fun x -> case x (fun y -> y) (fun y -> 2)) (fun x -> 3)"
     (return expected <&> to_string)
     (result <&> to_string)
 
 let compile_08 () =
   let result = compile (Case (Inl (Int 1), Abs ("x", Unit), Abs ("x", Var "x")))
   and expected =
-    [
-      PUSH (INT 1)
-    ; LEFT
-    ; CASE ([ PUSH UNIT; DROP (1, "x") ], [ DUP (0, "x"); DROP (1, "x") ])
-    ]
+    [ PUSH (INT 1); LEFT; CASE ([ PUSH UNIT; DROP (1, "x") ], [ DUP (0, "x"); DROP (1, "x") ]) ]
   in
   Alcotest.(check (result string string))
     "compile case (inl 1) (fun x -> unit) (fun x -> x)"
@@ -126,8 +102,7 @@ let compile_08 () =
     (result <&> to_string)
 
 let compile_09 () =
-  let result =
-    compile (Abs ("y", Case (Var "y", Abs ("x", Unit), Abs ("x", Var "y"))))
+  let result = compile (Abs ("y", Case (Var "y", Abs ("x", Unit), Abs ("x", Var "y"))))
   and expected =
     [
       LAMBDA
@@ -145,8 +120,7 @@ let compile_09 () =
     (result <&> to_string)
 
 let compile_10 () =
-  let result =
-    compile (Abs ("y", Case (Var "y", Abs ("x", Unit), Abs ("x", Var "x"))))
+  let result = compile (Abs ("y", Case (Var "y", Abs ("x", Unit), Abs ("x", Var "x"))))
   and expected =
     [
       LAMBDA
@@ -164,9 +138,7 @@ let compile_10 () =
     (result <&> to_string)
 
 let compile_11 () =
-  let result =
-    compile
-      (Abs ("x", Case (Inl (Var "x"), Abs ("x", Var "x"), Abs ("x", Int 3))))
+  let result = compile (Abs ("x", Case (Inl (Var "x"), Abs ("x", Var "x"), Abs ("x", Int 3))))
   and expected =
     [
       LAMBDA
@@ -174,8 +146,7 @@ let compile_11 () =
         , [
             DUP (0, "x")
           ; LEFT
-          ; CASE
-              ([ DUP (0, "x"); DROP (1, "x") ], [ PUSH (INT 3); DROP (1, "x") ])
+          ; CASE ([ DUP (0, "x"); DROP (1, "x") ], [ PUSH (INT 3); DROP (1, "x") ])
           ; DROP (1, "x")
           ] )
     ]

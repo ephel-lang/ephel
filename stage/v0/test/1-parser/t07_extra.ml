@@ -7,10 +7,7 @@ let parser_eager_choice_left () =
   let open Literal (Parsec) in
   let result =
     response
-    @@ ?=( char 'a'
-         <+> char 'b'
-         <&> (fun _ -> 1)
-         <|||> (char 'a' <+> char 'b' <&> fun _ -> 2) )
+    @@ ?=(char 'a' <+> char 'b' <&> (fun _ -> 1) <|||> (char 'a' <+> char 'b' <&> fun _ -> 2))
     @@ Parsec.source [ 'a'; 'b' ]
   and expected = (Some 1, true) in
   Alcotest.(check (pair (option int) bool)) "eager choice left" expected result

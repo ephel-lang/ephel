@@ -11,6 +11,7 @@ type literal =
   | String of string
 
 type t =
+  | Unit of Region.t
   | Ident of string * Region.t
   | Literal of literal * Region.t
   | App of t * t * Region.t

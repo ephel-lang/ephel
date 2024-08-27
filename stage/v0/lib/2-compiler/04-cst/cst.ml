@@ -11,6 +11,7 @@ type literal =
   | String of string
 
 type t =
+  | Unit of Region.t
   | Ident of string * Region.t
   | Literal of literal * Region.t
   | App of t * t * Region.t
@@ -21,6 +22,7 @@ type t =
   | Case of string * t * t * Region.t
 
 let region = function
+  | Unit r
   | Ident (_, r)
   | Literal (_, r)
   | App (_, _, r)

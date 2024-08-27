@@ -5,6 +5,7 @@ let rec render : Format.formatter -> t -> unit =
  fun ppf ->
   let open Format in
   function
+  | Unit _ -> fprintf ppf "()"
   | Ident (s, _) -> fprintf ppf "%s" s
   | Literal (Integer i, _) -> fprintf ppf "%d" i
   | Literal (String s, _) -> fprintf ppf "%s" s

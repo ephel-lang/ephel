@@ -6,26 +6,30 @@ value ::=
     'val' id '=' term
 
 term ::=
-    ident
+    unit
+    IDENT
     literal
     functional
     group
     product
     coproduct
 
-group ::=
-    '(' term ')'
+unit ::= 
+    '(' ')'
 
 literal ::=
-    STRING
+    STRING | INTEGER
 
-functional_term ::=
+functional ::=
     -- abstraction
     (ident)+ '=>' term
     -- application   
     term term
     -- let binding
     'let' ident = term 'in' term
+
+group ::=
+    '(' term ')'
 
 product ::=
     term ',' term

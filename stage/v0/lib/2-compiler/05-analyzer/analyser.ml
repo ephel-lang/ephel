@@ -29,7 +29,12 @@ module Rules (Parsec : Specs.PARSEC with type Source.e = Token.with_region) = st
 
   let ident = expect is_identifier
 
-  (* Group, Literal and variable *)
+  (* Unit, Group, Literal and variable *)
+
+  (* '(' ')' *)
+  let unit =
+    ?!(token Token.LPAR <+> token Token.RPAR)
+    <&> fun ((_, r1), (_, r2)) -> Cst.Unit (Region.Construct.combine r1 r2)
 
   (* '(' term ')' *)
   let group term = token Token.LPAR >+> term <+< token Token.RPAR
@@ -106,7 +111,8 @@ module Rules (Parsec : Specs.PARSEC with type Source.e = Token.with_region) = st
 
   let simple_term term =
     fix (fun simple_term ->
-        group term
+        unit
+        <|> group term
         <|> builtin term
         <|> literal
         <|> let_binding term

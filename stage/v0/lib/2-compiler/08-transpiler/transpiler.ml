@@ -111,5 +111,3 @@ let run : type a. a Term.t -> (Objcode.t list, string) result =
  fun e ->
   let open Monad in
   compile e [] <&> fst
-
-x y => f --> x => (x, y => f)

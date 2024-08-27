@@ -8,10 +8,10 @@ value ::=
 term ::=
     ident
     literal
-    product
-    coproduct
     functional
     group
+    product
+    coproduct
 
 group ::=
     '(' term ')'
@@ -29,11 +29,11 @@ functional_term ::=
 
 product ::=
     term ',' term
-    'fst'
-    'snd'
+    'fst' term
+    'snd' term
 
 coproduct ::=
     'case' term term term
-    'inl'
-    'inr'
+    'inl' term
+    'inr' term
 ```

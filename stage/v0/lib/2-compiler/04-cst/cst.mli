@@ -1,6 +1,6 @@
 open Ephel_parser_source
 
-type operation =
+type builtin =
   | Inl
   | Inr
   | Fst
@@ -16,7 +16,7 @@ type t =
   | App of t * t * Region.t
   | Abs of string list * t * Region.t
   | Let of string * t * t * Region.t
-  | Builtin of operation * Region.t
+  | Builtin of builtin * t * Region.t
   | Pair of t * t * Region.t
   | Case of string * t * t * Region.t
 

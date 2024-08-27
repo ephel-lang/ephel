@@ -42,14 +42,15 @@ module Rules (Parsec : Specs.PARSEC with type Source.e = Token.with_region) = st
 
   (* Operation *)
 
-  (* 'inl' | 'inr' | 'fst' | 'snd' *)
-  let operations =
+  (* 'inl' term | 'inr' term | 'fst' term | 'snd' term *)
+  let builtin term =
     token Token.INL
-    <&> (fun r -> Cst.Builtin (Cst.Inl, snd r))
-    <|> (token Token.INR <&> fun r -> Cst.Builtin (Cst.Inr, snd r))
-    <|> (token Token.FST <&> fun r -> Cst.Builtin (Cst.Fst, snd r))
-    <|> (token Token.SND <&> fun r -> Cst.Builtin (Cst.Snd, snd r))
-
+    <&> (fun (_, r) -> (Cst.Inl, r))
+    <|> (token Token.INR <&> fun (_, r) -> (Cst.Inr, r))
+    <|> (token Token.FST <&> fun (_, r) -> (Cst.Fst, r))
+    <|> (token Token.SND <&> fun (_, r) -> (Cst.Snd, r))
+    <+> term
+    <&> fun ((b, r), t) -> Cst.Builtin (b, t, Region.Construct.combine r (Cst.region t))
   (* Functional *)
 
   (* (ident)+ '=>' term *)
@@ -106,7 +107,7 @@ module Rules (Parsec : Specs.PARSEC with type Source.e = Token.with_region) = st
   let simple_term term =
     fix (fun simple_term ->
         group term
-        <|> operations
+        <|> builtin term
         <|> literal
         <|> let_binding term
         <|> case simple_term

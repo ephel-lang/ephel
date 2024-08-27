@@ -18,7 +18,7 @@ let response r =
   let open Response.Destruct in
   fold ~success:(fun (a, _, _) -> Some a) ~failure:(fun (_, _, _) -> None) r
 
-let test name input expected () =
+let test_expr name input expected () =
   let module Parsec = Parsec (FromTokensWithRegion) in
   let module Core = Core (Parsec) in
   let result =
@@ -30,4 +30,18 @@ let test name input expected () =
     name (expected <&> Render.to_string)
     (response result <&> Render.to_string)
 
-let test name input expected = Alcotest.(test_case name `Quick (test name input expected))
+let test_decl name input expected () =
+  let module Parsec = Parsec (FromTokensWithRegion) in
+  let module Core = Core (Parsec) in
+  let result =
+    Core.(Analyser.declaration (module Parsec) <+< eos)
+    @@ Parsec.source
+    @@ List.map (fun e -> (e, region)) input
+  and expected = Some expected in
+  Alcotest.(check (option string))
+    name
+    (expected <&> fun (n, t) -> n ^ ":" ^ Render.to_string t)
+    (response result <&> fun (n, t) -> n ^ ":" ^ Render.to_string t)
+
+let test_expr name input expected = Alcotest.(test_case name `Quick (test_expr name input expected))
+let test_decl name input expected = Alcotest.(test_case name `Quick (test_decl name input expected))

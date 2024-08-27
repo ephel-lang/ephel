@@ -8,4 +8,5 @@ let () =
       ; T04_group.cases
       ; T05_product.cases
       ; T06_coproduct.cases
+      ; T07_declaration.cases
       ] )

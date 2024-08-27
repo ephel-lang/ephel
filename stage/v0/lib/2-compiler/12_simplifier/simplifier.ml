@@ -6,7 +6,7 @@ let rec simplify_sequence =
   | DIG (0, _) :: l -> l
   | DIG (1, _) :: l -> SWAP :: l
   | SWAP :: DROP (i, n) :: l when i > 1 -> DROP (i, n) :: SWAP :: l
-  | APPLY :: DROP (i, n) :: l when i > 0 -> DROP (i + 1, n) :: APPLY :: l
+  | EXEC :: DROP (i, n) :: l when i > 0 -> DROP (i + 1, n) :: EXEC :: l
   | PUSH a :: DROP (i, n) :: l when i > 0 -> DROP (i - 1, n) :: PUSH a :: l
   | ((FST | SND | LEFT | RIGHT) as a) :: DROP (i, n) :: l when i > 0 -> DROP (i, n) :: a :: l
   | DUP (i, n) :: DROP (j, _) :: l when j = i + 1 -> DIG (i, n) :: l

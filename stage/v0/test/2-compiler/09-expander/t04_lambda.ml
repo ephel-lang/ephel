@@ -13,7 +13,7 @@ let compile s = return s >>= Transpiler.run <&> Expander.run
 let compile_01 () =
   let result = compile (Rec ("f", Abs ("x", App (Var "f", Var "x"))))
   and expected =
-    [ LAMBDA_REC ("f", "x", [ DUP (1, "f"); DUP (1, "x"); APPLY; DROP (1, "x"); DROP (1, "f") ]) ]
+    [ LAMBDA_REC ("f", "x", [ DUP (1, "f"); DUP (1, "x"); EXEC; DROP (1, "x"); DROP (1, "f") ]) ]
   in
   Alcotest.(check (result string string))
     "compile rec(f).(fun x -> f x)"
@@ -33,7 +33,7 @@ let compile_02 () =
             DUP (0, "x")
           ; CASE
               ( [ DUP (0, "y"); DROP (1, "y"); DROP (1, "x"); DROP (1, "f") ]
-              , [ DUP (2, "f"); DUP (1, "y"); APPLY; DROP (1, "y"); DROP (1, "x"); DROP (1, "f") ]
+              , [ DUP (2, "f"); DUP (1, "y"); EXEC; DROP (1, "y"); DROP (1, "x"); DROP (1, "f") ]
               )
           ] )
     ]

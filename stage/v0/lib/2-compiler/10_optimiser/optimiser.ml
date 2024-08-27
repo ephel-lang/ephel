@@ -23,7 +23,7 @@ let generate (o, s) =
     | Val a :: s -> PUSH a |> push_in r |> generate s
     | Code (n, a) :: s -> LAMBDA (n, a) |> push_in r |> generate s
     | RecCode (f, n, a) :: s -> LAMBDA_REC (f, n, a) |> push_in r |> generate s
-    | Exec (a, c) :: s -> APPLY |> push_in r |> generate (c :: a :: s)
+    | Exec (a, c) :: s -> EXEC |> push_in r |> generate (c :: a :: s)
     | Car a :: s -> FST |> push_in r |> generate (a :: s)
     | Cdr a :: s -> SND |> push_in r |> generate (a :: s)
     | Pair (pl, pr) :: s -> PAIR |> push_in r |> generate (pl :: pr :: s)
@@ -45,11 +45,11 @@ let rec optimise_instruction s =
   let open Objcode in
   function
   | PUSH v -> Ok ([], Val v :: s)
-  | APPLY -> (
+  | EXEC -> (
     match s with
     | a :: Code (_, c) :: s -> optimise (a :: s) c
     | a :: c :: s -> Ok ([], Exec (c, a) :: s)
-    | _ -> Ok ([ APPLY ], s) )
+    | _ -> Ok ([ EXEC ], s) )
   | LAMBDA (n, a) ->
     let+ o = optimise [ Var n ] a >>= generate in
     ([], Code (n, o) :: s)

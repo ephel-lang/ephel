@@ -97,7 +97,7 @@ and compile : type a. a Term.t -> Stack.t list -> (Objcode.t list * Stack.t list
     let* o_l, s = compile l s in
     let* o_r, s = compile r s in
     let+ s = remove 2 s in
-    (o_l @ o_r @ [ APPLY ], VAL "app" :: s)
+    (o_l @ o_r @ [ EXEC ], VAL "app" :: s)
   | Rec (f, Abs (n, e)) ->
     let* o, s = compile_binding n e [ VAR f ] in
     let+ g, _ = garbage f s in
@@ -111,3 +111,5 @@ let run : type a. a Term.t -> (Objcode.t list, string) result =
  fun e ->
   let open Monad in
   compile e [] <&> fst
+
+x y => f --> x => (x, y => f)

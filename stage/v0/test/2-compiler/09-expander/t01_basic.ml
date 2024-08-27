@@ -36,7 +36,7 @@ let compile_03 () =
 
 let compile_04 () =
   let result = compile (App (Abs ("x", Var "x"), Int 1))
-  and expected = [ LAMBDA ("x", [ DUP (0, "x"); DROP (1, "x") ]); PUSH (INT 1); APPLY ] in
+  and expected = [ LAMBDA ("x", [ DUP (0, "x"); DROP (1, "x") ]); PUSH (INT 1); EXEC ] in
   Alcotest.(check (result string string))
     "compile (fun x -> x) 1"
     (return expected <&> to_string)
@@ -44,7 +44,7 @@ let compile_04 () =
 
 let compile_05 () =
   let result = compile (App (Abs ("x", Unit), Int 1))
-  and expected = [ LAMBDA ("x", [ PUSH UNIT; DROP (1, "x") ]); PUSH (INT 1); APPLY ] in
+  and expected = [ LAMBDA ("x", [ PUSH UNIT; DROP (1, "x") ]); PUSH (INT 1); EXEC ] in
   Alcotest.(check (result string string))
     "compile (fun x -> unit) 1"
     (return expected <&> to_string)
@@ -56,9 +56,9 @@ let compile_06 () =
     [
       LAMBDA ("x", [ LAMBDA ("y", [ DUP (0, "y"); DROP (1, "y") ]); DROP (1, "x") ])
     ; PUSH (INT 1)
-    ; APPLY
+    ; EXEC
     ; PUSH (INT 2)
-    ; APPLY
+    ; EXEC
     ]
   in
   Alcotest.(check (result string string))
@@ -86,7 +86,7 @@ let compile_08 () =
 let compile_09 () =
   (* PARTIAL APPLICATION *)
   let result = compile (Abs ("f", Abs ("x", App (Var "f", Var "x"))))
-  and expected = [ LAMBDA ("f", [ LAMBDA ("x", [ DIG (1, "f"); APPLY ]) ]) ] in
+  and expected = [ LAMBDA ("f", [ LAMBDA ("x", [ DIG (1, "f"); EXEC ]) ]) ] in
   Alcotest.(check (result string string))
     "compile (fun f x -> f x)"
     (return expected <&> to_string)
@@ -96,7 +96,7 @@ let compile_10 () =
   let result = compile (Abs ("f", Let ("x", Int 1, App (Var "f", Var "x"))))
   and expected =
     [
-      LAMBDA ("f", [ PUSH (INT 1); DUP (1, "f"); DUP (1, "x"); APPLY; DROP (1, "x"); DROP (1, "f") ])
+      LAMBDA ("f", [ PUSH (INT 1); DUP (1, "f"); DUP (1, "x"); EXEC; DROP (1, "x"); DROP (1, "f") ])
     ]
   in
   Alcotest.(check (result string string))

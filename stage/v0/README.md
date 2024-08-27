@@ -111,5 +111,4 @@ type t =
   | EXEC
   | LAMBDA of string * t list
   | LAMBDA_REC of string * string * t list
-  | APPLY
 ```

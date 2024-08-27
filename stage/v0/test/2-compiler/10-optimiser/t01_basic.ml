@@ -79,7 +79,7 @@ let compile_08 () =
 let compile_09 () =
   (* PARTIAL APPLICATION *)
   let result = compile (Abs ("f", Abs ("x", App (Var "f", Var "x"))))
-  and expected = [ LAMBDA ("f", [ LAMBDA ("x", [ DIG (1, "f"); APPLY ]) ]) ] in
+  and expected = [ LAMBDA ("f", [ LAMBDA ("x", [ DIG (1, "f"); EXEC ]) ]) ] in
   Alcotest.(check (result string string))
     "compile (fun f x -> f x)"
     (return expected <&> to_string)
@@ -87,7 +87,7 @@ let compile_09 () =
 
 let compile_10 () =
   let result = compile (Abs ("f", Let ("x", Int 1, App (Var "f", Var "x"))))
-  and expected = [ LAMBDA ("f", [ DUP (0, "f"); PUSH (INT 1); APPLY; DROP (1, "f") ]) ] in
+  and expected = [ LAMBDA ("f", [ DUP (0, "f"); PUSH (INT 1); EXEC; DROP (1, "f") ]) ] in
   Alcotest.(check (result string string))
     "compile (fun f -> let x = 1 in f x)"
     (return expected <&> to_string)

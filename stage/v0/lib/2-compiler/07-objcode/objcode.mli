@@ -4,7 +4,7 @@ type value =
 
 type t =
   (* Lambda operation and terms *)
-  | APPLY
+  | EXEC
   | LAMBDA of string * t list
   | LAMBDA_REC of string * string * t list
   (* Sum operations *)

@@ -46,7 +46,7 @@ let compile_04 () =
 
 let compile_05 () =
   let result = compile (Abs ("p", App (Fst (Var "p"), Snd (Var "p"))))
-  and expected = [ LAMBDA ("p", [ UNPAIR; SWAP; APPLY ]) ] in
+  and expected = [ LAMBDA ("p", [ UNPAIR; SWAP; EXEC ]) ] in
   Alcotest.(check (result string string))
     "compile (fun p -> (fst p) (snd p))"
     (return expected <&> to_string)
@@ -54,7 +54,7 @@ let compile_05 () =
 
 let compile_06 () =
   let result = compile (Abs ("p", App (Snd (Var "p"), Fst (Var "p"))))
-  and expected = [ LAMBDA ("p", [ UNPAIR; APPLY ]) ] in
+  and expected = [ LAMBDA ("p", [ UNPAIR; EXEC ]) ] in
   Alcotest.(check (result string string))
     "compile (fun p -> (snd p) (fst p))"
     (return expected <&> to_string)

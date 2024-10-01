@@ -17,6 +17,7 @@ and render_t ppf =
   let open Format in
   function
   | PUSH v -> fprintf ppf "PUSH (%a)" render_value v
+  | APPLY -> fprintf ppf "APPLY"
   | EXEC -> fprintf ppf "EXEC"
   | LAMBDA (n, l) -> fprintf ppf "LAMBDA( %a, [ %a ])" render_string n render l
   | DIG (i, n) -> fprintf ppf "DIG (%d, %a)" i render_string n

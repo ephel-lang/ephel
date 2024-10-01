@@ -3,7 +3,8 @@ type value =
   | UNIT
 
 type t =
-  (* Lambda operation and terms *)
+  (* Lambda operation and terms "à la Michelson" *)
+  | APPLY
   | EXEC
   | LAMBDA of string * t list
   | LAMBDA_REC of string * string * t list

@@ -33,8 +33,7 @@ let compile_02 () =
             DUP (0, "x")
           ; CASE
               ( [ DUP (0, "y"); DROP (1, "y"); DROP (1, "x"); DROP (1, "f") ]
-              , [ DUP (2, "f"); DUP (1, "y"); EXEC; DROP (1, "y"); DROP (1, "x"); DROP (1, "f") ]
-              )
+              , [ DUP (2, "f"); DUP (1, "y"); EXEC; DROP (1, "y"); DROP (1, "x"); DROP (1, "f") ] )
           ] )
     ]
   in

@@ -1,1 +1,1 @@
-let () = Alcotest.(run "Lifting Test" [  ])
+let () = Alcotest.(run "Lifting Test" [])

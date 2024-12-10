@@ -119,13 +119,12 @@ Partial function compilation using APPLY (Michelson)
 Study of PUSH/GRAB instruction addition for closures (Zinc Abstract Machine)
 
 ```
-===========================================================
 ((x => y => add x y) 1) 2
 (1) ----
 PUSH 2;PUSH 1;LAMBDA[UNPAIR;FFI 2 "add"];APPLY;EXEC        {}
 PUSH 1;LAMBDA[UNPAIR;FFI 2 "add"];APPLY;EXEC               {2}
 LAMBDA[UNPAIR;FFI 2 "add"];APPLY;EXEC                      {1,2}
-APPLY;EXEC                                                 {1,[UNPAIR;FFI 2 "add";DROP "(x,y)" 1],2}
+APPLY;EXEC                                                 {[UNPAIR;FFI 2 "add";DROP "(x,y)" 1],1,2}
 EXEC                                                       {[PUSH 1;PAIR;UNPAIR;FFI 2 "add";DROP "(x,y)" 1],2}
 (2) ----
 PUSH 1;PAIR;UNPAIR;FFI 2 "add"                             {2}

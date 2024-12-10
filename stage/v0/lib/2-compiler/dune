@@ -6,6 +6,7 @@
   ephel.compiler.analyzer
   ephel.compiler.ast
   ephel.Compiler.Objcode
+  ephel.compiler.lifting
   ephel.compiler.transpiler
   ephel.compiler.expander
   ephel.compiler.optimiser

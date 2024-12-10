@@ -21,7 +21,7 @@ val fold =
     | None   => l => _ => l unit
     | Some a => _ => r => r a
 
-val _?_:_ : sig of fold = fold (infix 150)
+val _?_:_ : sig of fold (infix 150) = fold
 
 -{ Functor, Applicative and Monad }-
 

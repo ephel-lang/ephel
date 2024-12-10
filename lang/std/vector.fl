@@ -1,0 +1,9 @@
+open std.nat
+
+-{ Type definition }-
+
+sig Vec : Nat -> type -> type
+val Vec = size A =>
+    | VNil  : Vec Zero A
+    | VCons : A -> Vec size A -> Vec (Succ size) A
+

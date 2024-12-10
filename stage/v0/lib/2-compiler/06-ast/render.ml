@@ -5,7 +5,7 @@ let rec render : type a. Format.formatter -> a t -> unit =
  fun ppf ->
   let open Format in
   function
-  | Abs (n, c) -> fprintf ppf "%s => %a" n render c
+  | Abs (ln, c) -> fprintf ppf "%a => %a" render_arguments ln render c
   | App (l, r) -> fprintf ppf "%a (%a)" render l render r
   | Var n -> fprintf ppf "%s" n
   | Unit -> fprintf ppf "()"
@@ -16,8 +16,11 @@ let rec render : type a. Format.formatter -> a t -> unit =
   | Pair (l, r) -> fprintf ppf "(%a, %a)" render l render r
   | Fst e -> fprintf ppf "fst (%a)" render e
   | Snd e -> fprintf ppf "snd (%a)" render e
-  | Let (n, e, f) -> fprintf ppf "let %s = %a in %a" n render e render f
   | Rec (n, c) -> fprintf ppf "rec(%s).(%a)" n render c
   | Ffi (f, a) -> fprintf ppf "native %s %i" f a
 
-let to_string : type a. a t -> string = fun o -> Render.to_string render o
+and render_arguments ppf =
+  let open Format in
+  function [] -> () | a :: l -> fprintf ppf "%s %a" a render_arguments l
+
+let to_string o = Render.to_string render o

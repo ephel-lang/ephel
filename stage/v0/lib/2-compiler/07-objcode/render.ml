@@ -19,7 +19,7 @@ and render_t ppf =
   | PUSH v -> fprintf ppf "PUSH (%a)" render_value v
   | APPLY -> fprintf ppf "APPLY"
   | EXEC -> fprintf ppf "EXEC"
-  | LAMBDA (n, l) -> fprintf ppf "LAMBDA( %a, [ %a ])" render_string n render l
+  | LAMBDA (ln, l) -> fprintf ppf "LAMBDA([ %a ], [ %a ])" render_arguments ln render l
   | DIG (i, n) -> fprintf ppf "DIG (%d, %a)" i render_string n
   | DUP (i, n) -> fprintf ppf "DUP (%d, %a)" i render_string n
   | DROP (i, n) -> fprintf ppf "DROP (%d, %a)" i render_string n
@@ -31,8 +31,12 @@ and render_t ppf =
   | FST -> fprintf ppf "FST"
   | SND -> fprintf ppf "SND"
   | UNPAIR -> fprintf ppf "UNPAIR"
-  | LAMBDA_REC (f, n, l) ->
-    fprintf ppf "LAMBDA_REC(%a, %a, [ %a ])" render_string f render_string n render l
+  | LAMBDA_REC (f, ln, l) ->
+    fprintf ppf "LAMBDA_REC(%a, [ %a ], [ %a ])" render_string f render_arguments ln render l
   | FFI (f, a) -> fprintf ppf "FFI(%a, %d)" render_string f a
+
+and render_arguments ppf =
+  let open Format in
+  function [] -> () | a :: l -> fprintf ppf "%a; %a" render_string a render_arguments l
 
 let to_string o = Render.to_string render o

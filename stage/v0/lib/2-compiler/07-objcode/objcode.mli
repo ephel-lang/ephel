@@ -6,8 +6,8 @@ type t =
   (* Lambda operation and terms "à la Michelson" *)
   | APPLY
   | EXEC
-  | LAMBDA of string * t list
-  | LAMBDA_REC of string * string * t list
+  | LAMBDA of string list * t list
+  | LAMBDA_REC of string * string list * t list
   (* Sum operations *)
   | LEFT
   | RIGHT

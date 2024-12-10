@@ -1,26 +1,19 @@
-type tInt = T_INT
-type tUnit = T_UNIT
-type ('a, 'b) tFun = T_FUN
-type ('a, 'b) tSum = T_SUM
-type ('a, 'b) tProd = T_PROD
-
 type _ t =
-  | Unit : tUnit t
-  | Int : int -> tInt t
+  | Unit : 'a t
+  | Int : int -> 'a t
   (* Function *)
-  | Abs : string * 'a t -> ('b, 'a) tFun t
-  | App : ('a, 'b) tFun t * 'a t -> 'b t
+  | Abs : string list * 'a t -> 'a t
+  | App : 'a t * 'a t -> 'a t
   | Var : string -> 'a t
   (* Sum *)
-  | Inl : 'a t -> ('a, 'b) tSum t
-  | Inr : 'b t -> ('a, 'b) tSum t
-  | Case : ('a, 'b) tSum t * ('a, 'c) tFun t * ('b, 'c) tFun t -> 'c t
+  | Inl : 'a t -> 'a t
+  | Inr : 'a t -> 'a t
+  | Case : 'a t * 'a t * 'a t -> 'a t
   (* Product *)
-  | Pair : 'a t * 'b t -> ('a, 'b) tProd t
-  | Fst : ('a, 'b) tProd t -> 'a t
-  | Snd : ('a, 'b) tProd t -> 'b t
+  | Pair : 'a t * 'a t -> 'a t
+  | Fst : 'a t -> 'a t
+  | Snd : 'a t -> 'a t
   (* Extension *)
-  | Let : string * 'a t * 'b t -> 'b t
-  | Rec : string * ('a, 'b) tFun t -> ('a, 'b) tFun t
+  | Rec : string * 'a t -> 'a t
   (* FFI *)
   | Ffi : string * int -> 'a t

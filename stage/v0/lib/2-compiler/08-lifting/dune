@@ -1,0 +1,4 @@
+(library
+ (name ephel_compiler_lifting)
+ (public_name ephel.compiler.lifting)
+ (libraries preface ephel.compiler.ast ephel.Compiler.Objcode))

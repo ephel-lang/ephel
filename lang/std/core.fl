@@ -19,9 +19,9 @@ val switch = f b a => f a b
 sig Defer : type -> type
 val Defer = let open unit in A => Unit -> A
 
--{ Explicit type annotation }-
+-{ Explicit variable in type annotation }-
 
-sig {a}_as_{A} : (A:type) -> (a:A) -> A (linfix 200)
+sig {a}_as_{A} : (A:type) -> (a:A) -> A (rinfix 200)
 val _as_ = _ => id
 
 --  Examples: 1 as Int, Int as Type, 1 as Int as Type
